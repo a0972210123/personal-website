@@ -1,0 +1,312 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const SHEET_ID = '1vYSAfnbqFzLNBNcPY5dd8XRxvVozt1IDd-kIqKO5swA';
+const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=0`;
+---
+<BaseLayout
+  title="Speeches"
+  description="葉淨維 Matt Ye 的演講、工作坊、競賽作品集。2020 年至今，涵蓋學術簡報、表達技巧、EMI教學等主題。"
+>
+  <div class="container-wide">
+
+    <!-- Hero -->
+    <section class="speeches-hero">
+      <h1>Speeches &amp; <span class="accent-text">Workshops</span></h1>
+      <p class="subtitle">
+        2020 年起的演講、工作坊與競賽紀錄，資料即時同步自 Google Sheets。
+      </p>
+    </section>
+
+    <!-- Bento Stats (populated by JS) -->
+    <div class="bento-grid" id="bento-stats">
+      <div class="bento-card">
+        <div class="bento-card-label">Total Events</div>
+        <div class="bento-card-num" id="val-total">—</div>
+        <div class="bento-card-sub">場次累計</div>
+      </div>
+      <div class="bento-card">
+        <div class="bento-card-label">Total Hours</div>
+        <div class="bento-card-num" id="val-hours">—</div>
+        <div class="bento-card-sub">講台時數</div>
+      </div>
+      <div class="bento-card">
+        <div class="bento-card-label">Audience</div>
+        <div class="bento-card-num" id="val-audience">—</div>
+        <div class="bento-card-sub">觸及人次</div>
+      </div>
+      <div class="bento-card">
+        <div class="bento-card-label">Organizations</div>
+        <div class="bento-card-num" id="val-orgs">—</div>
+        <div class="bento-card-sub">合作單位</div>
+      </div>
+      <div class="bento-card">
+        <div class="bento-card-label">Languages</div>
+        <div class="bento-card-num" id="val-langs">2</div>
+        <div class="bento-card-sub">中文 · 英文</div>
+      </div>
+      <div class="bento-card">
+        <div class="bento-card-label">Since</div>
+        <div class="bento-card-num" id="val-since">2020</div>
+        <div class="bento-card-sub" id="val-span">—</div>
+      </div>
+    </div>
+
+    <!-- Explorer: search + filters -->
+    <div class="explorer-bar">
+      <div class="search-box">
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" id="search-input" placeholder="搜尋主題、主辦單位…" autocomplete="off" />
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">類型</span>
+        <div class="chip-group" id="type-chips"></div>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">形式</span>
+        <div class="chip-group" id="mode-chips"></div>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">語言</span>
+        <div class="chip-group" id="lang-chips"></div>
+      </div>
+    </div>
+
+    <!-- Results meta -->
+    <div class="results-meta">
+      <span>Showing <b id="results-count">—</b> events</span>
+      <button class="clear-btn" id="clear-btn" style="display:none">Clear filters</button>
+    </div>
+
+    <!-- Cards -->
+    <div class="speech-cards-grid" id="cards-grid">
+      <div class="data-loading">Loading speeches data…</div>
+    </div>
+
+    <!-- Show more -->
+    <div class="show-more-row">
+      <button class="show-more-btn" id="show-more-btn" style="display:none">
+        Show more
+      </button>
+    </div>
+
+  </div>
+</BaseLayout>
+
+<script define:vars={{ CSV_URL }}>
+/* ── Helpers ── */
+function parseCSV(text) {
+  const rows = [];
+  const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
+  for (const line of lines) {
+    if (!line.trim()) continue;
+    const row = [];
+    let cur = '', inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (c === '"') {
+        if (inQ && line[i+1] === '"') { cur += '"'; i++; }
+        else inQ = !inQ;
+      } else if (c === ',' && !inQ) { row.push(cur.trim()); cur = ''; }
+      else cur += c;
+    }
+    row.push(cur.trim());
+    rows.push(row);
+  }
+  return rows;
+}
+
+function fmtDate(raw) {
+  if (!raw) return '';
+  // Handle malformed like "20253/26" → skip
+  const clean = raw.replace(/[^\d/]/g, '');
+  const parts = clean.split('/');
+  if (parts.length < 3) return raw;
+  const [y, m, d] = parts;
+  if (!y || y.length !== 4) return raw;
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${months[parseInt(m)-1] ?? m} ${parseInt(d)}, ${y}`;
+}
+
+function fmtNum(n) {
+  if (n >= 1000) return `${(n/1000).toFixed(1)}K`;
+  return String(n);
+}
+
+/* ── State ── */
+const PAGE_SIZE = 24;
+let allData = [];
+let state = { search: '', types: new Set(), modes: new Set(), langs: new Set(), page: 1 };
+
+/* ── Fetch & Init ── */
+async function init() {
+  try {
+    const resp = await fetch(CSV_URL);
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const text = await resp.text();
+    const rows = parseCSV(text);
+    // First row = headers: ["","日期","主辦單位","主辦單位(英文名稱)","主題","類型","線上/實體","語言","聽眾教育程度","人數/觀看","小時"]
+    allData = rows.slice(1)
+      .map(r => ({
+        date:     r[1]  ?? '',
+        org:      r[2]  ?? '',
+        orgEn:    r[3]  ?? '',
+        topic:    r[4]  ?? '',
+        type:     r[5]  ?? '',
+        mode:     r[6]  ?? '',
+        lang:     r[7]  ?? '',
+        edu:      r[8]  ?? '',
+        audience: parseInt(r[9])  || 0,
+        hours:    parseFloat(r[10]) || 0,
+      }))
+      .filter(d => d.date && d.topic);
+
+    renderStats();
+    renderChips();
+    renderCards();
+  } catch (err) {
+    document.getElementById('cards-grid').innerHTML =
+      `<div class="data-error">⚠️ 資料載入失敗，請稍後再試。<br><small>${err.message}</small></div>`;
+    console.error('Speeches data error:', err);
+  }
+}
+
+/* ── Stats ── */
+function renderStats() {
+  const total = allData.length;
+  const hours = allData.reduce((s, d) => s + d.hours, 0);
+  const audience = allData.reduce((s, d) => s + d.audience, 0);
+  const orgs = new Set(allData.map(d => d.org.trim()).filter(Boolean)).size;
+
+  document.getElementById('val-total').textContent = total;
+  document.getElementById('val-hours').textContent = Math.round(hours);
+  document.getElementById('val-audience').textContent = fmtNum(audience);
+  document.getElementById('val-orgs').textContent = orgs;
+  document.getElementById('val-span').textContent = `${total} events over 6 yrs`;
+}
+
+/* ── Filter Chips ── */
+function makeChips(containerId, values, stateSet, onChange) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = '';
+  [...values].sort().forEach(val => {
+    const btn = document.createElement('button');
+    btn.className = 'chip' + (stateSet.has(val) ? ' active' : '');
+    btn.textContent = val;
+    btn.addEventListener('click', () => {
+      stateSet.has(val) ? stateSet.delete(val) : stateSet.add(val);
+      btn.classList.toggle('active');
+      state.page = 1;
+      onChange();
+    });
+    container.appendChild(btn);
+  });
+}
+
+function renderChips() {
+  const types    = new Set(allData.map(d => d.type).filter(Boolean));
+  const modes    = new Set(allData.map(d => d.mode).filter(Boolean));
+  const langs    = new Set(allData.map(d => d.lang).filter(Boolean));
+
+  makeChips('type-chips', types, state.types, renderCards);
+  makeChips('mode-chips', modes, state.modes, renderCards);
+  makeChips('lang-chips', langs, state.langs, renderCards);
+}
+
+/* ── Filter Logic ── */
+function applyFilters() {
+  const q = state.search.toLowerCase();
+  return allData.filter(d => {
+    if (q && !d.topic.toLowerCase().includes(q) && !d.org.toLowerCase().includes(q) && !d.orgEn.toLowerCase().includes(q)) return false;
+    if (state.types.size && !state.types.has(d.type)) return false;
+    if (state.modes.size && !state.modes.has(d.mode)) return false;
+    if (state.langs.size && !state.langs.has(d.lang)) return false;
+    return true;
+  });
+}
+
+function hasActiveFilters() {
+  return state.search || state.types.size || state.modes.size || state.langs.size;
+}
+
+/* ── Card Renderer ── */
+function cardHTML(d) {
+  const typeCls = `badge badge-type-${d.type}`;
+  const modeCls = `badge badge-mode-${d.mode}`;
+  return `
+    <div class="speech-card">
+      <div class="card-meta-row">
+        <span>${fmtDate(d.date)}</span>
+        <span>${d.edu}</span>
+      </div>
+      <div class="card-topic">${d.topic}</div>
+      ${d.org ? `<div class="card-org">${d.org}</div>` : ''}
+      ${d.orgEn ? `<div class="card-org-en">${d.orgEn}</div>` : ''}
+      <div class="card-stats">
+        ${d.audience ? `<span><b>${d.audience}</b>人</span>` : ''}
+        ${d.hours ? `<span><b>${d.hours}</b>hr</span>` : ''}
+      </div>
+      <div class="card-badges">
+        ${d.type ? `<span class="${typeCls}">${d.type}</span>` : ''}
+        ${d.mode ? `<span class="${modeCls}">${d.mode}</span>` : ''}
+        ${d.lang ? `<span class="badge badge-lang">${d.lang}</span>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function renderCards() {
+  const filtered = applyFilters();
+  const visible = filtered.slice(0, state.page * PAGE_SIZE);
+
+  document.getElementById('results-count').textContent = filtered.length;
+  document.getElementById('clear-btn').style.display = hasActiveFilters() ? 'block' : 'none';
+
+  const grid = document.getElementById('cards-grid');
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="data-error" style="font-size:2rem">😶<br><br>No results found.</div>';
+  } else {
+    grid.innerHTML = visible.map(cardHTML).join('');
+  }
+
+  const moreBtn = document.getElementById('show-more-btn');
+  if (filtered.length > state.page * PAGE_SIZE) {
+    moreBtn.style.display = 'block';
+    moreBtn.disabled = false;
+    moreBtn.textContent = `Show more (${filtered.length - visible.length} remaining)`;
+  } else {
+    moreBtn.style.display = 'none';
+  }
+}
+
+/* ── Event Listeners ── */
+document.getElementById('search-input')?.addEventListener('input', e => {
+  state.search = e.target.value;
+  state.page = 1;
+  renderCards();
+});
+
+document.getElementById('show-more-btn')?.addEventListener('click', () => {
+  state.page++;
+  renderCards();
+});
+
+document.getElementById('clear-btn')?.addEventListener('click', () => {
+  state.search = '';
+  state.types.clear();
+  state.modes.clear();
+  state.langs.clear();
+  state.page = 1;
+  const inp = document.getElementById('search-input');
+  if (inp) inp.value = '';
+  document.querySelectorAll('.chip.active').forEach(c => c.classList.remove('active'));
+  document.getElementById('clear-btn').style.display = 'none';
+  renderCards();
+});
+
+/* ── Run ── */
+init();
+</script>
