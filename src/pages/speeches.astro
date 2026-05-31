@@ -168,19 +168,21 @@ async function init() {
 
     // Build header index for flexible column mapping
     const headers = rows[0].map(h => h.toLowerCase().trim());
+    console.log('[speeches] CSV headers:', headers);
     const hi = name => headers.findIndex(h => h.includes(name.toLowerCase()));
 
-    const iDate = hi('日期');
-    const iOrg = hi('主辦單位') !== -1 ? hi('主辦單位') : 2;
-    const iOrgEn = hi('英文名稱') !== -1 ? hi('英文名稱') : 3;
-    const iTopic = hi('主題');
-    const iType = hi('類型');
-    const iMode = hi('線上');
-    const iLang = hi('語言');
-    const iEdu = hi('教育程度');
+    const iDate     = hi('日期');
+    const iOrg      = hi('主辦單位') !== -1 ? hi('主辦單位') : 2;
+    const iOrgEn    = hi('英文名稱') !== -1 ? hi('英文名稱') : 3;
+    const iTopic    = hi('主題');
+    const iType     = hi('類型');
+    const iMode     = hi('線上');
+    const iLang     = hi('語言');
+    const iEdu      = hi('教育程度');
     const iAudience = hi('人數');
-    const iHours = hi('小時');
-    const iUrl = hi('url');  // matches "news, blog, or other url"
+    const iHours    = hi('小時');
+    const iUrl      = hi('news, blog');  // "News, Blog, or Other URL"
+    console.log('[speeches] iUrl =', iUrl, '| header =', headers[iUrl]);
 
     allData = rows.slice(1)
       .map(r => ({
