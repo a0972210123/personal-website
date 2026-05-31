@@ -108,7 +108,22 @@ const orgDomains: Record<string, string> = {
         </a>
       </div>
       <div class="hero-photo-wrap">
-        <img src="/photo-pointing.jpg" alt="葉淨維 Matt Ye" />
+        <div class="hero-carousel" id="hero-carousel">
+          <div class="carousel-slide active">
+            <img src="/photo-pointing.jpg" alt="葉淨維 Matt Ye — 演講姿態" />
+          </div>
+          <div class="carousel-slide">
+            <img src="/photo-standing.jpg" alt="葉淨維 Matt Ye — 站姿" />
+          </div>
+          <div class="carousel-slide">
+            <img src="/photo-suit.jpg" alt="葉淨維 Matt Ye — 商務形象" />
+          </div>
+        </div>
+        <div class="carousel-dots">
+          <button class="carousel-dot active" aria-label="照片 1"></button>
+          <button class="carousel-dot" aria-label="照片 2"></button>
+          <button class="carousel-dot" aria-label="照片 3"></button>
+        </div>
       </div>
     </section>
 
@@ -218,6 +233,46 @@ const orgDomains: Record<string, string> = {
 
   </div>
 </BaseLayout>
+
+<script>
+/* ── Hero Photo Carousel ── */
+(function () {
+  var slides = document.querySelectorAll('#hero-carousel .carousel-slide');
+  var dots   = document.querySelectorAll('.carousel-dots .carousel-dot');
+  if (!slides.length) return;
+
+  var current = 0;
+
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = (n + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+  }
+
+  // Auto-advance every 4 seconds
+  var timer = setInterval(function () { goTo(current + 1); }, 4000);
+
+  // Dot click → jump + reset timer
+  dots.forEach(function (dot, i) {
+    dot.addEventListener('click', function () {
+      clearInterval(timer);
+      goTo(i);
+      timer = setInterval(function () { goTo(current + 1); }, 4000);
+    });
+  });
+
+  // Pause on hover
+  var carousel = document.getElementById('hero-carousel');
+  if (carousel) {
+    carousel.addEventListener('mouseenter', function () { clearInterval(timer); });
+    carousel.addEventListener('mouseleave', function () {
+      timer = setInterval(function () { goTo(current + 1); }, 4000);
+    });
+  }
+})();
+</script>
 
 <script define:vars={{ CSV_URL, orgDomains }}>
 /* Simple CSV parser */
