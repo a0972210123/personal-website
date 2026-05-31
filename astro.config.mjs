@@ -5,9 +5,7 @@ import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
-  // update when custom domain is ready
-  site: 'https://a0972210123.github.io',
-
+  site: 'https://personal-website.a0972210123.workers.dev',
   output: 'static',
   adapter: cloudflare(),
 });
