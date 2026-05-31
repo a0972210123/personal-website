@@ -9,20 +9,45 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 ---
 <BaseLayout
   title="葉淨維 Matt Ye"
-  description="葉淨維 Ching-Wei (Matt) Ye 的個人網站。記錄創業、閱讀與思考。"
+  description="葉淨維 Ching-Wei (Matt) Ye 的個人網站。記錄演講、創業、閱讀與思考。"
 >
+  <!-- Intro -->
   <section class="home-intro">
     <h1>葉淨維 <span style="font-weight:400">Matt Ye</span></h1>
-    <p class="subtitle">Ching-Wei Ye · Builder · Thinker</p>
+    <p class="subtitle">Ching-Wei Ye · Speaker · Builder · Researcher</p>
     <p class="bio">
-      正在探索創業路上的可能性。在這裡記錄想法、閱讀心得，以及建造過程中的學習。
+      職能治療研究者、公眾演講者。熱衷於簡報教學、跨領域表達與創業探索。
+      在這裡記錄想法、分享學習，以及台上台下的故事。
     </p>
     <div class="social-links">
       <a href="https://github.com/a0972210123" target="_blank" rel="noopener">GitHub</a>
-      <!-- 更多社群連結之後再加 -->
     </div>
   </section>
 
+  <!-- Speeches teaser -->
+  <section style="margin-bottom: var(--spacing-xl)">
+    <p class="section-heading">Speeches &amp; Workshops</p>
+    <div class="bento-grid" id="home-bento">
+      <div class="bento-card">
+        <div class="bento-card-label">Total Events</div>
+        <div class="bento-card-num" id="h-total">—</div>
+        <div class="bento-card-sub">場次累計</div>
+      </div>
+      <div class="bento-card">
+        <div class="bento-card-label">Hours on Stage</div>
+        <div class="bento-card-num" id="h-hours">—</div>
+        <div class="bento-card-sub">講台時數</div>
+      </div>
+      <div class="bento-card">
+        <div class="bento-card-label">Audience Reached</div>
+        <div class="bento-card-num" id="h-audience">—</div>
+        <div class="bento-card-sub">觸及人次</div>
+      </div>
+    </div>
+    <a href="/speeches" class="section-cta">查看完整演講紀錄 →</a>
+  </section>
+
+  <!-- Recent writing -->
   {posts.length > 0 && (
     <section>
       <p class="section-heading">Recent Writing</p>
@@ -40,3 +65,38 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     </section>
   )}
 </BaseLayout>
+
+<script>
+/* Fetch stats for home page bento */
+const SHEET_ID = '1vYSAfnbqFzLNBNcPY5dd8XRxvVozt1IDd-kIqKO5swA';
+const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=0`;
+
+function parseCSVSimple(text) {
+  return text.replace(/\r/g,'').split('\n').filter(Boolean).map(line => {
+    const row = []; let cur = '', inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (c === '"') { if (inQ && line[i+1]==='"') { cur+='"'; i++; } else inQ=!inQ; }
+      else if (c===',' && !inQ) { row.push(cur.trim()); cur=''; }
+      else cur+=c;
+    }
+    row.push(cur.trim()); return row;
+  });
+}
+
+(async () => {
+  try {
+    const resp = await fetch(CSV_URL);
+    const text = await resp.text();
+    const rows = parseCSVSimple(text).slice(1).filter(r => r[1] && r[4]);
+    const total = rows.length;
+    const hours = rows.reduce((s, r) => s + (parseFloat(r[10]) || 0), 0);
+    const audience = rows.reduce((s, r) => s + (parseInt(r[9]) || 0), 0);
+
+    document.getElementById('h-total').textContent = total;
+    document.getElementById('h-hours').textContent = Math.round(hours);
+    document.getElementById('h-audience').textContent =
+      audience >= 1000 ? `${(audience/1000).toFixed(1)}K` : audience;
+  } catch (_) { /* silent fail on home page */ }
+})();
+</script>
