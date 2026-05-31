@@ -3,6 +3,6 @@ import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://personal-website.a0972210123.workers.dev',
+  site: 'https://personal-website-1m7.pages.dev',
   output: 'static',
 });
