@@ -1,0 +1,12 @@
+---
+const pathname = Astro.url.pathname;
+---
+<header>
+  <div class="container">
+    <a href="/" class="site-name">Matt Ye</a>
+    <nav>
+      <a href="/" aria-current={pathname === '/' ? 'page' : undefined}>Home</a>
+      <a href="/writing" aria-current={pathname.startsWith('/writing') ? 'page' : undefined}>Writing</a>
+    </nav>
+  </div>
+</header>

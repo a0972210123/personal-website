@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .slice(0, 3);
+---
+<BaseLayout
+  title="葉淨維 Matt Ye"
+  description="葉淨維 Ching-Wei (Matt) Ye 的個人網站。記錄創業、閱讀與思考。"
+>
+  <section class="home-intro">
+    <h1>葉淨維 <span style="font-weight:400">Matt Ye</span></h1>
+    <p class="subtitle">Ching-Wei Ye · Builder · Thinker</p>
+    <p class="bio">
+      正在探索創業路上的可能性。在這裡記錄想法、閱讀心得，以及建造過程中的學習。
+    </p>
+    <div class="social-links">
+      <a href="https://github.com/a0972210123" target="_blank" rel="noopener">GitHub</a>
+      <!-- 更多社群連結之後再加 -->
+    </div>
+  </section>
+
+  {posts.length > 0 && (
+    <section>
+      <p class="section-heading">Recent Writing</p>
+      <ul class="post-list">
+        {posts.map(post => (
+          <PostCard
+            id={post.id}
+            title={post.data.title}
+            description={post.data.description}
+            pubDate={post.data.pubDate}
+            lang={post.data.lang}
+          />
+        ))}
+      </ul>
+    </section>
+  )}
+</BaseLayout>

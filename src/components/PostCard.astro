@@ -1,0 +1,27 @@
+---
+interface Props {
+  id: string;
+  title: string;
+  description: string;
+  pubDate: Date;
+  lang: 'zh' | 'en';
+}
+
+const { id, title, description, pubDate, lang } = Astro.props;
+
+const dateFormatted = pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+<li class="post-card">
+  <div class="post-card-header">
+    <a href={`/writing/${id}`} class="post-card-title">{title}</a>
+    <span class="post-card-date">
+      <time datetime={pubDate.toISOString()}>{dateFormatted}</time>
+    </span>
+    <span class="lang-badge">{lang === 'zh' ? '中' : 'EN'}</span>
+  </div>
+  <p class="post-card-desc">{description}</p>
+</li>

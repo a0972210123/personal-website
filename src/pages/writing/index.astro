@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+---
+<BaseLayout
+  title="Writing"
+  description="葉淨維 Matt Ye 的所有文章。中英雙語，涵蓋創業、閱讀、技術與生活。"
+>
+  <div class="writing-header">
+    <h1>Writing</h1>
+  </div>
+
+  {posts.length === 0 ? (
+    <p style="color: var(--color-text-muted)">文章即將上線。</p>
+  ) : (
+    <ul class="post-list">
+      {posts.map(post => (
+        <PostCard
+          id={post.id}
+          title={post.data.title}
+          description={post.data.description}
+          pubDate={post.data.pubDate}
+          lang={post.data.lang}
+        />
+      ))}
+    </ul>
+  )}
+</BaseLayout>

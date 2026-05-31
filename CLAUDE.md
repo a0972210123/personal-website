@@ -1,0 +1,93 @@
+# CLAUDE.md — 個人網站開發規則
+
+## 專案概覽
+
+**Owner：** 葉淨維 Ching-Wei (Matt) Ye  
+**GitHub：** https://github.com/a0972210123/personal-website  
+**部署：** Cloudflare Pages（連接 GitHub `main` branch，push 自動 deploy）  
+**Tech stack：** Astro 6 (static) · Plain CSS · Markdown content collections
+
+---
+
+## 工作流程規則
+
+1. **每次收到需求，開一個新 PR**，不直接 push 到 `main`
+2. PR 標題格式：`feat:` / `fix:` / `content:` / `style:` / `chore:` + 一句話描述
+3. PR 說明要包含：做了什麼、為什麼這樣做、需要注意的地方
+4. 等待 owner review + merge，不自行 merge
+
+---
+
+## 技術規範
+
+### Astro
+- 使用 Astro 6，**靜態輸出**（`output: 'static'`）
+- Content collections 設定在 `src/content.config.ts`
+- 文章放在 `src/content/blog/`，格式為 Markdown（`.md`）
+- 頁面路由：`/` · `/writing` · `/writing/[slug]`
+
+### CSS
+- **不使用 Tailwind**，使用 plain CSS
+- 所有全域樣式在 `src/styles/global.css`
+- 用 CSS custom properties（變數）管理 design tokens
+- 頁面特定樣式用 `<style>` 寫在 `.astro` 檔案的 scoped block
+- Max content width：`680px`
+
+### 元件結構
+```
+src/
+├── components/     # 可重用元件（Header, Footer, PostCard）
+├── content/blog/   # Markdown 文章
+├── content.config.ts
+├── layouts/        # BaseLayout, PostLayout
+├── pages/          # 路由頁面
+└── styles/
+    └── global.css
+```
+
+### 文章 Frontmatter 規範
+```yaml
+---
+title: 文章標題
+description: 一句話描述（用於 SEO meta 和文章列表）
+pubDate: YYYY-MM-DD
+lang: zh   # zh 或 en
+tags: [標籤1, 標籤2]   # 可選
+draft: false   # true 時不顯示在列表
+---
+```
+
+---
+
+## SEO 規則
+- 每篇文章必須有 `title` 和 `description`
+- `description` 長度建議 50-160 字元
+- `lang` 設定正確（`zh` → `zh-TW`，`en` → `en`）
+- canonical URL 由 BaseLayout 自動處理
+
+---
+
+## 命名規範
+- 文章 slug（檔名）：英文小寫、用連字號，例如 `my-first-post.md`
+- 元件檔名：PascalCase，例如 `PostCard.astro`
+- CSS class 名稱：kebab-case，例如 `.post-card-title`
+
+---
+
+## 待辦事項（之後的 PR）
+- [ ] 加入 Google Analytics 4
+- [ ] 加入 Google Search Console verification meta tag
+- [ ] 建立 `llms.txt`
+- [ ] 加入個人照片
+- [ ] 設定自訂網域
+- [ ] 加入 RSS feed（`@astrojs/rss`）
+- [ ] 加入 sitemap（`@astrojs/sitemap`）
+- [ ] Dark mode support
+
+---
+
+## 禁止事項
+- 不使用 JavaScript framework（React、Vue 等）
+- 不使用 CSS framework（Tailwind、Bootstrap 等）
+- 不使用 `npm run build` 以外的 build 工具
+- 不修改 Cloudflare Pages 設定，除非 owner 明確要求
