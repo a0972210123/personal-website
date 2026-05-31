@@ -6,97 +6,331 @@ import { getCollection } from 'astro:content';
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
   .slice(0, 3);
----
-<BaseLayout
-  title="葉淨維 Matt Ye"
-  description="葉淨維 Ching-Wei (Matt) Ye 的個人網站。記錄演講、創業、閱讀與思考。"
->
-  <!-- Intro -->
-  <section class="home-intro">
-    <h1>葉淨維 <span style="font-weight:400">Matt Ye</span></h1>
-    <p class="subtitle">Ching-Wei Ye · Speaker · Builder · Researcher</p>
-    <p class="bio">
-      職能治療研究者、公眾演講者。熱衷於簡報教學、跨領域表達與創業探索。
-      在這裡記錄想法、分享學習，以及台上台下的故事。
-    </p>
-    <div class="social-links">
-      <a href="https://github.com/a0972210123" target="_blank" rel="noopener">GitHub</a>
-    </div>
-  </section>
 
-  <!-- Speeches teaser -->
-  <section style="margin-bottom: var(--spacing-xl)">
-    <p class="section-heading">Speeches &amp; Workshops</p>
-    <div class="bento-grid" id="home-bento">
-      <div class="bento-card">
-        <div class="bento-card-label">Total Events</div>
-        <div class="bento-card-num" id="h-total">—</div>
-        <div class="bento-card-sub">場次累計</div>
-      </div>
-      <div class="bento-card">
-        <div class="bento-card-label">Hours on Stage</div>
-        <div class="bento-card-num" id="h-hours">—</div>
-        <div class="bento-card-sub">講台時數</div>
-      </div>
-      <div class="bento-card">
-        <div class="bento-card-label">Audience Reached</div>
-        <div class="bento-card-num" id="h-audience">—</div>
-        <div class="bento-card-sub">觸及人次</div>
-      </div>
-    </div>
-    <a href="/speeches" class="section-cta">查看完整演講紀錄 →</a>
-  </section>
-
-  <!-- Recent writing -->
-  {posts.length > 0 && (
-    <section>
-      <p class="section-heading">Recent Writing</p>
-      <ul class="post-list">
-        {posts.map(post => (
-          <PostCard
-            id={post.id}
-            title={post.data.title}
-            description={post.data.description}
-            pubDate={post.data.pubDate}
-            lang={post.data.lang}
-          />
-        ))}
-      </ul>
-    </section>
-  )}
-</BaseLayout>
-
-<script>
-/* Fetch stats for home page bento */
 const SHEET_ID = '1vYSAfnbqFzLNBNcPY5dd8XRxvVozt1IDd-kIqKO5swA';
 const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=0`;
 
+// Key experience roles (curated)
+const roles = [
+  {
+    icon: '🎓',
+    org: 'National Taiwan University',
+    orgZh: '國立臺灣大學',
+    title: 'PhD Researcher — AI & Handwriting Diagnostics',
+    desc: '研究 AI 輔助的手寫動作分析，用於輕度認知障礙（MCI）與阿茲海默症的早期偵測。已發表 6 篇 SCI/SSCI 期刊論文，含 2 篇國際研討會最佳口頭報告獎。',
+    period: '2019 – 現在',
+  },
+  {
+    icon: '📣',
+    org: 'CAPE 起駛簡報表達教育協會',
+    orgZh: 'Cheese Association of Presentation Education',
+    title: '理事 · 課程研發組長',
+    desc: '共同設計三套模組化簡報課程（邏輯、設計、表達），帶領團隊前往偏鄉國高中實地授課，推廣到更多資源不足的地區。',
+    period: '2022 – 現在',
+  },
+  {
+    icon: '🍎',
+    org: 'Straight A × Apple Education',
+    orgZh: '晶盛科技（蘋果授權教育夥伴）',
+    title: 'MAIC 競賽提案培訓講師',
+    desc: '負責 2024–2026 年行動應用創新競賽（MAIC）賽前培訓工作坊。2024 年協助培訓的台灣代表隊於亞太賽事獲獎。',
+    period: '2024 – 2026',
+  },
+  {
+    icon: '✍️',
+    org: 'NTU AWEC 寫作教學中心',
+    orgZh: 'Academic Writing Education Center',
+    title: '兼任講師 · 3MT 競賽培訓師',
+    desc: '主持 3MT 學術簡報賽前講堂、英語即席演講課程，以及全英語授課（EMI）教學助理培訓工作坊，服務台大及跨校學員。',
+    period: '2021 – 現在',
+  },
+  {
+    icon: '🌐',
+    org: 'NTU CBE 雙語教育中心',
+    orgZh: 'Center for Bilingual Education',
+    title: 'EMI-TA 培訓工作坊講師',
+    desc: '以英語主持「課堂討論帶領技巧」工作坊，培訓來自台大及合作大學的全英語授課教學助理，已累計跨校場次超過 15 場。',
+    period: '2023 – 現在',
+  },
+  {
+    icon: '🔬',
+    org: '台灣職能治療學會',
+    orgZh: 'Taiwan Occupational Therapy Association',
+    title: '會員 · 國際研討會演講者',
+    desc: '參與國內外職能治療相關研討會發表研究成果，並曾擔任年度學術研討會司儀，推動專業知識的傳播與跨領域交流。',
+    period: '2020 – 現在',
+  },
+];
+
+// Known org → domain mapping for logo fetching
+const orgDomains: Record<string, string> = {
+  '國立臺灣大學': 'ntu.edu.tw',
+  '台灣大學': 'ntu.edu.tw',
+  '臺灣大學': 'ntu.edu.tw',
+  'NTU': 'ntu.edu.tw',
+  '國立臺灣科技大學': 'ntust.edu.tw',
+  '逢甲大學': 'fcu.edu.tw',
+  '國立政治大學': 'nccu.edu.tw',
+  '天主教輔仁大學': 'fju.edu.tw',
+  '中原大學': 'cycu.edu.tw',
+  '澳洲昆士蘭大學': 'uq.edu.au',
+  '新北市立新店高中': 'hths.ntpc.edu.tw',
+  'Straight A': 'straightatw.com',
+  '德國在台協會': 'daad.de',
+  'DAAD': 'daad.de',
+};
+---
+<BaseLayout
+  title="葉淨維 Matt Ye"
+  description="葉淨維 Ching-Wei (Matt) Ye — 職能治療師、研究者、溝通教育者。PhD @ NTU，150+ 場演講，專注 AI 輔助診斷與簡報教育。"
+>
+  <div class="container-wide">
+
+    <!-- ① Hero -->
+    <section class="hero-section">
+      <div class="hero-text">
+        <h1>
+          葉淨維
+          <span class="name-en">Ching-Wei (Matt) Ye</span>
+        </h1>
+        <p class="hero-tagline">
+          研究者、溝通教育者、多領域實踐者。<br>
+          用科學語言與清晰表達，連結研究與真實世界。
+        </p>
+        <div class="hero-tags">
+          <span class="hero-tag">🧠 AI &amp; 認知科學研究</span>
+          <span class="hero-tag">🎤 150+ 場演講</span>
+          <span class="hero-tag">🎓 NTU PhD Candidate</span>
+          <span class="hero-tag">🏆 3MT 冠軍</span>
+        </div>
+        <a href="mailto:f08429008@ntu.edu.tw" class="hero-cta">
+          合作洽詢 →
+        </a>
+      </div>
+      <div class="hero-photo-wrap">
+        <img src="/photo-pointing.jpg" alt="葉淨維 Matt Ye" />
+      </div>
+    </section>
+
+    <!-- ② Bento Stats -->
+    <section style="margin-bottom: var(--spacing-xl)">
+      <p class="section-heading">By the numbers</p>
+      <div class="bento-grid" style="grid-template-columns: repeat(4,1fr)">
+        <div class="bento-card">
+          <div class="bento-card-label">Speeches</div>
+          <div class="bento-card-num" id="h-total">—</div>
+          <div class="bento-card-sub">場次累計</div>
+        </div>
+        <div class="bento-card">
+          <div class="bento-card-label">Hours</div>
+          <div class="bento-card-num" id="h-hours">—</div>
+          <div class="bento-card-sub">講台時數</div>
+        </div>
+        <div class="bento-card">
+          <div class="bento-card-label">Audience</div>
+          <div class="bento-card-num" id="h-audience">—</div>
+          <div class="bento-card-sub">觸及人次</div>
+        </div>
+        <div class="bento-card">
+          <div class="bento-card-label">Publications</div>
+          <div class="bento-card-num">6</div>
+          <div class="bento-card-sub">SCI / SSCI</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ③ Three Pillars -->
+    <section style="margin-bottom: var(--spacing-xl)">
+      <p class="section-heading">Core strengths</p>
+      <div class="pillars-grid">
+        <div class="pillar-card">
+          <div class="pillar-icon">🔬</div>
+          <div class="pillar-title">Research &amp; AI</div>
+          <p class="pillar-desc">
+            以 AI 與機器學習方法分析手寫動作，研究輕度認知障礙的早期偵測。
+            6 篇期刊發表，2 項國際研討會最佳口頭報告獎。
+          </p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-icon">🎤</div>
+          <div class="pillar-title">Communication</div>
+          <p class="pillar-desc">
+            NTU 3MT 冠軍、DAAD Falling Walls Lab 亞軍。
+            以中英雙語在學術、企業、教育場域進行演講與工作坊，累計 150+ 場。
+          </p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-icon">🚀</div>
+          <div class="pillar-title">Startup Advisory</div>
+          <p class="pillar-desc">
+            具備投資人簡報、提案結構設計的實戰經驗，
+            曾協助 Straight A 培訓競賽選手奪得亞太獎項，
+            持續深化創業溝通顧問能力。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ④ Experience Roles -->
+    <section style="margin-bottom: var(--spacing-xl)">
+      <p class="section-heading">Experience &amp; Roles</p>
+      <div class="roles-list">
+        {roles.map(r => (
+          <div class="role-card">
+            <div class="role-icon-box">{r.icon}</div>
+            <div class="role-body">
+              <div class="role-org">{r.org}</div>
+              <div class="role-title">{r.title}</div>
+              <div class="role-desc">{r.desc}</div>
+            </div>
+            <div class="role-period">{r.period}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ⑤ Partners / Organizations (dynamic from Sheet) -->
+    <section class="partners-section">
+      <p class="section-heading">Organizations collaborated with</p>
+      <div class="partners-grid" id="partners-grid">
+        <span class="partner-chip" style="border-style:dashed">Loading…</span>
+      </div>
+    </section>
+
+    <!-- ⑥ Recent Writing -->
+    {posts.length > 0 && (
+      <section style="margin-top: var(--spacing-xl)">
+        <p class="section-heading">Recent Writing</p>
+        <ul class="post-list">
+          {posts.map(post => (
+            <PostCard
+              id={post.id}
+              title={post.data.title}
+              description={post.data.description}
+              pubDate={post.data.pubDate}
+              lang={post.data.lang}
+            />
+          ))}
+        </ul>
+        <a href="/writing" class="section-cta">All posts →</a>
+      </section>
+    )}
+
+  </div>
+</BaseLayout>
+
+<script define:vars={{ CSV_URL, orgDomains }}>
+/* Simple CSV parser */
 function parseCSVSimple(text) {
-  return text.replace(/\r/g,'').split('\n').filter(Boolean).map(line => {
-    const row = []; let cur = '', inQ = false;
-    for (let i = 0; i < line.length; i++) {
-      const c = line[i];
+  var rows = [];
+  var lines = text.replace(/\r/g, '').split('\n');
+  for (var li = 0; li < lines.length; li++) {
+    var line = lines[li];
+    if (!line.trim()) continue;
+    var row = [], cur = '', inQ = false;
+    for (var i = 0; i < line.length; i++) {
+      var c = line[i];
       if (c === '"') { if (inQ && line[i+1]==='"') { cur+='"'; i++; } else inQ=!inQ; }
       else if (c===',' && !inQ) { row.push(cur.trim()); cur=''; }
       else cur+=c;
     }
-    row.push(cur.trim()); return row;
-  });
+    row.push(cur.trim());
+    rows.push(row);
+  }
+  return rows;
 }
 
-(async () => {
-  try {
-    const resp = await fetch(CSV_URL);
-    const text = await resp.text();
-    const rows = parseCSVSimple(text).slice(1).filter(r => r[1] && r[4]);
-    const total = rows.length;
-    const hours = rows.reduce((s, r) => s + (parseFloat(r[10]) || 0), 0);
-    const audience = rows.reduce((s, r) => s + (parseInt(r[9]) || 0), 0);
+/* Get domain for an org name */
+function getDomain(orgName) {
+  var keys = Object.keys(orgDomains);
+  for (var i = 0; i < keys.length; i++) {
+    if (orgName.indexOf(keys[i]) !== -1) return orgDomains[keys[i]];
+  }
+  return null;
+}
 
-    document.getElementById('h-total').textContent = total;
-    document.getElementById('h-hours').textContent = Math.round(hours);
-    document.getElementById('h-audience').textContent =
-      audience >= 1000 ? `${(audience/1000).toFixed(1)}K` : audience;
-  } catch (_) { /* silent fail on home page */ }
+/* Shorten org name for display */
+function shortName(name) {
+  if (!name) return '';
+  // Use English abbreviation if present (in parentheses)
+  var enMatch = name.match(/\(([A-Z][A-Z\s\-]{1,12})\)/);
+  if (enMatch) return enMatch[1];
+  // Strip common prefixes
+  name = name.replace(/^(國立|社團法人|財團法人|台灣|臺灣)/, '');
+  return name.length > 18 ? name.substring(0, 16) + '…' : name;
+}
+
+(function () {
+  /* Fetch speeches stats for bento */
+  fetch(CSV_URL)
+    .then(function(r) { return r.text(); })
+    .then(function(text) {
+      var rows = parseCSVSimple(text).slice(1).filter(function(r) { return r[1] && r[4]; });
+
+      /* Stats */
+      var total = rows.length;
+      var hours = rows.reduce(function(s, r) { return s + (parseFloat(r[10]) || 0); }, 0);
+      var audience = rows.reduce(function(s, r) { return s + (parseInt(r[9]) || 0); }, 0);
+
+      var el = document.getElementById('h-total');
+      if (el) el.textContent = total;
+      el = document.getElementById('h-hours');
+      if (el) el.textContent = Math.round(hours);
+      el = document.getElementById('h-audience');
+      if (el) el.textContent = audience >= 1000 ? (audience/1000).toFixed(1) + 'K' : audience;
+
+      /* Partners grid: collect unique org names */
+      var seen = {};
+      var orgs = [];
+      for (var i = 0; i < rows.length; i++) {
+        var orgRaw = (rows[i][2] || '').trim();
+        // Some cells have multiple orgs separated by newlines or spaces - split on newline
+        var parts = orgRaw.split(/\n/);
+        for (var p = 0; p < parts.length; p++) {
+          var org = parts[p].trim();
+          if (!org || seen[org]) continue;
+          seen[org] = true;
+          orgs.push(org);
+        }
+      }
+
+      /* Sort by frequency */
+      var freq = {};
+      for (var i = 0; i < rows.length; i++) {
+        var o = (rows[i][2] || '').trim().split('\n')[0].trim();
+        freq[o] = (freq[o] || 0) + 1;
+      }
+      orgs.sort(function(a, b) { return (freq[b] || 0) - (freq[a] || 0); });
+
+      /* Render chips */
+      var grid = document.getElementById('partners-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      for (var j = 0; j < orgs.length; j++) {
+        var name = orgs[j];
+        if (!name) continue;
+        var domain = getDomain(name);
+        var chip = document.createElement('span');
+        chip.className = 'partner-chip';
+
+        if (domain) {
+          var img = document.createElement('img');
+          img.src = 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=32';
+          img.alt = '';
+          img.onerror = function() { this.style.display = 'none'; };
+          chip.appendChild(img);
+        }
+
+        var label = document.createTextNode(shortName(name));
+        chip.appendChild(label);
+        grid.appendChild(chip);
+      }
+    })
+    .catch(function() {
+      /* silent fail */
+      var grid = document.getElementById('partners-grid');
+      if (grid) grid.innerHTML = '';
+    });
 })();
 </script>
