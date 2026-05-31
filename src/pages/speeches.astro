@@ -74,6 +74,24 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
       </div>
     </div>
 
+    <!-- Filtered Stats Strip (updates with filter) -->
+    <div class="filtered-stats" id="filtered-stats" style="display:none">
+      <div class="fstat-item">
+        <span class="fstat-num" id="fval-events">—</span>
+        <span class="fstat-label">場次</span>
+      </div>
+      <div class="fstat-divider"></div>
+      <div class="fstat-item">
+        <span class="fstat-num" id="fval-hours">—</span>
+        <span class="fstat-label">小時</span>
+      </div>
+      <div class="fstat-divider"></div>
+      <div class="fstat-item">
+        <span class="fstat-num" id="fval-audience">—</span>
+        <span class="fstat-label">人次</span>
+      </div>
+    </div>
+
     <!-- Results meta -->
     <div class="results-meta">
       <span>Showing <b id="results-count">—</b> events</span>
@@ -120,7 +138,6 @@ function parseCSV(text) {
 
 function fmtDate(raw) {
   if (!raw) return '';
-  // Handle malformed like "20253/26" → skip
   const clean = raw.replace(/[^\d/]/g, '');
   const parts = clean.split('/');
   if (parts.length < 3) return raw;
@@ -137,6 +154,7 @@ function fmtNum(n) {
 
 /* ── State ── */
 const PAGE_SIZE = 24;
+const EXCLUDED_TYPES = new Set(['彩排', '教材製作']);
 let allData = [];
 let state = { search: '', types: new Set(), modes: new Set(), langs: new Set(), page: 1 };
 
@@ -147,21 +165,38 @@ async function init() {
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const text = await resp.text();
     const rows = parseCSV(text);
-    // First row = headers: ["","日期","主辦單位","主辦單位(英文名稱)","主題","類型","線上/實體","語言","聽眾教育程度","人數/觀看","小時"]
+
+    // Build header index for flexible column mapping
+    const headers = rows[0].map(h => h.toLowerCase().trim());
+    const hi = name => headers.findIndex(h => h.includes(name.toLowerCase()));
+
+    const iDate = hi('日期');
+    const iOrg = hi('主辦單位') !== -1 ? hi('主辦單位') : 2;
+    const iOrgEn = hi('英文名稱') !== -1 ? hi('英文名稱') : 3;
+    const iTopic = hi('主題');
+    const iType = hi('類型');
+    const iMode = hi('線上');
+    const iLang = hi('語言');
+    const iEdu = hi('教育程度');
+    const iAudience = hi('人數');
+    const iHours = hi('小時');
+    const iUrl = hi('url');  // matches "news, blog, or other url"
+
     allData = rows.slice(1)
       .map(r => ({
-        date:     r[1]  ?? '',
-        org:      r[2]  ?? '',
-        orgEn:    r[3]  ?? '',
-        topic:    r[4]  ?? '',
-        type:     r[5]  ?? '',
-        mode:     r[6]  ?? '',
-        lang:     r[7]  ?? '',
-        edu:      r[8]  ?? '',
-        audience: parseInt(r[9])  || 0,
-        hours:    parseFloat(r[10]) || 0,
+        date:     r[iDate]     ?? '',
+        org:      r[iOrg]      ?? '',
+        orgEn:    r[iOrgEn]    ?? '',
+        topic:    r[iTopic]    ?? '',
+        type:     r[iType]     ?? '',
+        mode:     r[iMode]     ?? '',
+        lang:     r[iLang]     ?? '',
+        edu:      r[iEdu]      ?? '',
+        audience: parseInt(r[iAudience])   || 0,
+        hours:    parseFloat(r[iHours])    || 0,
+        url:      iUrl >= 0 ? (r[iUrl] ?? '') : '',
       }))
-      .filter(d => d.date && d.topic);
+      .filter(d => d.date && d.topic && !EXCLUDED_TYPES.has(d.type));
 
     renderStats();
     renderChips();
@@ -185,6 +220,17 @@ function renderStats() {
   document.getElementById('val-audience').textContent = fmtNum(audience);
   document.getElementById('val-orgs').textContent = orgs;
   document.getElementById('val-span').textContent = `${total} events over 6 yrs`;
+}
+
+function renderFilteredStats(filtered) {
+  const strip = document.getElementById('filtered-stats');
+  if (!strip) return;
+  const active = hasActiveFilters();
+  strip.style.display = active ? 'flex' : 'none';
+  if (!active) return;
+  document.getElementById('fval-events').textContent = filtered.length;
+  document.getElementById('fval-hours').textContent = Math.round(filtered.reduce((s, d) => s + d.hours, 0));
+  document.getElementById('fval-audience').textContent = fmtNum(filtered.reduce((s, d) => s + d.audience, 0));
 }
 
 /* ── Filter Chips ── */
@@ -236,13 +282,16 @@ function hasActiveFilters() {
 function cardHTML(d) {
   const typeCls = `badge badge-type-${d.type}`;
   const modeCls = `badge badge-mode-${d.mode}`;
+  const topicHTML = (d.type === 'Podcast' && d.url)
+    ? `<a class="card-topic card-topic-link" href="${d.url}" target="_blank" rel="noopener">${d.topic}</a>`
+    : `<div class="card-topic">${d.topic}</div>`;
   return `
     <div class="speech-card">
       <div class="card-meta-row">
         <span>${fmtDate(d.date)}</span>
         <span>${d.edu}</span>
       </div>
-      <div class="card-topic">${d.topic}</div>
+      ${topicHTML}
       ${d.org ? `<div class="card-org">${d.org}</div>` : ''}
       ${d.orgEn ? `<div class="card-org-en">${d.orgEn}</div>` : ''}
       <div class="card-stats">
@@ -264,6 +313,7 @@ function renderCards() {
 
   document.getElementById('results-count').textContent = filtered.length;
   document.getElementById('clear-btn').style.display = hasActiveFilters() ? 'block' : 'none';
+  renderFilteredStats(filtered);
 
   const grid = document.getElementById('cards-grid');
   if (filtered.length === 0) {
