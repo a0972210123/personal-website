@@ -553,6 +553,59 @@ footer .container {
   font-weight: 600;
 }
 
+/* Filtered Stats Strip */
+.filtered-stats {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 10px 20px;
+  margin-bottom: 12px;
+}
+
+.fstat-item {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex: 1;
+  justify-content: center;
+}
+
+.fstat-num {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  line-height: 1;
+}
+
+.fstat-label {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+.fstat-divider {
+  width: 1px;
+  height: 28px;
+  background: var(--color-border);
+  flex-shrink: 0;
+}
+
+/* Podcast topic link */
+.card-topic-link {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--color-accent);
+  text-decoration: none;
+}
+.card-topic-link:hover { text-decoration: underline; color: var(--color-accent-hover); }
+
 /* Results meta */
 .results-meta {
   display: flex;
