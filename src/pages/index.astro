@@ -287,18 +287,13 @@ function loadSpeeches() {
           '<span class="org-count">' + info.count + '</span>';
         grid.appendChild(rowEl);
       }
-      var obs = new IntersectionObserver(function(entries) {
-        if (entries[0].isIntersecting) {
-          grid.querySelectorAll('.org-bar').forEach(function(b) { b.style.width = b.dataset.width + '%'; });
-          obs.disconnect();
-        }
-      }, { threshold: 0.1 });
-      obs.observe(grid);
-      setTimeout(function() {
-        grid.querySelectorAll('.org-bar').forEach(function(b) {
-          if (!b.style.width || b.style.width === '0%') b.style.width = b.dataset.width + '%';
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          grid.querySelectorAll('.org-bar').forEach(function(b) {
+            b.style.width = b.dataset.width + '%';
+          });
         });
-      }, 1500);
+      });
     })
     .catch(function() {
       var grid = document.getElementById('partners-grid');

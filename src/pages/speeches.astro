@@ -492,12 +492,14 @@ function renderOrgLeaderboard(catFilter) {
     grid.appendChild(row);
   });
 
-  const animateBars = () => { grid.querySelectorAll('.org-bar').forEach(b => { b.style.width = b.dataset.width + '%'; }); };
-  const observer = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting) { animateBars(); observer.disconnect(); }
-  }, { threshold: 0.1 });
-  observer.observe(grid);
-  setTimeout(() => { grid.querySelectorAll('.org-bar').forEach(b => { if (!b.style.width || b.style.width === '0%') b.style.width = b.dataset.width + '%'; }); }, 1500);
+  /* Double-rAF: first frame paints width:0%, second frame triggers CSS transition */
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      grid.querySelectorAll('.org-bar').forEach(b => {
+        b.style.width = b.dataset.width + '%';
+      });
+    });
+  });
 }
 
 /* ── Org Filter Chip Listeners ── */
