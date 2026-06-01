@@ -350,6 +350,8 @@ function shortName(name) {
       }
       var iDate     = hi('日期');
       var iOrg      = hi('主辦單位');
+      var iCoOrg1   = hi('協辦單位_1_zh');
+      var iCoOrg2   = hi('協辦單位_2_zh');
       var iTopic    = hi('主題');
       var iType     = hi('類型');
       var iAudience = hi('人數');
@@ -374,15 +376,18 @@ function shortName(name) {
       el = document.getElementById('h-audience');
       if (el) el.textContent = audience >= 1000 ? (audience/1000).toFixed(1) + 'K' : audience;
 
-      /* Partners grid — collect unique org names */
+      /* Partners grid — collect unique org names (主辦 + 協辦) */
       var seen = {}, orgs = [], freq = {};
       for (var i = 0; i < rows.length; i++) {
-        var orgRaw = (rows[i][iOrg] || '').trim();
-        var parts = orgRaw.split(/\n/);
-        var primary = parts[0].trim();
-        freq[primary] = (freq[primary] || 0) + 1;
-        for (var p = 0; p < parts.length; p++) {
-          var org = parts[p].trim();
+        var primary = (rows[i][iOrg] || '').trim();
+        if (primary) freq[primary] = (freq[primary] || 0) + 1;
+        var allOrgs = [
+          primary,
+          iCoOrg1 >= 0 ? (rows[i][iCoOrg1] || '').trim() : '',
+          iCoOrg2 >= 0 ? (rows[i][iCoOrg2] || '').trim() : '',
+        ];
+        for (var p = 0; p < allOrgs.length; p++) {
+          var org = allOrgs[p];
           if (!org || seen[org]) continue;
           seen[org] = true;
           orgs.push(org);
