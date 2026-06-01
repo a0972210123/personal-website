@@ -18,7 +18,7 @@
   --font-mono: 'SF Mono', 'Fira Code', Consolas, monospace;
 
   --max-width: 680px;
-  --max-width-wide: 1100px;
+  --max-width-wide: 960px;
   --spacing-xs: 0.5rem;
   --spacing-sm: 1rem;
   --spacing-md: 1.5rem;
@@ -89,7 +89,7 @@ a:hover {
   width: 100%;
   max-width: var(--max-width-wide);
   margin: 0 auto;
-  padding: 0 var(--spacing-sm);
+  padding: 0 clamp(1rem, 4vw, 2rem);
 }
 
 main {
@@ -1295,6 +1295,7 @@ footer .container {
 
 .role-body {}
 .role-org { font-size: 0.78rem; font-weight: 600; color: var(--color-accent); letter-spacing: 0.03em; text-transform: uppercase; margin-bottom: 2px; }
+.role-org-en { font-weight: 400; color: var(--color-text-muted); text-transform: none; letter-spacing: 0; }
 .role-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; }
 .role-desc { font-size: 0.82rem; color: var(--color-text-muted); line-height: 1.55; }
 .role-period { font-size: 0.75rem; color: var(--color-text-muted); font-family: var(--font-mono); white-space: nowrap; padding-top: 2px; }
