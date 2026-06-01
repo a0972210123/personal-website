@@ -106,7 +106,9 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
         <button class="chip" data-cat="學生社團">🎓 學生社團</button>
         <button class="chip" data-cat="自媒體">📱 自媒體</button>
       </div>
-      <div class="orgs-grid" id="orgs-grid"></div>
+      <div class="orgs-scroll-wrap">
+        <div class="orgs-grid" id="orgs-grid"></div>
+      </div>
     </section>
 
     <!-- Explorer: search + filters -->
@@ -459,12 +461,15 @@ function renderOrgLeaderboard(catFilter) {
     entries = entries.filter(([, info]) => info.type === orgCatFilter);
   }
 
-  const ranked = entries.slice(0, 10);
+  const ranked = entries; /* show all — scrollable container handles overflow */
   const max = ranked[0]?.[1].count || 1;
 
   const grid = document.getElementById('orgs-grid');
   if (!grid) return;
   grid.innerHTML = '';
+  /* Reset scroll position on each filter change */
+  const wrap = grid.closest('.orgs-scroll-wrap');
+  if (wrap) wrap.scrollTop = 0;
 
   if (ranked.length === 0) {
     grid.innerHTML = '<div class="data-error" style="font-size:1.1rem">此分類尚無資料</div>';
@@ -487,12 +492,14 @@ function renderOrgLeaderboard(catFilter) {
     grid.appendChild(row);
   });
 
-  const animateBars = () => { grid.querySelectorAll('.org-bar').forEach(b => { b.style.width = b.dataset.width + '%'; }); };
-  const observer = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting) { animateBars(); observer.disconnect(); }
-  }, { threshold: 0.1 });
-  observer.observe(grid);
-  setTimeout(() => { grid.querySelectorAll('.org-bar').forEach(b => { if (!b.style.width || b.style.width === '0%') b.style.width = b.dataset.width + '%'; }); }, 1500);
+  /* Double-rAF: first frame paints width:0%, second frame triggers CSS transition */
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      grid.querySelectorAll('.org-bar').forEach(b => {
+        b.style.width = b.dataset.width + '%';
+      });
+    });
+  });
 }
 
 /* ── Org Filter Chip Listeners ── */
