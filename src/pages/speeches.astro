@@ -225,6 +225,23 @@ function fmtNum(n) {
   return String(n);
 }
 
+/* ── Count-up animation ── */
+function countUp(el, finalVal, dur) {
+  if (!el || isNaN(finalVal)) return;
+  const fmt = finalVal >= 1000
+    ? v => `${(v / 1000).toFixed(1)}K`
+    : v => String(Math.round(v));
+  const start = performance.now();
+  const step = now => {
+    const t = Math.min((now - start) / dur, 1);
+    const ease = 1 - Math.pow(1 - t, 3);
+    el.textContent = fmt(finalVal * ease);
+    if (t < 1) requestAnimationFrame(step);
+    else el.textContent = fmt(finalVal);
+  };
+  requestAnimationFrame(step);
+}
+
 /* ── State ── */
 const PAGE_SIZE = 24;
 const EXCLUDED_TYPES = new Set(['彩排', '教材製作']);
@@ -310,10 +327,11 @@ function renderStats() {
     allData.flatMap(d => [d.org, d.coOrg1, d.coOrg2]).map(s => s.trim()).filter(Boolean)
   ).size;
 
-  document.getElementById('val-total').textContent = total;
-  document.getElementById('val-hours').textContent = Math.round(hours);
-  document.getElementById('val-audience').textContent = fmtNum(audience);
-  document.getElementById('val-orgs').textContent = orgs;
+  countUp(document.getElementById('val-total'),    total,              1400);
+  countUp(document.getElementById('val-hours'),    Math.round(hours),  1400);
+  countUp(document.getElementById('val-audience'), audience,           1600);
+  countUp(document.getElementById('val-orgs'),     orgs,               1200);
+  countUp(document.getElementById('val-langs'),    2,                   600);
   document.getElementById('val-span').textContent = `${total} events over 6 yrs`;
 }
 

@@ -97,7 +97,7 @@ const ROLES_URL     = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/t
         </div>
         <div class="bento-card">
           <div class="bento-card-label">Publications</div>
-          <div class="bento-card-num">2</div>
+          <div class="bento-card-num" id="h-pubs">2</div>
           <div class="bento-card-sub">SCIE · SSCI</div>
           <a href="https://orcid.org/0009-0001-6085-8303" target="_blank" rel="noopener" class="bento-orcid-link">ORCID ↗</a>
         </div>
@@ -192,6 +192,22 @@ const ROLES_URL     = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/t
 </script>
 
 <script define:vars={{ CSV_URL, CONTENT_URL, STRENGTHS_URL, ROLES_URL }}>
+/* ── Count-up animation ── */
+function countUp(el, finalVal, dur) {
+  if (!el || isNaN(finalVal)) return;
+  var fmt = finalVal >= 1000
+    ? function(v) { return (v / 1000).toFixed(1) + 'K'; }
+    : function(v) { return Math.round(v); };
+  var start = performance.now();
+  requestAnimationFrame(function step(now) {
+    var t = Math.min((now - start) / dur, 1);
+    var ease = 1 - Math.pow(1 - t, 3);
+    el.textContent = fmt(finalVal * ease);
+    if (t < 1) requestAnimationFrame(step);
+    else el.textContent = fmt(finalVal);
+  });
+}
+
 /* ── Robust CSV parser ── */
 function parseCSV(text) {
   var rows = [], row = [], cur = '', inQ = false;
@@ -244,10 +260,10 @@ function loadSpeeches() {
       var hours = rows.reduce(function(s, r) { return s + (parseFloat(r[iHours]) || 0); }, 0);
       var audience = rows.reduce(function(s, r) { return s + (parseInt(r[iAudience]) || 0); }, 0);
 
-      var el = document.getElementById('h-total');    if (el) el.textContent = total;
-      el = document.getElementById('h-hours');         if (el) el.textContent = Math.round(hours);
-      el = document.getElementById('h-audience');
-      if (el) el.textContent = audience >= 1000 ? (audience/1000).toFixed(1) + 'K' : audience;
+      countUp(document.getElementById('h-total'),    total,              1400);
+      countUp(document.getElementById('h-hours'),    Math.round(hours),  1400);
+      countUp(document.getElementById('h-audience'), audience,           1600);
+      countUp(document.getElementById('h-pubs'),     2,                   800);
 
       /* Partners leaderboard */
       var orgMap = {};
