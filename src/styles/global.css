@@ -606,6 +606,209 @@ footer .container {
 }
 .card-topic-link:hover { text-decoration: underline; color: var(--color-accent-hover); }
 
+/* ===== Charts Section ===== */
+.charts-section { margin-bottom: var(--spacing-xl); }
+
+.charts-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(4, 1fr);
+  margin-bottom: 12px;
+}
+@media (max-width: 900px) { .charts-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .charts-grid { grid-template-columns: 1fr 1fr; } }
+
+.chart-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  box-shadow: var(--card-shadow);
+}
+
+.chart-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.chart-card-title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+}
+
+.chart-badge {
+  font-size: 0.68rem;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--color-tag-bg);
+  color: var(--color-accent);
+  font-weight: 600;
+  border: 1px solid var(--color-border);
+}
+
+.chart-biggest {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chart-wrap { position: relative; height: 180px; }
+
+/* Year chart */
+.year-chart-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  box-shadow: var(--card-shadow);
+}
+
+.year-chart-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.year-peak {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  margin-top: 4px;
+}
+
+.year-chart-wrap { height: 240px; position: relative; }
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  align-items: center;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.legend-swatch {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* ===== Org Leaderboard ===== */
+.orgs-section { margin-bottom: var(--spacing-xl); }
+
+.orgs-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (max-width: 640px) { .orgs-grid { grid-template-columns: 1fr; } }
+
+.org-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--card-shadow);
+  transition: transform 0.2s, border-color 0.2s;
+}
+.org-row:hover { transform: translateX(4px); border-color: var(--color-accent); }
+
+.org-rank {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  width: 22px;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+.org-rank-top { color: var(--color-accent); }
+
+.org-name {
+  flex: 1;
+  font-size: 0.85rem;
+  color: var(--color-text);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.4;
+}
+
+.org-bar-bg {
+  flex: 0 0 80px;
+  height: 6px;
+  background: var(--color-border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.org-bar {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--color-accent), #14e0ff);
+  width: 0%;
+  transition: width 1.2s cubic-bezier(.2,.8,.2,1);
+}
+
+.org-count {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-text);
+  min-width: 20px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===== Sort select ===== */
+.sort-select {
+  font-size: 0.82rem;
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-tag-bg);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  outline: none;
+}
+.sort-select:focus { border-color: var(--color-accent); }
+
+.results-meta-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Card co-organizer */
+.card-org-co {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  opacity: 0.8;
+  line-height: 1.4;
+}
+
 /* Results meta */
 .results-meta {
   display: flex;

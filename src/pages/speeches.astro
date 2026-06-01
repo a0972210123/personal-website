@@ -8,6 +8,8 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
   title="Speeches"
   description="葉淨維 Matt Ye 的演講、工作坊、競賽作品集。2020 年至今，涵蓋學術簡報、表達技巧、EMI教學等主題。"
 >
+  <script slot="head" src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
   <div class="container-wide">
 
     <!-- Hero -->
@@ -18,7 +20,7 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
       </p>
     </section>
 
-    <!-- Bento Stats (populated by JS) -->
+    <!-- Bento Stats -->
     <div class="bento-grid" id="bento-stats">
       <div class="bento-card">
         <div class="bento-card-label">Total Events</div>
@@ -52,6 +54,51 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
       </div>
     </div>
 
+    <!-- Charts: 4 Donuts -->
+    <section class="charts-section">
+      <p class="section-heading">Distribution breakdown</p>
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-card-head"><span class="chart-card-title">類型</span><span class="chart-badge" id="badge-type">—</span></div>
+          <div class="chart-biggest" id="biggest-type">—</div>
+          <div class="chart-wrap"><canvas id="chart-type"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-card-head"><span class="chart-card-title">形式</span><span class="chart-badge" id="badge-mode">—</span></div>
+          <div class="chart-biggest" id="biggest-mode">—</div>
+          <div class="chart-wrap"><canvas id="chart-mode"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-card-head"><span class="chart-card-title">語言</span><span class="chart-badge" id="badge-lang">—</span></div>
+          <div class="chart-biggest" id="biggest-lang">—</div>
+          <div class="chart-wrap"><canvas id="chart-lang"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-card-head"><span class="chart-card-title">聽眾程度</span><span class="chart-badge" id="badge-edu">—</span></div>
+          <div class="chart-biggest" id="biggest-edu">—</div>
+          <div class="chart-wrap"><canvas id="chart-edu"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Year stacked bar -->
+      <div class="year-chart-card">
+        <div class="year-chart-head">
+          <div>
+            <div class="chart-card-title">每年場次</div>
+            <div class="year-peak" id="peak-year">—</div>
+          </div>
+          <div class="chart-legend" id="year-legend"></div>
+        </div>
+        <div class="year-chart-wrap"><canvas id="chart-year"></canvas></div>
+      </div>
+    </section>
+
+    <!-- Org Leaderboard -->
+    <section class="orgs-section">
+      <p class="section-heading">Top collaborating organizations</p>
+      <div class="orgs-grid" id="orgs-grid"></div>
+    </section>
+
     <!-- Explorer: search + filters -->
     <div class="explorer-bar">
       <div class="search-box">
@@ -72,9 +119,13 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
         <span class="filter-label">語言</span>
         <div class="chip-group" id="lang-chips"></div>
       </div>
+      <div class="filter-row">
+        <span class="filter-label">年份</span>
+        <div class="chip-group" id="year-chips"></div>
+      </div>
     </div>
 
-    <!-- Filtered Stats Strip (updates with filter) -->
+    <!-- Filtered Stats Strip -->
     <div class="filtered-stats" id="filtered-stats" style="display:none">
       <div class="fstat-item">
         <span class="fstat-num" id="fval-events">—</span>
@@ -92,10 +143,18 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
       </div>
     </div>
 
-    <!-- Results meta -->
+    <!-- Results meta + sort -->
     <div class="results-meta">
       <span>Showing <b id="results-count">—</b> events</span>
-      <button class="clear-btn" id="clear-btn" style="display:none">Clear filters</button>
+      <div class="results-meta-right">
+        <select id="sort-select" class="sort-select">
+          <option value="date-desc">日期（最新）</option>
+          <option value="date-asc">日期（最早）</option>
+          <option value="audience-desc">人次（最多）</option>
+          <option value="hours-desc">時數（最多）</option>
+        </select>
+        <button class="clear-btn" id="clear-btn" style="display:none">Clear filters</button>
+      </div>
     </div>
 
     <!-- Cards -->
@@ -114,7 +173,7 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
 </BaseLayout>
 
 <script define:vars={{ CSV_URL }}>
-/* ── Helpers ── */
+/* ── CSV Parser (robust: handles quoted multi-line cells) ── */
 function parseCSV(text) {
   const rows = [];
   let row = [], cur = '', inQ = false;
@@ -157,8 +216,9 @@ function fmtNum(n) {
 /* ── State ── */
 const PAGE_SIZE = 24;
 const EXCLUDED_TYPES = new Set(['彩排', '教材製作']);
+const PALETTE = ['#8b6cff','#14e0ff','#ff5dd9','#ffd166','#4ade80','#ff7a59','#c8b0ff','#8ee0ff','#ffb3ee'];
 let allData = [];
-let state = { search: '', types: new Set(), modes: new Set(), langs: new Set(), page: 1 };
+let state = { search: '', types: new Set(), modes: new Set(), langs: new Set(), years: new Set(), sort: 'date-desc', page: 1 };
 
 /* ── Fetch & Init ── */
 async function init() {
@@ -168,28 +228,28 @@ async function init() {
     const text = await resp.text();
     const rows = parseCSV(text);
 
-    // Build header index for flexible column mapping
     const headers = rows[0].map(h => h.toLowerCase().trim());
     const hi = name => headers.findIndex(h => h.includes(name.toLowerCase()));
 
-    const iDate      = hi('日期');
-    const iOrg       = hi('主辦單位') !== -1 ? hi('主辦單位') : 2;
-    const iOrgEn     = hi('英文名稱') !== -1 ? hi('英文名稱') : 3;
-    const iCoOrg1    = hi('協辦單位_1_zh');
-    const iCoOrg2    = hi('協辦單位_2_zh');
-    const iTopic     = hi('主題');
-    const iType      = hi('類型');
-    const iMode      = hi('線上');
-    const iLang      = hi('語言');
-    const iEdu       = hi('教育程度');
-    const iAudience  = hi('人數');
-    const iHours     = hi('小時');
+    const iDate       = hi('日期');
+    const iOrg        = hi('主辦單位') !== -1 ? hi('主辦單位') : 2;
+    const iOrgEn      = hi('英文名稱') !== -1 ? hi('英文名稱') : 3;
+    const iCoOrg1     = hi('協辦單位_1_zh');
+    const iCoOrg2     = hi('協辦單位_2_zh');
+    const iTopic      = hi('主題');
+    const iType       = hi('類型');
+    const iMode       = hi('線上');
+    const iLang       = hi('語言');
+    const iEdu        = hi('教育程度');
+    const iAudience   = hi('人數');
+    const iHours      = hi('小時');
     const iYoutubeUrl = hi('youtube');
     const iUrl        = hi('news, blog');
 
     allData = rows.slice(1)
       .map(r => ({
         date:       r[iDate]      ?? '',
+        year:       (r[iDate] ?? '').match(/^(\d{4})/)?.[1] ?? '',
         org:        r[iOrg]       ?? '',
         orgEn:      r[iOrgEn]     ?? '',
         coOrg1:     iCoOrg1 >= 0 ? (r[iCoOrg1] ?? '') : '',
@@ -199,8 +259,8 @@ async function init() {
         mode:       r[iMode]      ?? '',
         lang:       r[iLang]      ?? '',
         edu:        r[iEdu]       ?? '',
-        audience:   parseInt(r[iAudience])    || 0,
-        hours:      parseFloat(r[iHours])     || 0,
+        audience:   parseInt(r[iAudience])  || 0,
+        hours:      parseFloat(r[iHours])   || 0,
         youtubeUrl: iYoutubeUrl >= 0 ? (r[iYoutubeUrl] ?? '') : '',
         url:        iUrl >= 0 ? (r[iUrl] ?? '') : '',
       }))
@@ -208,6 +268,8 @@ async function init() {
 
     renderStats();
     renderChips();
+    renderCharts();
+    renderOrgLeaderboard();
     renderCards();
   } catch (err) {
     document.getElementById('cards-grid').innerHTML =
@@ -243,6 +305,144 @@ function renderFilteredStats(filtered) {
   document.getElementById('fval-audience').textContent = fmtNum(filtered.reduce((s, d) => s + d.audience, 0));
 }
 
+/* ── Charts ── */
+function countBy(arr, key) {
+  const m = {};
+  arr.forEach(r => { const k = r[key] || '未知'; m[k] = (m[k] || 0) + 1; });
+  return m;
+}
+
+function makeDonut(canvasId, counts, biggestId, badgeId) {
+  const ctx = document.getElementById(canvasId);
+  if (!ctx) return;
+  const labels = Object.keys(counts);
+  const values = labels.map(l => counts[l]);
+  const total = values.reduce((a, b) => a + b, 0);
+  const sorted = labels.map((l, i) => ({ l, v: values[i] })).sort((a, b) => b.v - a.v);
+  const biggestEl = document.getElementById(biggestId);
+  const badgeEl = document.getElementById(badgeId);
+  if (biggestEl) biggestEl.textContent = sorted[0].l + ' · ' + Math.round(sorted[0].v / total * 100) + '%';
+  if (badgeEl) badgeEl.textContent = labels.length + ' 類';
+
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels,
+      datasets: [{ data: values, backgroundColor: labels.map((_, i) => PALETTE[i % PALETTE.length]), borderWidth: 0, borderRadius: 3, spacing: 1, hoverOffset: 8 }]
+    },
+    options: {
+      cutout: '68%',
+      responsive: true, maintainAspectRatio: false,
+      animation: { duration: 1200, easing: 'easeOutQuart' },
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 8, boxHeight: 8, padding: 8, font: { size: 11 }, usePointStyle: true, pointStyle: 'circle' } },
+        tooltip: {
+          callbacks: { label: (c) => ' ' + c.label + ' · ' + c.parsed + ' 場 (' + (c.parsed / total * 100).toFixed(1) + '%)' }
+        }
+      }
+    }
+  });
+}
+
+function renderCharts() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  Chart.defaults.color = isDark ? '#8b93bf' : '#666666';
+  Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+  Chart.defaults.font.size = 11;
+  Chart.defaults.borderColor = isDark ? 'rgba(255,255,255,.05)' : 'rgba(0,0,0,.06)';
+
+  makeDonut('chart-type', countBy(allData, 'type'), 'biggest-type', 'badge-type');
+  makeDonut('chart-mode', countBy(allData, 'mode'), 'biggest-mode', 'badge-mode');
+  makeDonut('chart-lang', countBy(allData, 'lang'), 'biggest-lang', 'badge-lang');
+  makeDonut('chart-edu',  countBy(allData, 'edu'),  'biggest-edu',  'badge-edu');
+
+  /* Stacked bar by year */
+  const years = [...new Set(allData.map(d => d.year).filter(Boolean))].sort();
+  const types = [...new Set(allData.map(d => d.type))];
+  const peak = years.map(y => ({ y, n: allData.filter(d => d.year === y).length })).sort((a, b) => b.n - a.n)[0];
+  const peakEl = document.getElementById('peak-year');
+  if (peakEl && peak) peakEl.textContent = `Peak: ${peak.y} · ${peak.n} 場`;
+
+  const legendEl = document.getElementById('year-legend');
+  if (legendEl) {
+    legendEl.innerHTML = '';
+    types.forEach((t, i) => {
+      const item = document.createElement('span');
+      item.className = 'legend-item';
+      item.innerHTML = `<span class="legend-swatch" style="background:${PALETTE[i % PALETTE.length]}"></span>${t}`;
+      legendEl.appendChild(item);
+    });
+  }
+
+  const yearCtx = document.getElementById('chart-year');
+  if (yearCtx) {
+    new Chart(yearCtx, {
+      type: 'bar',
+      data: {
+        labels: years,
+        datasets: types.map((t, i) => ({
+          label: t,
+          data: years.map(y => allData.filter(d => d.year === y && d.type === t).length),
+          backgroundColor: PALETTE[i % PALETTE.length],
+          borderRadius: 4, borderSkipped: false, maxBarThickness: 52,
+        }))
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        animation: { duration: 1200, easing: 'easeOutQuart' },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: { footer: (items) => '合計 ' + items.reduce((a, b) => a + b.parsed.y, 0) + ' 場' }
+          }
+        },
+        scales: {
+          x: { stacked: true, grid: { display: false }, ticks: { font: { size: 12, weight: '600' } } },
+          y: { stacked: true, grid: { color: isDark ? 'rgba(255,255,255,.04)' : 'rgba(0,0,0,.06)' }, ticks: { precision: 0, padding: 6 } }
+        }
+      }
+    });
+  }
+}
+
+/* ── Org Leaderboard ── */
+function renderOrgLeaderboard() {
+  const counts = {};
+  allData.forEach(d => {
+    [d.org, d.coOrg1, d.coOrg2].forEach(o => {
+      const name = (o || '').trim();
+      if (name) counts[name] = (counts[name] || 0) + 1;
+    });
+  });
+  const ranked = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 16);
+  const max = ranked[0]?.[1] || 1;
+  const grid = document.getElementById('orgs-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  ranked.forEach(([name, count], i) => {
+    const pct = (count / max) * 100;
+    const row = document.createElement('div');
+    row.className = 'org-row';
+    row.innerHTML = `
+      <span class="org-rank${i < 3 ? ' org-rank-top' : ''}">${String(i + 1).padStart(2, '0')}</span>
+      <span class="org-name">${name}</span>
+      <span class="org-bar-bg"><span class="org-bar" data-width="${pct}"></span></span>
+      <span class="org-count">${count}</span>
+    `;
+    grid.appendChild(row);
+  });
+
+  /* Animate bars when visible */
+  const observer = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      grid.querySelectorAll('.org-bar').forEach(b => { b.style.width = b.dataset.width + '%'; });
+      observer.disconnect();
+    }
+  }, { threshold: 0.1 });
+  observer.observe(grid);
+  setTimeout(() => { grid.querySelectorAll('.org-bar').forEach(b => { if (!b.style.width || b.style.width === '0%') b.style.width = b.dataset.width + '%'; }); }, 1500);
+}
+
 /* ── Filter Chips ── */
 function makeChips(containerId, values, stateSet, onChange) {
   const container = document.getElementById(containerId);
@@ -263,29 +463,40 @@ function makeChips(containerId, values, stateSet, onChange) {
 }
 
 function renderChips() {
-  const types    = new Set(allData.map(d => d.type).filter(Boolean));
-  const modes    = new Set(allData.map(d => d.mode).filter(Boolean));
-  const langs    = new Set(allData.map(d => d.lang).filter(Boolean));
+  const types = new Set(allData.map(d => d.type).filter(Boolean));
+  const modes = new Set(allData.map(d => d.mode).filter(Boolean));
+  const langs = new Set(allData.map(d => d.lang).filter(Boolean));
+  const years = new Set(allData.map(d => d.year).filter(Boolean));
 
   makeChips('type-chips', types, state.types, renderCards);
   makeChips('mode-chips', modes, state.modes, renderCards);
   makeChips('lang-chips', langs, state.langs, renderCards);
+  makeChips('year-chips', [...years].sort(), state.years, renderCards);
 }
 
-/* ── Filter Logic ── */
+/* ── Filter + Sort Logic ── */
 function applyFilters() {
   const q = state.search.toLowerCase();
-  return allData.filter(d => {
+  let result = allData.filter(d => {
     if (q && !d.topic.toLowerCase().includes(q) && !d.org.toLowerCase().includes(q) && !d.orgEn.toLowerCase().includes(q)) return false;
     if (state.types.size && !state.types.has(d.type)) return false;
     if (state.modes.size && !state.modes.has(d.mode)) return false;
     if (state.langs.size && !state.langs.has(d.lang)) return false;
+    if (state.years.size && !state.years.has(d.year)) return false;
     return true;
   });
+
+  switch (state.sort) {
+    case 'date-asc':      result = result.sort((a, b) => a.date.localeCompare(b.date)); break;
+    case 'audience-desc': result = result.sort((a, b) => b.audience - a.audience); break;
+    case 'hours-desc':    result = result.sort((a, b) => b.hours - a.hours); break;
+    default:              result = result.sort((a, b) => b.date.localeCompare(a.date));
+  }
+  return result;
 }
 
 function hasActiveFilters() {
-  return state.search || state.types.size || state.modes.size || state.langs.size;
+  return state.search || state.types.size || state.modes.size || state.langs.size || state.years.size;
 }
 
 /* ── Card Renderer ── */
@@ -296,6 +507,7 @@ function cardHTML(d) {
   const topicHTML = linkUrl
     ? `<a class="card-topic card-topic-link" href="${linkUrl}" target="_blank" rel="noopener">${d.topic}</a>`
     : `<div class="card-topic">${d.topic}</div>`;
+  const coOrgHTML = [d.coOrg1, d.coOrg2].filter(Boolean).map(o => `<div class="card-org-co">協辦：${o}</div>`).join('');
   return `
     <div class="speech-card">
       <div class="card-meta-row">
@@ -305,6 +517,7 @@ function cardHTML(d) {
       ${topicHTML}
       ${d.org ? `<div class="card-org">${d.org}</div>` : ''}
       ${d.orgEn ? `<div class="card-org-en">${d.orgEn}</div>` : ''}
+      ${coOrgHTML}
       <div class="card-stats">
         ${d.audience ? `<span><b>${d.audience}</b>人</span>` : ''}
         ${d.hours ? `<span><b>${d.hours}</b>hr</span>` : ''}
@@ -350,6 +563,12 @@ document.getElementById('search-input')?.addEventListener('input', e => {
   renderCards();
 });
 
+document.getElementById('sort-select')?.addEventListener('change', e => {
+  state.sort = e.target.value;
+  state.page = 1;
+  renderCards();
+});
+
 document.getElementById('show-more-btn')?.addEventListener('click', () => {
   state.page++;
   renderCards();
@@ -357,9 +576,7 @@ document.getElementById('show-more-btn')?.addEventListener('click', () => {
 
 document.getElementById('clear-btn')?.addEventListener('click', () => {
   state.search = '';
-  state.types.clear();
-  state.modes.clear();
-  state.langs.clear();
+  state.types.clear(); state.modes.clear(); state.langs.clear(); state.years.clear();
   state.page = 1;
   const inp = document.getElementById('search-input');
   if (inp) inp.value = '';
