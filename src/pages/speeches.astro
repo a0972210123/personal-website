@@ -106,7 +106,9 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
         <button class="chip" data-cat="學生社團">🎓 學生社團</button>
         <button class="chip" data-cat="自媒體">📱 自媒體</button>
       </div>
-      <div class="orgs-grid" id="orgs-grid"></div>
+      <div class="orgs-scroll-wrap">
+        <div class="orgs-grid" id="orgs-grid"></div>
+      </div>
     </section>
 
     <!-- Explorer: search + filters -->
@@ -465,6 +467,9 @@ function renderOrgLeaderboard(catFilter) {
   const grid = document.getElementById('orgs-grid');
   if (!grid) return;
   grid.innerHTML = '';
+  /* Reset scroll position on each filter change */
+  const wrap = grid.closest('.orgs-scroll-wrap');
+  if (wrap) wrap.scrollTop = 0;
 
   if (ranked.length === 0) {
     grid.innerHTML = '<div class="data-error" style="font-size:1.1rem">此分類尚無資料</div>';

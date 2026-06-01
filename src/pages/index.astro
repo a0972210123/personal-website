@@ -268,7 +268,7 @@ function loadSpeeches() {
       var ranked = Object.keys(orgMap)
         .map(function(k) { return [k, orgMap[k]]; })
         .sort(function(a, b) { return b[1].count - a[1].count; })
-        .slice(0, 10);
+        .slice(0, 5);
       var maxCount = ranked.length ? ranked[0][1].count : 1;
 
       var grid = document.getElementById('partners-grid');

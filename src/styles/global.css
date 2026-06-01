@@ -721,12 +721,27 @@ footer .container {
   margin-bottom: 16px;
 }
 
+/* Speeches page: scrollable org leaderboard */
+.orgs-scroll-wrap {
+  max-height: 360px;   /* ~5 rows visible */
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 4px;
+  /* Custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-accent) transparent;
+}
+.orgs-scroll-wrap::-webkit-scrollbar { width: 6px; }
+.orgs-scroll-wrap::-webkit-scrollbar-track { background: transparent; }
+.orgs-scroll-wrap::-webkit-scrollbar-thumb { background: var(--color-accent); border-radius: 999px; }
+
 .orgs-grid {
   display: grid;
-  gap: 8px;
-  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  grid-template-columns: 1fr;
 }
-@media (max-width: 640px) { .orgs-grid { grid-template-columns: 1fr; } }
 
 .org-row {
   display: flex;
