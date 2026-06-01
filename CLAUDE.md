@@ -5,7 +5,18 @@
 **Owner：** 葉淨維 Ching-Wei (Matt) Ye  
 **GitHub：** https://github.com/a0972210123/personal-website  
 **部署：** Cloudflare Pages（連接 GitHub `main` branch，push 自動 deploy）  
+**網域：** https://mattye.dev（自訂網域，preview: personal-website-1m7.pages.dev）  
 **Tech stack：** Astro 6 (static) · Plain CSS · Markdown content collections
+
+---
+
+## 開發環境
+
+**建議：統一使用 `claude.ai/code`（瀏覽器版）**，手機和電腦都用這個，避免本地環境衝突。
+
+- claude.ai/code 運行在 Anthropic 雲端 VM，直接操作 GitHub repo，不需要本地 node_modules
+- 改內容 / 樣式 → merge 後 Cloudflare Pages 幾秒內自動 deploy，不需要本地預覽
+- 例外：需要快速迭代 UI 時，可在桌機用本地 `npm run dev`，但要記得先 pull main
 
 ---
 
