@@ -172,31 +172,37 @@ async function init() {
     const headers = rows[0].map(h => h.toLowerCase().trim());
     const hi = name => headers.findIndex(h => h.includes(name.toLowerCase()));
 
-    const iDate     = hi('日期');
-    const iOrg      = hi('主辦單位') !== -1 ? hi('主辦單位') : 2;
-    const iOrgEn    = hi('英文名稱') !== -1 ? hi('英文名稱') : 3;
-    const iTopic    = hi('主題');
-    const iType     = hi('類型');
-    const iMode     = hi('線上');
-    const iLang     = hi('語言');
-    const iEdu      = hi('教育程度');
-    const iAudience = hi('人數');
-    const iHours    = hi('小時');
-    const iUrl      = hi('news, blog');  // "News, Blog, or Other URL"
+    const iDate      = hi('日期');
+    const iOrg       = hi('主辦單位') !== -1 ? hi('主辦單位') : 2;
+    const iOrgEn     = hi('英文名稱') !== -1 ? hi('英文名稱') : 3;
+    const iCoOrg1    = hi('協辦單位_1_zh');
+    const iCoOrg2    = hi('協辦單位_2_zh');
+    const iTopic     = hi('主題');
+    const iType      = hi('類型');
+    const iMode      = hi('線上');
+    const iLang      = hi('語言');
+    const iEdu       = hi('教育程度');
+    const iAudience  = hi('人數');
+    const iHours     = hi('小時');
+    const iYoutubeUrl = hi('youtube');
+    const iUrl        = hi('news, blog');
 
     allData = rows.slice(1)
       .map(r => ({
-        date:     r[iDate]     ?? '',
-        org:      r[iOrg]      ?? '',
-        orgEn:    r[iOrgEn]    ?? '',
-        topic:    r[iTopic]    ?? '',
-        type:     r[iType]     ?? '',
-        mode:     r[iMode]     ?? '',
-        lang:     r[iLang]     ?? '',
-        edu:      r[iEdu]      ?? '',
-        audience: parseInt(r[iAudience])   || 0,
-        hours:    parseFloat(r[iHours])    || 0,
-        url:      iUrl >= 0 ? (r[iUrl] ?? '') : '',
+        date:       r[iDate]      ?? '',
+        org:        r[iOrg]       ?? '',
+        orgEn:      r[iOrgEn]     ?? '',
+        coOrg1:     iCoOrg1 >= 0 ? (r[iCoOrg1] ?? '') : '',
+        coOrg2:     iCoOrg2 >= 0 ? (r[iCoOrg2] ?? '') : '',
+        topic:      r[iTopic]     ?? '',
+        type:       r[iType]      ?? '',
+        mode:       r[iMode]      ?? '',
+        lang:       r[iLang]      ?? '',
+        edu:        r[iEdu]       ?? '',
+        audience:   parseInt(r[iAudience])    || 0,
+        hours:      parseFloat(r[iHours])     || 0,
+        youtubeUrl: iYoutubeUrl >= 0 ? (r[iYoutubeUrl] ?? '') : '',
+        url:        iUrl >= 0 ? (r[iUrl] ?? '') : '',
       }))
       .filter(d => d.date && d.topic && !EXCLUDED_TYPES.has(d.type));
 
@@ -215,7 +221,9 @@ function renderStats() {
   const total = allData.length;
   const hours = allData.reduce((s, d) => s + d.hours, 0);
   const audience = allData.reduce((s, d) => s + d.audience, 0);
-  const orgs = new Set(allData.map(d => d.org.trim()).filter(Boolean)).size;
+  const orgs = new Set(
+    allData.flatMap(d => [d.org, d.coOrg1, d.coOrg2]).map(s => s.trim()).filter(Boolean)
+  ).size;
 
   document.getElementById('val-total').textContent = total;
   document.getElementById('val-hours').textContent = Math.round(hours);
@@ -284,8 +292,9 @@ function hasActiveFilters() {
 function cardHTML(d) {
   const typeCls = `badge badge-type-${d.type}`;
   const modeCls = `badge badge-mode-${d.mode}`;
-  const topicHTML = (d.type === 'Podcast' && d.url)
-    ? `<a class="card-topic card-topic-link" href="${d.url}" target="_blank" rel="noopener">${d.topic}</a>`
+  const linkUrl = d.youtubeUrl || d.url;
+  const topicHTML = linkUrl
+    ? `<a class="card-topic card-topic-link" href="${linkUrl}" target="_blank" rel="noopener">${d.topic}</a>`
     : `<div class="card-topic">${d.topic}</div>`;
   return `
     <div class="speech-card">
