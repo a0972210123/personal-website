@@ -226,10 +226,11 @@ const orgDomains: Record<string, string> = {
 
     <!-- ⑤ Partners / Organizations (dynamic from Sheet) -->
     <section class="partners-section">
-      <p class="section-heading">Organizations collaborated with</p>
-      <div class="partners-grid" id="partners-grid">
-        <span class="partner-chip" style="border-style:dashed">Loading…</span>
+      <p class="section-heading">Top collaborating organizations</p>
+      <div class="partners-orgs-grid" id="partners-grid">
+        <div class="data-loading">Loading…</div>
       </div>
+      <a href="/speeches" class="section-cta" style="margin-top:1rem">View all speeches →</a>
     </section>
 
     <!-- ⑥ Recent Writing -->
@@ -348,14 +349,17 @@ function shortName(name) {
       function hi(name) {
         return headers.findIndex(function(h) { return h.includes(name.toLowerCase()); });
       }
-      var iDate     = hi('日期');
-      var iOrg      = hi('主辦單位');
-      var iCoOrg1   = hi('協辦單位_1_zh');
-      var iCoOrg2   = hi('協辦單位_2_zh');
-      var iTopic    = hi('主題');
-      var iType     = hi('類型');
-      var iAudience = hi('人數');
-      var iHours    = hi('小時');
+      var iDate      = hi('日期');
+      var iOrg       = hi('主辦單位_zh');
+      var iOrgEn     = hi('主辦單位_eng');
+      var iCoOrg1    = hi('協辦單位_1_zh');
+      var iCoOrg1En  = hi('協辦單位_1_eng');
+      var iCoOrg2    = hi('協辦單位_2_zh');
+      var iCoOrg2En  = hi('協辦單位_2_eng');
+      var iTopic     = hi('主題');
+      var iType      = hi('場次類型');
+      var iAudience  = hi('人數');
+      var iHours     = hi('小時');
 
       var EXCLUDED = ['彩排', '教材製作'];
       var rows = allRows.slice(1).filter(function(r) {
@@ -376,49 +380,64 @@ function shortName(name) {
       el = document.getElementById('h-audience');
       if (el) el.textContent = audience >= 1000 ? (audience/1000).toFixed(1) + 'K' : audience;
 
-      /* Partners grid — collect unique org names (主辦 + 協辦) */
-      var seen = {}, orgs = [], freq = {};
+      /* Partners leaderboard — build orgMap (zh → { count, eng }), top 10 */
+      var orgMap = {};
       for (var i = 0; i < rows.length; i++) {
-        var primary = (rows[i][iOrg] || '').trim();
-        if (primary) freq[primary] = (freq[primary] || 0) + 1;
-        var allOrgs = [
-          primary,
-          iCoOrg1 >= 0 ? (rows[i][iCoOrg1] || '').trim() : '',
-          iCoOrg2 >= 0 ? (rows[i][iCoOrg2] || '').trim() : '',
+        var orgsInRow = [
+          { zh: (rows[i][iOrg]    || '').trim(), eng: iOrgEn    >= 0 ? (rows[i][iOrgEn]    || '').trim() : '' },
+          { zh: iCoOrg1 >= 0 ? (rows[i][iCoOrg1] || '').trim() : '', eng: iCoOrg1En >= 0 ? (rows[i][iCoOrg1En] || '').trim() : '' },
+          { zh: iCoOrg2 >= 0 ? (rows[i][iCoOrg2] || '').trim() : '', eng: iCoOrg2En >= 0 ? (rows[i][iCoOrg2En] || '').trim() : '' },
         ];
-        for (var p = 0; p < allOrgs.length; p++) {
-          var org = allOrgs[p];
-          if (!org || seen[org]) continue;
-          seen[org] = true;
-          orgs.push(org);
+        for (var p = 0; p < orgsInRow.length; p++) {
+          var zh  = orgsInRow[p].zh;
+          var eng = orgsInRow[p].eng;
+          if (!zh) continue;
+          if (!orgMap[zh]) orgMap[zh] = { count: 0, eng: '' };
+          orgMap[zh].count++;
+          if (!orgMap[zh].eng && eng) orgMap[zh].eng = eng;
         }
       }
-      orgs.sort(function(a, b) { return (freq[b] || 0) - (freq[a] || 0); });
+      var ranked = Object.keys(orgMap)
+        .map(function(k) { return [k, orgMap[k]]; })
+        .sort(function(a, b) { return b[1].count - a[1].count; })
+        .slice(0, 10);
+      var maxCount = ranked.length ? ranked[0][1].count : 1;
 
-      /* Render chips */
+      /* Render leaderboard rows */
       var grid = document.getElementById('partners-grid');
       if (!grid) return;
       grid.innerHTML = '';
 
-      for (var j = 0; j < orgs.length; j++) {
-        var name = orgs[j];
-        if (!name) continue;
-        var domain = getDomain(name);
-        var chip = document.createElement('span');
-        chip.className = 'partner-chip';
-
-        if (domain) {
-          var img = document.createElement('img');
-          img.src = 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=32';
-          img.alt = '';
-          img.onerror = function() { this.style.display = 'none'; };
-          chip.appendChild(img);
-        }
-
-        var label = document.createTextNode(shortName(name));
-        chip.appendChild(label);
-        grid.appendChild(chip);
+      for (var j = 0; j < ranked.length; j++) {
+        var name = ranked[j][0];
+        var info = ranked[j][1];
+        var pct  = (info.count / maxCount) * 100;
+        var row  = document.createElement('div');
+        row.className = 'org-row';
+        row.innerHTML =
+          '<span class="org-rank' + (j < 3 ? ' org-rank-top' : '') + '">' + String(j + 1).padStart(2, '0') + '</span>' +
+          '<span class="org-name">' +
+            '<span class="org-name-zh">' + name + '</span>' +
+            (info.eng ? '<span class="org-name-en">' + info.eng + '</span>' : '') +
+          '</span>' +
+          '<span class="org-bar-bg"><span class="org-bar" data-width="' + pct + '"></span></span>' +
+          '<span class="org-count">' + info.count + '</span>';
+        grid.appendChild(row);
       }
+
+      /* Animate bars */
+      var observer = new IntersectionObserver(function(entries) {
+        if (entries[0].isIntersecting) {
+          grid.querySelectorAll('.org-bar').forEach(function(b) { b.style.width = b.dataset.width + '%'; });
+          observer.disconnect();
+        }
+      }, { threshold: 0.1 });
+      observer.observe(grid);
+      setTimeout(function() {
+        grid.querySelectorAll('.org-bar').forEach(function(b) {
+          if (!b.style.width || b.style.width === '0%') b.style.width = b.dataset.width + '%';
+        });
+      }, 1500);
     })
     .catch(function() {
       /* silent fail */
