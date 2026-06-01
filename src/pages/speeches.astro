@@ -461,7 +461,7 @@ function renderOrgLeaderboard(catFilter) {
     entries = entries.filter(([, info]) => info.type === orgCatFilter);
   }
 
-  const ranked = entries.slice(0, 10);
+  const ranked = entries; /* show all — scrollable container handles overflow */
   const max = ranked[0]?.[1].count || 1;
 
   const grid = document.getElementById('orgs-grid');

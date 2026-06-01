@@ -819,7 +819,8 @@ footer .container {
   font-size: 0.82rem;
   font-weight: 700;
   color: var(--color-text);
-  min-width: 20px;
+  min-width: 24px;
+  flex-shrink: 0;
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
@@ -1327,10 +1328,9 @@ footer .container {
 .partners-orgs-grid {
   display: grid;
   gap: 8px;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   margin-top: var(--spacing-md);
 }
-@media (max-width: 640px) { .partners-orgs-grid { grid-template-columns: 1fr; } }
 
 /* Legacy chip style (kept for potential reuse) */
 .partners-grid {
