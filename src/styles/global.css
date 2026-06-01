@@ -812,8 +812,10 @@ footer .container {
   border-radius: 999px;
   background: linear-gradient(90deg, var(--color-accent), #14e0ff);
   width: 0%;
-  transition: width 1.2s cubic-bezier(.2,.8,.2,1);
+  min-width: 0px;
+  transition: width 1.2s cubic-bezier(.2,.8,.2,1), min-width 1.2s cubic-bezier(.2,.8,.2,1);
 }
+.org-bar[data-width] { min-width: 4px; } /* always show a sliver, even for 1-count orgs */
 
 .org-count {
   font-size: 0.82rem;
