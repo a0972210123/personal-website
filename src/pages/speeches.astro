@@ -117,22 +117,24 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
 /* ── Helpers ── */
 function parseCSV(text) {
   const rows = [];
-  const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
-  for (const line of lines) {
-    if (!line.trim()) continue;
-    const row = [];
-    let cur = '', inQ = false;
-    for (let i = 0; i < line.length; i++) {
-      const c = line[i];
-      if (c === '"') {
-        if (inQ && line[i+1] === '"') { cur += '"'; i++; }
-        else inQ = !inQ;
-      } else if (c === ',' && !inQ) { row.push(cur.trim()); cur = ''; }
-      else cur += c;
+  let row = [], cur = '', inQ = false;
+  const t = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  for (let i = 0; i < t.length; i++) {
+    const c = t[i];
+    if (c === '"') {
+      if (inQ && t[i+1] === '"') { cur += '"'; i++; }
+      else inQ = !inQ;
+    } else if (c === ',' && !inQ) {
+      row.push(cur.trim()); cur = '';
+    } else if (c === '\n' && !inQ) {
+      row.push(cur.trim());
+      if (row.some(v => v)) rows.push(row);
+      row = []; cur = '';
+    } else {
+      cur += c;
     }
-    row.push(cur.trim());
-    rows.push(row);
   }
+  if (cur || row.length) { row.push(cur.trim()); rows.push(row); }
   return rows;
 }
 
@@ -168,7 +170,6 @@ async function init() {
 
     // Build header index for flexible column mapping
     const headers = rows[0].map(h => h.toLowerCase().trim());
-    console.log('[speeches] CSV headers:', headers);
     const hi = name => headers.findIndex(h => h.includes(name.toLowerCase()));
 
     const iDate     = hi('日期');
@@ -182,7 +183,6 @@ async function init() {
     const iAudience = hi('人數');
     const iHours    = hi('小時');
     const iUrl      = hi('news, blog');  // "News, Blog, or Other URL"
-    console.log('[speeches] iUrl =', iUrl, '| header =', headers[iUrl]);
 
     allData = rows.slice(1)
       .map(r => ({
