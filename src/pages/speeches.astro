@@ -96,6 +96,12 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
     <!-- Org Leaderboard -->
     <section class="orgs-section">
       <p class="section-heading">Top collaborating organizations</p>
+      <div class="orgs-filter-row">
+        <button class="chip active" id="org-filter-all" data-cat="all">全部</button>
+        <button class="chip" id="org-filter-school" data-cat="school">🎓 學校</button>
+        <button class="chip" id="org-filter-npo" data-cat="npo">🤝 NPO / NGO</button>
+        <button class="chip" id="org-filter-company" data-cat="company">🏢 公司 / 企業</button>
+      </div>
       <div class="orgs-grid" id="orgs-grid"></div>
     </section>
 
@@ -269,6 +275,7 @@ async function init() {
     renderStats();
     renderChips();
     renderCharts();
+    initOrgFilters();
     renderOrgLeaderboard();
     renderCards();
   } catch (err) {
@@ -405,8 +412,25 @@ function renderCharts() {
   }
 }
 
+/* ── Org Category Classifier ── */
+function classifyOrg(name) {
+  if (!name) return 'other';
+  const n = name;
+  // 學校：大學、學院、高中、國中、國小、學校、書院
+  if (/大學|學院|高中|國中|國小|學校|書院|University|College|School/.test(n)) return 'school';
+  // NPO/NGO：協會、基金會、社團法人、財團法人、公益、協進會、學會、NGO|NPO
+  if (/協會|基金會|社團法人|財團法人|公益|協進會|學會|NGO|NPO|非營利|公益社團/.test(n)) return 'npo';
+  // 公司 / 企業：股份、有限公司、科技、企業、集團、Studio、Lab（商業實體）
+  if (/股份|有限公司|科技|企業|集團|Studio|Lab|Inc\.|Ltd\./.test(n)) return 'company';
+  return 'other';
+}
+
 /* ── Org Leaderboard ── */
-function renderOrgLeaderboard() {
+let orgCatFilter = 'all';
+
+function renderOrgLeaderboard(catFilter) {
+  if (catFilter !== undefined) orgCatFilter = catFilter;
+
   const counts = {};
   allData.forEach(d => {
     [d.org, d.coOrg1, d.coOrg2].forEach(o => {
@@ -414,11 +438,30 @@ function renderOrgLeaderboard() {
       if (name) counts[name] = (counts[name] || 0) + 1;
     });
   });
-  const ranked = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 16);
+
+  // Filter by category, then take top 10
+  let entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  if (orgCatFilter !== 'all') {
+    entries = entries.filter(([name]) => {
+      const cat = classifyOrg(name);
+      if (orgCatFilter === 'school')  return cat === 'school';
+      if (orgCatFilter === 'npo')     return cat === 'npo';
+      if (orgCatFilter === 'company') return cat === 'company' || cat === 'other';
+      return true;
+    });
+  }
+  const ranked = entries.slice(0, 10);
   const max = ranked[0]?.[1] || 1;
+
   const grid = document.getElementById('orgs-grid');
   if (!grid) return;
   grid.innerHTML = '';
+
+  if (ranked.length === 0) {
+    grid.innerHTML = '<div class="data-error" style="font-size:1.1rem">此分類尚無資料</div>';
+    return;
+  }
+
   ranked.forEach(([name, count], i) => {
     const pct = (count / max) * 100;
     const row = document.createElement('div');
@@ -433,14 +476,23 @@ function renderOrgLeaderboard() {
   });
 
   /* Animate bars when visible */
+  const animateBars = () => { grid.querySelectorAll('.org-bar').forEach(b => { b.style.width = b.dataset.width + '%'; }); };
   const observer = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting) {
-      grid.querySelectorAll('.org-bar').forEach(b => { b.style.width = b.dataset.width + '%'; });
-      observer.disconnect();
-    }
+    if (entries[0].isIntersecting) { animateBars(); observer.disconnect(); }
   }, { threshold: 0.1 });
   observer.observe(grid);
   setTimeout(() => { grid.querySelectorAll('.org-bar').forEach(b => { if (!b.style.width || b.style.width === '0%') b.style.width = b.dataset.width + '%'; }); }, 1500);
+}
+
+/* ── Org Filter Chip Listeners ── */
+function initOrgFilters() {
+  document.querySelectorAll('[data-cat]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-cat]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderOrgLeaderboard(btn.dataset.cat);
+    });
+  });
 }
 
 /* ── Filter Chips ── */

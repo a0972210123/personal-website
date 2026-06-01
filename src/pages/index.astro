@@ -226,10 +226,11 @@ const orgDomains: Record<string, string> = {
 
     <!-- ⑤ Partners / Organizations (dynamic from Sheet) -->
     <section class="partners-section">
-      <p class="section-heading">Organizations collaborated with</p>
-      <div class="partners-grid" id="partners-grid">
-        <span class="partner-chip" style="border-style:dashed">Loading…</span>
+      <p class="section-heading">Top collaborating organizations</p>
+      <div class="partners-orgs-grid" id="partners-grid">
+        <div class="data-loading">Loading…</div>
       </div>
+      <a href="/speeches" class="section-cta" style="margin-top:1rem">View all speeches →</a>
     </section>
 
     <!-- ⑥ Recent Writing -->
@@ -376,49 +377,57 @@ function shortName(name) {
       el = document.getElementById('h-audience');
       if (el) el.textContent = audience >= 1000 ? (audience/1000).toFixed(1) + 'K' : audience;
 
-      /* Partners grid — collect unique org names (主辦 + 協辦) */
-      var seen = {}, orgs = [], freq = {};
+      /* Partners leaderboard — count each org (主辦 + 協辦), top 10 */
+      var counts = {};
       for (var i = 0; i < rows.length; i++) {
-        var primary = (rows[i][iOrg] || '').trim();
-        if (primary) freq[primary] = (freq[primary] || 0) + 1;
-        var allOrgs = [
-          primary,
+        var orgsInRow = [
+          (rows[i][iOrg] || '').trim(),
           iCoOrg1 >= 0 ? (rows[i][iCoOrg1] || '').trim() : '',
           iCoOrg2 >= 0 ? (rows[i][iCoOrg2] || '').trim() : '',
         ];
-        for (var p = 0; p < allOrgs.length; p++) {
-          var org = allOrgs[p];
-          if (!org || seen[org]) continue;
-          seen[org] = true;
-          orgs.push(org);
+        for (var p = 0; p < orgsInRow.length; p++) {
+          var org = orgsInRow[p];
+          if (org) counts[org] = (counts[org] || 0) + 1;
         }
       }
-      orgs.sort(function(a, b) { return (freq[b] || 0) - (freq[a] || 0); });
+      var ranked = Object.keys(counts)
+        .map(function(k) { return [k, counts[k]]; })
+        .sort(function(a, b) { return b[1] - a[1]; })
+        .slice(0, 10);
+      var maxCount = ranked.length ? ranked[0][1] : 1;
 
-      /* Render chips */
+      /* Render leaderboard rows */
       var grid = document.getElementById('partners-grid');
       if (!grid) return;
       grid.innerHTML = '';
 
-      for (var j = 0; j < orgs.length; j++) {
-        var name = orgs[j];
-        if (!name) continue;
-        var domain = getDomain(name);
-        var chip = document.createElement('span');
-        chip.className = 'partner-chip';
-
-        if (domain) {
-          var img = document.createElement('img');
-          img.src = 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=32';
-          img.alt = '';
-          img.onerror = function() { this.style.display = 'none'; };
-          chip.appendChild(img);
-        }
-
-        var label = document.createTextNode(shortName(name));
-        chip.appendChild(label);
-        grid.appendChild(chip);
+      for (var j = 0; j < ranked.length; j++) {
+        var name = ranked[j][0];
+        var cnt  = ranked[j][1];
+        var pct  = (cnt / maxCount) * 100;
+        var row  = document.createElement('div');
+        row.className = 'org-row';
+        row.innerHTML =
+          '<span class="org-rank' + (j < 3 ? ' org-rank-top' : '') + '">' + String(j + 1).padStart(2, '0') + '</span>' +
+          '<span class="org-name">' + name + '</span>' +
+          '<span class="org-bar-bg"><span class="org-bar" data-width="' + pct + '"></span></span>' +
+          '<span class="org-count">' + cnt + '</span>';
+        grid.appendChild(row);
       }
+
+      /* Animate bars */
+      var observer = new IntersectionObserver(function(entries) {
+        if (entries[0].isIntersecting) {
+          grid.querySelectorAll('.org-bar').forEach(function(b) { b.style.width = b.dataset.width + '%'; });
+          observer.disconnect();
+        }
+      }, { threshold: 0.1 });
+      observer.observe(grid);
+      setTimeout(function() {
+        grid.querySelectorAll('.org-bar').forEach(function(b) {
+          if (!b.style.width || b.style.width === '0%') b.style.width = b.dataset.width + '%';
+        });
+      }, 1500);
     })
     .catch(function() {
       /* silent fail */
