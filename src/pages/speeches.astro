@@ -99,10 +99,12 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
       <div class="orgs-filter-row">
         <button class="chip active" data-cat="all">全部</button>
         <button class="chip" data-cat="學校">🎓 學校</button>
-        <button class="chip" data-cat="NPO/NGO">🤝 NPO / NGO</button>
-        <button class="chip" data-cat="公司">🏢 公司 / 企業</button>
-        <button class="chip" data-cat="政府">🏛 政府</button>
-        <button class="chip" data-cat="其他">其他</button>
+        <button class="chip" data-cat="NGO">🌍 NGO</button>
+        <button class="chip" data-cat="NPO">🤝 NPO</button>
+        <button class="chip" data-cat="政府單位">🏛 政府單位</button>
+        <button class="chip" data-cat="企業">🏢 企業</button>
+        <button class="chip" data-cat="學生社團">🎓 學生社團</button>
+        <button class="chip" data-cat="自媒體">📱 自媒體</button>
       </div>
       <div class="orgs-grid" id="orgs-grid"></div>
     </section>
@@ -250,7 +252,7 @@ async function init() {
     const iCoOrg2En    = hi('協辦單位_2_eng');
     const iCoOrg2Type  = hi('協辦單位_2_類型');
     const iTopic       = hi('主題');
-    const iType        = hi('類型');
+    const iType        = hi('場次類型');
     const iMode        = hi('線上');
     const iLang        = hi('語言');
     const iEdu         = hi('教育程度');
