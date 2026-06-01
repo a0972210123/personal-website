@@ -295,23 +295,26 @@ const orgDomains: Record<string, string> = {
 </script>
 
 <script define:vars={{ CSV_URL, orgDomains }}>
-/* Simple CSV parser */
-function parseCSVSimple(text) {
-  var rows = [];
-  var lines = text.replace(/\r/g, '').split('\n');
-  for (var li = 0; li < lines.length; li++) {
-    var line = lines[li];
-    if (!line.trim()) continue;
-    var row = [], cur = '', inQ = false;
-    for (var i = 0; i < line.length; i++) {
-      var c = line[i];
-      if (c === '"') { if (inQ && line[i+1]==='"') { cur+='"'; i++; } else inQ=!inQ; }
-      else if (c===',' && !inQ) { row.push(cur.trim()); cur=''; }
-      else cur+=c;
+/* Robust CSV parser — handles quoted multi-line cells */
+function parseCSV(text) {
+  var rows = [], row = [], cur = '', inQ = false;
+  var t = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  for (var i = 0; i < t.length; i++) {
+    var c = t[i];
+    if (c === '"') {
+      if (inQ && t[i+1] === '"') { cur += '"'; i++; }
+      else inQ = !inQ;
+    } else if (c === ',' && !inQ) {
+      row.push(cur.trim()); cur = '';
+    } else if (c === '\n' && !inQ) {
+      row.push(cur.trim());
+      if (row.some(function(v) { return v; })) rows.push(row);
+      row = []; cur = '';
+    } else {
+      cur += c;
     }
-    row.push(cur.trim());
-    rows.push(row);
   }
+  if (cur || row.length) { row.push(cur.trim()); rows.push(row); }
   return rows;
 }
 
@@ -327,26 +330,42 @@ function getDomain(orgName) {
 /* Shorten org name for display */
 function shortName(name) {
   if (!name) return '';
-  // Use English abbreviation if present (in parentheses)
   var enMatch = name.match(/\(([A-Z][A-Z\s\-]{1,12})\)/);
   if (enMatch) return enMatch[1];
-  // Strip common prefixes
   name = name.replace(/^(國立|社團法人|財團法人|台灣|臺灣)/, '');
   return name.length > 18 ? name.substring(0, 16) + '…' : name;
 }
 
 (function () {
-  /* Fetch speeches stats for bento */
   fetch(CSV_URL)
     .then(function(r) { return r.text(); })
     .then(function(text) {
+      var allRows = parseCSV(text);
+      if (!allRows.length) return;
+
+      /* Build header index — find column by name, not by hardcoded position */
+      var headers = allRows[0].map(function(h) { return h.toLowerCase().trim(); });
+      function hi(name) {
+        return headers.findIndex(function(h) { return h.includes(name.toLowerCase()); });
+      }
+      var iDate     = hi('日期');
+      var iOrg      = hi('主辦單位');
+      var iTopic    = hi('主題');
+      var iType     = hi('類型');
+      var iAudience = hi('人數');
+      var iHours    = hi('小時');
+
       var EXCLUDED = ['彩排', '教材製作'];
-      var rows = parseCSVSimple(text).slice(1).filter(function(r) { return r[1] && r[4] && EXCLUDED.indexOf((r[5]||'').trim()) === -1; });
+      var rows = allRows.slice(1).filter(function(r) {
+        return (r[iDate] || '').trim() &&
+               (r[iTopic] || '').trim() &&
+               EXCLUDED.indexOf((r[iType] || '').trim()) === -1;
+      });
 
       /* Stats */
-      var total = rows.length;
-      var hours = rows.reduce(function(s, r) { return s + (parseFloat(r[10]) || 0); }, 0);
-      var audience = rows.reduce(function(s, r) { return s + (parseInt(r[9]) || 0); }, 0);
+      var total    = rows.length;
+      var hours    = rows.reduce(function(s, r) { return s + (parseFloat(r[iHours]) || 0); }, 0);
+      var audience = rows.reduce(function(s, r) { return s + (parseInt(r[iAudience]) || 0); }, 0);
 
       var el = document.getElementById('h-total');
       if (el) el.textContent = total;
@@ -355,26 +374,19 @@ function shortName(name) {
       el = document.getElementById('h-audience');
       if (el) el.textContent = audience >= 1000 ? (audience/1000).toFixed(1) + 'K' : audience;
 
-      /* Partners grid: collect unique org names */
-      var seen = {};
-      var orgs = [];
+      /* Partners grid — collect unique org names */
+      var seen = {}, orgs = [], freq = {};
       for (var i = 0; i < rows.length; i++) {
-        var orgRaw = (rows[i][2] || '').trim();
-        // Some cells have multiple orgs separated by newlines or spaces - split on newline
+        var orgRaw = (rows[i][iOrg] || '').trim();
         var parts = orgRaw.split(/\n/);
+        var primary = parts[0].trim();
+        freq[primary] = (freq[primary] || 0) + 1;
         for (var p = 0; p < parts.length; p++) {
           var org = parts[p].trim();
           if (!org || seen[org]) continue;
           seen[org] = true;
           orgs.push(org);
         }
-      }
-
-      /* Sort by frequency */
-      var freq = {};
-      for (var i = 0; i < rows.length; i++) {
-        var o = (rows[i][2] || '').trim().split('\n')[0].trim();
-        freq[o] = (freq[o] || 0) + 1;
       }
       orgs.sort(function(a, b) { return (freq[b] || 0) - (freq[a] || 0); });
 
