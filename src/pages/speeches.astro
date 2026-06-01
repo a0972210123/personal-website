@@ -97,10 +97,12 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
     <section class="orgs-section">
       <p class="section-heading">Top collaborating organizations</p>
       <div class="orgs-filter-row">
-        <button class="chip active" id="org-filter-all" data-cat="all">全部</button>
-        <button class="chip" id="org-filter-school" data-cat="school">🎓 學校</button>
-        <button class="chip" id="org-filter-npo" data-cat="npo">🤝 NPO / NGO</button>
-        <button class="chip" id="org-filter-company" data-cat="company">🏢 公司 / 企業</button>
+        <button class="chip active" data-cat="all">全部</button>
+        <button class="chip" data-cat="學校">🎓 學校</button>
+        <button class="chip" data-cat="NPO/NGO">🤝 NPO / NGO</button>
+        <button class="chip" data-cat="公司">🏢 公司 / 企業</button>
+        <button class="chip" data-cat="政府">🏛 政府</button>
+        <button class="chip" data-cat="其他">其他</button>
       </div>
       <div class="orgs-grid" id="orgs-grid"></div>
     </section>
@@ -237,38 +239,48 @@ async function init() {
     const headers = rows[0].map(h => h.toLowerCase().trim());
     const hi = name => headers.findIndex(h => h.includes(name.toLowerCase()));
 
-    const iDate       = hi('日期');
-    const iOrg        = hi('主辦單位') !== -1 ? hi('主辦單位') : 2;
-    const iOrgEn      = hi('英文名稱') !== -1 ? hi('英文名稱') : 3;
-    const iCoOrg1     = hi('協辦單位_1_zh');
-    const iCoOrg2     = hi('協辦單位_2_zh');
-    const iTopic      = hi('主題');
-    const iType       = hi('類型');
-    const iMode       = hi('線上');
-    const iLang       = hi('語言');
-    const iEdu        = hi('教育程度');
-    const iAudience   = hi('人數');
-    const iHours      = hi('小時');
-    const iYoutubeUrl = hi('youtube');
-    const iUrl        = hi('news, blog');
+    const iDate        = hi('日期');
+    const iOrg         = hi('主辦單位_zh');
+    const iOrgEn       = hi('主辦單位_eng');
+    const iOrgType     = hi('主辦單位_類型');
+    const iCoOrg1      = hi('協辦單位_1_zh');
+    const iCoOrg1En    = hi('協辦單位_1_eng');
+    const iCoOrg1Type  = hi('協辦單位_1_類型');
+    const iCoOrg2      = hi('協辦單位_2_zh');
+    const iCoOrg2En    = hi('協辦單位_2_eng');
+    const iCoOrg2Type  = hi('協辦單位_2_類型');
+    const iTopic       = hi('主題');
+    const iType        = hi('類型');
+    const iMode        = hi('線上');
+    const iLang        = hi('語言');
+    const iEdu         = hi('教育程度');
+    const iAudience    = hi('人數');
+    const iHours       = hi('小時');
+    const iYoutubeUrl  = hi('youtube');
+    const iUrl         = hi('news, blog');
 
     allData = rows.slice(1)
       .map(r => ({
-        date:       r[iDate]      ?? '',
-        year:       (r[iDate] ?? '').match(/^(\d{4})/)?.[1] ?? '',
-        org:        r[iOrg]       ?? '',
-        orgEn:      r[iOrgEn]     ?? '',
-        coOrg1:     iCoOrg1 >= 0 ? (r[iCoOrg1] ?? '') : '',
-        coOrg2:     iCoOrg2 >= 0 ? (r[iCoOrg2] ?? '') : '',
-        topic:      r[iTopic]     ?? '',
-        type:       r[iType]      ?? '',
-        mode:       r[iMode]      ?? '',
-        lang:       r[iLang]      ?? '',
-        edu:        r[iEdu]       ?? '',
-        audience:   parseInt(r[iAudience])  || 0,
-        hours:      parseFloat(r[iHours])   || 0,
-        youtubeUrl: iYoutubeUrl >= 0 ? (r[iYoutubeUrl] ?? '') : '',
-        url:        iUrl >= 0 ? (r[iUrl] ?? '') : '',
+        date:        r[iDate]                           ?? '',
+        year:        (r[iDate] ?? '').match(/^(\d{4})/)?.[1] ?? '',
+        org:         iOrg >= 0        ? (r[iOrg]        ?? '') : '',
+        orgEn:       iOrgEn >= 0      ? (r[iOrgEn]      ?? '') : '',
+        orgType:     iOrgType >= 0    ? (r[iOrgType]    ?? '') : '',
+        coOrg1:      iCoOrg1 >= 0     ? (r[iCoOrg1]     ?? '') : '',
+        coOrg1En:    iCoOrg1En >= 0   ? (r[iCoOrg1En]   ?? '') : '',
+        coOrg1Type:  iCoOrg1Type >= 0 ? (r[iCoOrg1Type] ?? '') : '',
+        coOrg2:      iCoOrg2 >= 0     ? (r[iCoOrg2]     ?? '') : '',
+        coOrg2En:    iCoOrg2En >= 0   ? (r[iCoOrg2En]   ?? '') : '',
+        coOrg2Type:  iCoOrg2Type >= 0 ? (r[iCoOrg2Type] ?? '') : '',
+        topic:       r[iTopic]                          ?? '',
+        type:        r[iType]                           ?? '',
+        mode:        r[iMode]                           ?? '',
+        lang:        r[iLang]                           ?? '',
+        edu:         r[iEdu]                            ?? '',
+        audience:    parseInt(r[iAudience])  || 0,
+        hours:       parseFloat(r[iHours])   || 0,
+        youtubeUrl:  iYoutubeUrl >= 0 ? (r[iYoutubeUrl] ?? '') : '',
+        url:         iUrl >= 0        ? (r[iUrl]         ?? '') : '',
       }))
       .filter(d => d.date && d.topic && !EXCLUDED_TYPES.has(d.type));
 
@@ -412,46 +424,41 @@ function renderCharts() {
   }
 }
 
-/* ── Org Category Classifier ── */
-function classifyOrg(name) {
-  if (!name) return 'other';
-  const n = name;
-  // 學校：大學、學院、高中、國中、國小、學校、書院
-  if (/大學|學院|高中|國中|國小|學校|書院|University|College|School/.test(n)) return 'school';
-  // NPO/NGO：協會、基金會、社團法人、財團法人、公益、協進會、學會、NGO|NPO
-  if (/協會|基金會|社團法人|財團法人|公益|協進會|學會|NGO|NPO|非營利|公益社團/.test(n)) return 'npo';
-  // 公司 / 企業：股份、有限公司、科技、企業、集團、Studio、Lab（商業實體）
-  if (/股份|有限公司|科技|企業|集團|Studio|Lab|Inc\.|Ltd\./.test(n)) return 'company';
-  return 'other';
-}
-
 /* ── Org Leaderboard ── */
 let orgCatFilter = 'all';
+
+function buildOrgMap() {
+  // zh → { count, eng, type }
+  const map = {};
+  allData.forEach(d => {
+    [
+      { zh: d.org,    eng: d.orgEn,    type: d.orgType    },
+      { zh: d.coOrg1, eng: d.coOrg1En, type: d.coOrg1Type },
+      { zh: d.coOrg2, eng: d.coOrg2En, type: d.coOrg2Type },
+    ].forEach(({ zh, eng, type }) => {
+      const name = (zh || '').trim();
+      if (!name) return;
+      if (!map[name]) map[name] = { count: 0, eng: '', type: '' };
+      map[name].count++;
+      if (!map[name].eng  && eng)  map[name].eng  = eng.trim();
+      if (!map[name].type && type) map[name].type = type.trim();
+    });
+  });
+  return map;
+}
 
 function renderOrgLeaderboard(catFilter) {
   if (catFilter !== undefined) orgCatFilter = catFilter;
 
-  const counts = {};
-  allData.forEach(d => {
-    [d.org, d.coOrg1, d.coOrg2].forEach(o => {
-      const name = (o || '').trim();
-      if (name) counts[name] = (counts[name] || 0) + 1;
-    });
-  });
+  const orgMap = buildOrgMap();
+  let entries = Object.entries(orgMap).sort((a, b) => b[1].count - a[1].count);
 
-  // Filter by category, then take top 10
-  let entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
   if (orgCatFilter !== 'all') {
-    entries = entries.filter(([name]) => {
-      const cat = classifyOrg(name);
-      if (orgCatFilter === 'school')  return cat === 'school';
-      if (orgCatFilter === 'npo')     return cat === 'npo';
-      if (orgCatFilter === 'company') return cat === 'company' || cat === 'other';
-      return true;
-    });
+    entries = entries.filter(([, info]) => info.type === orgCatFilter);
   }
+
   const ranked = entries.slice(0, 10);
-  const max = ranked[0]?.[1] || 1;
+  const max = ranked[0]?.[1].count || 1;
 
   const grid = document.getElementById('orgs-grid');
   if (!grid) return;
@@ -462,20 +469,22 @@ function renderOrgLeaderboard(catFilter) {
     return;
   }
 
-  ranked.forEach(([name, count], i) => {
-    const pct = (count / max) * 100;
+  ranked.forEach(([name, info], i) => {
+    const pct = (info.count / max) * 100;
     const row = document.createElement('div');
     row.className = 'org-row';
     row.innerHTML = `
       <span class="org-rank${i < 3 ? ' org-rank-top' : ''}">${String(i + 1).padStart(2, '0')}</span>
-      <span class="org-name">${name}</span>
+      <span class="org-name">
+        <span class="org-name-zh">${name}</span>
+        ${info.eng ? `<span class="org-name-en">${info.eng}</span>` : ''}
+      </span>
       <span class="org-bar-bg"><span class="org-bar" data-width="${pct}"></span></span>
-      <span class="org-count">${count}</span>
+      <span class="org-count">${info.count}</span>
     `;
     grid.appendChild(row);
   });
 
-  /* Animate bars when visible */
   const animateBars = () => { grid.querySelectorAll('.org-bar').forEach(b => { b.style.width = b.dataset.width + '%'; }); };
   const observer = new IntersectionObserver(entries => {
     if (entries[0].isIntersecting) { animateBars(); observer.disconnect(); }
@@ -559,7 +568,12 @@ function cardHTML(d) {
   const topicHTML = linkUrl
     ? `<a class="card-topic card-topic-link" href="${linkUrl}" target="_blank" rel="noopener">${d.topic}</a>`
     : `<div class="card-topic">${d.topic}</div>`;
-  const coOrgHTML = [d.coOrg1, d.coOrg2].filter(Boolean).map(o => `<div class="card-org-co">協辦：${o}</div>`).join('');
+  const coOrgHTML = [
+    { zh: d.coOrg1, en: d.coOrg1En },
+    { zh: d.coOrg2, en: d.coOrg2En },
+  ].filter(o => o.zh).map(o =>
+    `<div class="card-org-co">協辦：${o.zh}${o.en ? ` <span class="card-org-co-en">· ${o.en}</span>` : ''}</div>`
+  ).join('');
   return `
     <div class="speech-card">
       <div class="card-meta-row">

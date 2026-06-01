@@ -349,14 +349,17 @@ function shortName(name) {
       function hi(name) {
         return headers.findIndex(function(h) { return h.includes(name.toLowerCase()); });
       }
-      var iDate     = hi('日期');
-      var iOrg      = hi('主辦單位');
-      var iCoOrg1   = hi('協辦單位_1_zh');
-      var iCoOrg2   = hi('協辦單位_2_zh');
-      var iTopic    = hi('主題');
-      var iType     = hi('類型');
-      var iAudience = hi('人數');
-      var iHours    = hi('小時');
+      var iDate      = hi('日期');
+      var iOrg       = hi('主辦單位_zh');
+      var iOrgEn     = hi('主辦單位_eng');
+      var iCoOrg1    = hi('協辦單位_1_zh');
+      var iCoOrg1En  = hi('協辦單位_1_eng');
+      var iCoOrg2    = hi('協辦單位_2_zh');
+      var iCoOrg2En  = hi('協辦單位_2_eng');
+      var iTopic     = hi('主題');
+      var iType      = hi('類型');
+      var iAudience  = hi('人數');
+      var iHours     = hi('小時');
 
       var EXCLUDED = ['彩排', '教材製作'];
       var rows = allRows.slice(1).filter(function(r) {
@@ -377,24 +380,28 @@ function shortName(name) {
       el = document.getElementById('h-audience');
       if (el) el.textContent = audience >= 1000 ? (audience/1000).toFixed(1) + 'K' : audience;
 
-      /* Partners leaderboard — count each org (主辦 + 協辦), top 10 */
-      var counts = {};
+      /* Partners leaderboard — build orgMap (zh → { count, eng }), top 10 */
+      var orgMap = {};
       for (var i = 0; i < rows.length; i++) {
         var orgsInRow = [
-          (rows[i][iOrg] || '').trim(),
-          iCoOrg1 >= 0 ? (rows[i][iCoOrg1] || '').trim() : '',
-          iCoOrg2 >= 0 ? (rows[i][iCoOrg2] || '').trim() : '',
+          { zh: (rows[i][iOrg]    || '').trim(), eng: iOrgEn    >= 0 ? (rows[i][iOrgEn]    || '').trim() : '' },
+          { zh: iCoOrg1 >= 0 ? (rows[i][iCoOrg1] || '').trim() : '', eng: iCoOrg1En >= 0 ? (rows[i][iCoOrg1En] || '').trim() : '' },
+          { zh: iCoOrg2 >= 0 ? (rows[i][iCoOrg2] || '').trim() : '', eng: iCoOrg2En >= 0 ? (rows[i][iCoOrg2En] || '').trim() : '' },
         ];
         for (var p = 0; p < orgsInRow.length; p++) {
-          var org = orgsInRow[p];
-          if (org) counts[org] = (counts[org] || 0) + 1;
+          var zh  = orgsInRow[p].zh;
+          var eng = orgsInRow[p].eng;
+          if (!zh) continue;
+          if (!orgMap[zh]) orgMap[zh] = { count: 0, eng: '' };
+          orgMap[zh].count++;
+          if (!orgMap[zh].eng && eng) orgMap[zh].eng = eng;
         }
       }
-      var ranked = Object.keys(counts)
-        .map(function(k) { return [k, counts[k]]; })
-        .sort(function(a, b) { return b[1] - a[1]; })
+      var ranked = Object.keys(orgMap)
+        .map(function(k) { return [k, orgMap[k]]; })
+        .sort(function(a, b) { return b[1].count - a[1].count; })
         .slice(0, 10);
-      var maxCount = ranked.length ? ranked[0][1] : 1;
+      var maxCount = ranked.length ? ranked[0][1].count : 1;
 
       /* Render leaderboard rows */
       var grid = document.getElementById('partners-grid');
@@ -403,15 +410,18 @@ function shortName(name) {
 
       for (var j = 0; j < ranked.length; j++) {
         var name = ranked[j][0];
-        var cnt  = ranked[j][1];
-        var pct  = (cnt / maxCount) * 100;
+        var info = ranked[j][1];
+        var pct  = (info.count / maxCount) * 100;
         var row  = document.createElement('div');
         row.className = 'org-row';
         row.innerHTML =
           '<span class="org-rank' + (j < 3 ? ' org-rank-top' : '') + '">' + String(j + 1).padStart(2, '0') + '</span>' +
-          '<span class="org-name">' + name + '</span>' +
+          '<span class="org-name">' +
+            '<span class="org-name-zh">' + name + '</span>' +
+            (info.eng ? '<span class="org-name-en">' + info.eng + '</span>' : '') +
+          '</span>' +
           '<span class="org-bar-bg"><span class="org-bar" data-width="' + pct + '"></span></span>' +
-          '<span class="org-count">' + cnt + '</span>';
+          '<span class="org-count">' + info.count + '</span>';
         grid.appendChild(row);
       }
 
