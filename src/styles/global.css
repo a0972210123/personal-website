@@ -1451,6 +1451,12 @@ footer .container {
 }
 
 /* ===== Responsive ===== */
+@media (max-width: 600px) {
+  /* Hide decorative bar in org leaderboard rows on mobile;
+     rank + name + count still visible and sufficient */
+  .org-bar-bg { display: none; }
+}
+
 @media (max-width: 480px) {
   :root {
     --spacing-lg: 2rem;
