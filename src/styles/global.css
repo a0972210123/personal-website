@@ -1451,6 +1451,12 @@ footer .container {
 }
 
 /* ===== Responsive ===== */
+@media (max-width: 600px) {
+  /* Org leaderboard: hide decorative bar on mobile to prevent overflow.
+     Rank + name + count remain fully visible. */
+  .org-bar-bg { display: none; }
+}
+
 @media (max-width: 480px) {
   :root {
     --spacing-lg: 2rem;
