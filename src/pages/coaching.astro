@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 const SHEET_ID = '1vYSAfnbqFzLNBNcPY5dd8XRxvVozt1IDd-kIqKO5swA';
 const AWARDS_URL       = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=mentees_award_records`;
-const TESTIMONIALS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=mentees_testimonials`;
+const TESTIMONIALS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=611725944`;
 ---
 <BaseLayout
   title="Coaching — Matt Ye"
@@ -299,10 +299,11 @@ async function loadTestimonials() {
     const hi = makeHI(rows);
     const iQuote   = hi('quote');
     const iContext = hi('context');
+    const iShow    = hi('show');
 
     const data = rows.slice(1)
-      .map(r => ({ quote: (r[iQuote] || '').trim(), context: (r[iContext] || '').trim() }))
-      .filter(r => r.quote);
+      .map(r => ({ quote: (r[iQuote] || '').trim(), context: (r[iContext] || '').trim(), show: (r[iShow] || '').trim().toUpperCase() }))
+      .filter(r => r.quote && (iShow < 0 || r.show === 'TRUE'));
 
     if (!data.length) { track.innerHTML = ''; return; }
 
