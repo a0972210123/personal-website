@@ -443,11 +443,12 @@ footer .container {
 }
 
 .bento-card-num {
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-size: clamp(1.3rem, 2.5vw, 2rem);
   font-weight: 800;
-  line-height: 1;
+  line-height: 1.1;
   letter-spacing: -0.03em;
   color: var(--color-text);
+  word-break: break-all;
 }
 
 [data-theme="dark"] .bento-card-num {
@@ -1328,8 +1329,8 @@ footer .container {
 .coaching-hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 0.5rem; }
 .coaching-subtitle { font-size: 1.05rem; color: var(--color-text-muted); line-height: 1.7; }
 
-.coaching-stats-grid { grid-template-columns: repeat(4, 1fr); margin-bottom: var(--spacing-xl); }
-@media (max-width: 640px) { .coaching-stats-grid { grid-template-columns: repeat(2, 1fr); } }
+.coaching-stats-grid { grid-template-columns: repeat(3, 1fr); margin-bottom: var(--spacing-xl); }
+@media (max-width: 640px) { .coaching-stats-grid { grid-template-columns: repeat(1, 1fr); } }
 
 .coaching-section { margin-bottom: var(--spacing-xl); }
 .section-heading-en { font-size: 0.75rem; font-weight: 400; color: var(--color-text-muted); margin-left: 8px; text-transform: none; letter-spacing: 0; }
