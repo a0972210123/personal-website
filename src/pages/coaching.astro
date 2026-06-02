@@ -2,26 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const SHEET_ID = '1vYSAfnbqFzLNBNcPY5dd8XRxvVozt1IDd-kIqKO5swA';
-const AWARDS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=mentees_award_records`;
-
-const testimonials = [
-  {
-    quote: '覺得簡報訓練課程有討論到很多關於作品的背景調查，以及如何更完整的介紹作品，還有可能被問到的問題等，都非常有幫助。',
-    context: 'MAIC 學員',
-  },
-  {
-    quote: 'App UI/UX 課程和簡報課程，13 老師和葉老師剛好都有心理學背景，同時老師也講了很多我們從來沒考慮過的事情，這對我們的 App 都很有幫助。',
-    context: 'MAIC 學員',
-  },
-  {
-    quote: '老師的課程都很有收穫～覺得特別多知識量的是13和Matt的課程，剛好兩位老師都有心理學的背景，有補足我們對產品本身定位以及相關知識缺乏的地方，很謝謝他們～',
-    context: 'MAIC 學員',
-  },
-  {
-    quote: 'Matt 很像我們組一樣積極的教我們，再次感謝 Matt。',
-    context: 'MAIC 學員',
-  },
-];
+const AWARDS_URL       = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=mentees_award_records`;
+const TESTIMONIALS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=611725944`;
 ---
 <BaseLayout
   title="Coaching — Matt Ye"
@@ -55,18 +37,13 @@ const testimonials = [
         <div class="bento-card-num" id="c-fw">—</div>
         <div class="bento-card-sub">Falling Walls 得獎人次</div>
       </div>
-      <div class="bento-card">
-        <div class="bento-card-label">Active Since</div>
-        <div class="bento-card-num">2023</div>
-        <div class="bento-card-sub">首屆培訓年份</div>
-      </div>
     </div>
 
     <!-- MAIC Section -->
     <section class="coaching-section">
       <p class="section-heading">行動應用創新賽 <span class="section-heading-en">MAIC</span></p>
       <p class="coaching-section-desc">
-        Straight A × Apple 授權教育夥伴競賽培訓計畫。以提案結構、投影片設計、英語簡報三位一體為核心，協助學生團隊角逐亞太賽事獎項。
+        Straight A × Apple 授權教育夥伴競賽培訓計畫。以提案結構、投影片設計、簡報表達三位一體為核心，協助學生團隊角逐亞太賽事獎項。
       </p>
       <div id="maic-container" class="maic-container">
         <div class="data-loading">載入中…</div>
@@ -89,21 +66,11 @@ const testimonials = [
       <p class="section-heading">學生怎麼說</p>
       <div class="testi-carousel" id="testi-carousel">
         <div class="testi-track" id="testi-track">
-          {testimonials.map((t, i) => (
-            <div class={`testi-slide${i === 0 ? ' active' : ''}`}>
-              <div class="testi-quote-mark">❝</div>
-              <p class="testi-quote">{t.quote}</p>
-              <div class="testi-context">— {t.context}</div>
-            </div>
-          ))}
+          <div class="data-loading">載入中…</div>
         </div>
-        <div class="testi-nav">
+        <div class="testi-nav" id="testi-nav" style="display:none">
           <button class="testi-arrow" id="testi-prev" aria-label="上一則">‹</button>
-          <div class="testi-dots" id="testi-dots">
-            {testimonials.map((_, i) => (
-              <button class={`testi-dot${i === 0 ? ' active' : ''}`} aria-label={`第 ${i+1} 則`}></button>
-            ))}
-          </div>
+          <div class="testi-dots" id="testi-dots"></div>
           <button class="testi-arrow" id="testi-next" aria-label="下一則">›</button>
         </div>
       </div>
@@ -118,7 +85,7 @@ const testimonials = [
   </div>
 </BaseLayout>
 
-<script define:vars={{ AWARDS_URL }}>
+<script define:vars={{ AWARDS_URL, TESTIMONIALS_URL }}>
 /* ── CSV Parser ── */
 function parseCSV(text) {
   const rows = [], t = text.replace(/\r\n/g,'\n').replace(/\r/g,'\n');
@@ -316,32 +283,74 @@ async function loadAwards() {
   }
 }
 
-/* ── Testimonials Carousel ── */
-(function() {
-  const slides = document.querySelectorAll('.testi-slide');
-  const dots   = document.querySelectorAll('.testi-dot');
-  if (!slides.length) return;
-  let cur = 0;
+/* ── Testimonials: fetch from Sheet then init carousel ── */
+async function loadTestimonials() {
+  const track = document.getElementById('testi-track');
+  const dotsEl = document.getElementById('testi-dots');
+  const nav = document.getElementById('testi-nav');
+  if (!track) return;
 
-  function goTo(n) {
-    slides[cur].classList.remove('active');
-    dots[cur].classList.remove('active');
-    cur = (n + slides.length) % slides.length;
-    slides[cur].classList.add('active');
-    dots[cur].classList.add('active');
+  try {
+    const resp = await fetch(TESTIMONIALS_URL);
+    const text = await resp.text();
+    const rows = parseCSV(text);
+    if (rows.length < 2) { track.innerHTML = ''; return; }
+
+    const hi = makeHI(rows);
+    const iQuote   = hi('quote');
+    const iContext = hi('context');
+    const iShow    = hi('show');
+
+    const data = rows.slice(1)
+      .map(r => ({ quote: (r[iQuote] || '').trim(), context: (r[iContext] || '').trim(), show: (r[iShow] || '').trim().toUpperCase() }))
+      .filter(r => r.quote && (iShow < 0 || r.show === 'TRUE'));
+
+    if (!data.length) { track.innerHTML = ''; return; }
+
+    track.innerHTML = data.map((t, i) => `
+      <div class="testi-slide${i === 0 ? ' active' : ''}">
+        <div class="testi-quote-mark">❝</div>
+        <p class="testi-quote">${t.quote}</p>
+        <div class="testi-context">— ${t.context}</div>
+      </div>
+    `).join('');
+
+    if (dotsEl) {
+      dotsEl.innerHTML = data.map((_, i) =>
+        `<button class="testi-dot${i === 0 ? ' active' : ''}" aria-label="第 ${i+1} 則"></button>`
+      ).join('');
+    }
+
+    if (nav) nav.style.display = '';
+
+    /* Init carousel */
+    const slides = track.querySelectorAll('.testi-slide');
+    const dots   = dotsEl ? dotsEl.querySelectorAll('.testi-dot') : [];
+    let cur = 0;
+
+    function goTo(n) {
+      slides[cur].classList.remove('active');
+      if (dots[cur]) dots[cur].classList.remove('active');
+      cur = (n + slides.length) % slides.length;
+      slides[cur].classList.add('active');
+      if (dots[cur]) dots[cur].classList.add('active');
+    }
+
+    document.getElementById('testi-prev')?.addEventListener('click', () => goTo(cur - 1));
+    document.getElementById('testi-next')?.addEventListener('click', () => goTo(cur + 1));
+    dots.forEach((d, i) => d.addEventListener('click', () => goTo(i)));
+
+    let timer = setInterval(() => goTo(cur + 1), 5000);
+    document.getElementById('testi-carousel')?.addEventListener('mouseenter', () => clearInterval(timer));
+    document.getElementById('testi-carousel')?.addEventListener('mouseleave', () => {
+      timer = setInterval(() => goTo(cur + 1), 5000);
+    });
+
+  } catch (e) {
+    if (track) track.innerHTML = '';
   }
-
-  document.getElementById('testi-prev')?.addEventListener('click', () => goTo(cur - 1));
-  document.getElementById('testi-next')?.addEventListener('click', () => goTo(cur + 1));
-  dots.forEach((d, i) => d.addEventListener('click', () => goTo(i)));
-
-  /* Auto-advance every 5s */
-  let timer = setInterval(() => goTo(cur + 1), 5000);
-  document.getElementById('testi-carousel')?.addEventListener('mouseenter', () => clearInterval(timer));
-  document.getElementById('testi-carousel')?.addEventListener('mouseleave', () => {
-    timer = setInterval(() => goTo(cur + 1), 5000);
-  });
-})();
+}
 
 loadAwards();
+loadTestimonials();
 </script>
