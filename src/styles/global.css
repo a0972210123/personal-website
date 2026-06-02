@@ -417,7 +417,7 @@ footer .container {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: var(--radius-md);
-  padding: 20px;
+  padding: 16px 20px;
   box-shadow: var(--card-shadow);
   transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
   position: relative;
@@ -443,12 +443,14 @@ footer .container {
 }
 
 .bento-card-num {
-  font-size: clamp(1.3rem, 2.5vw, 2rem);
+  font-size: clamp(1.1rem, 2vw, 1.7rem);
   font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
   color: var(--color-text);
-  word-break: break-all;
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: nowrap;
 }
 
 [data-theme="dark"] .bento-card-num {
