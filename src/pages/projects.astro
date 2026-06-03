@@ -1,0 +1,185 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const projects = [
+  {
+    slug: 'dreamcatcher',
+    title: '捕夢網產生器',
+    titleEn: 'Dreamcatcher Generator',
+    description: '根據使用者設定，即時繪製專屬的捕夢網圖案。探索幾何之美與個人化創作。',
+    status: 'in-progress', // 'live' | 'in-progress' | 'archived'
+    url: null, // 上線後填入 URL
+    tags: ['互動工具', 'Generative Art'],
+  },
+];
+---
+<BaseLayout
+  title="Projects — Matt Ye"
+  description="葉淨維 Matt Ye 的 Side Projects — 互動工具、實驗性作品。"
+>
+  <section class="projects-hero">
+    <h1>Side <span class="accent-text">Projects</span></h1>
+    <p class="projects-subtitle">正在做的東西。實驗性質，持續演進。</p>
+  </section>
+
+  <div class="projects-grid">
+    {projects.map(p => (
+      <div class={`project-card ${p.status === 'in-progress' ? 'card-wip' : ''}`}>
+        <div class="project-card-header">
+          <div>
+            <h2 class="project-title">{p.title}</h2>
+            <p class="project-title-en">{p.titleEn}</p>
+          </div>
+          <span class={`project-badge badge-${p.status}`}>
+            {p.status === 'live' ? 'Live' : p.status === 'in-progress' ? 'In Progress' : 'Archived'}
+          </span>
+        </div>
+        <p class="project-desc">{p.description}</p>
+        <div class="project-footer">
+          <div class="project-tags">
+            {p.tags.map(tag => <span class="project-tag">{tag}</span>)}
+          </div>
+          {p.url
+            ? <a href={p.url} target="_blank" rel="noopener noreferrer" class="project-link">前往 →</a>
+            : <span class="project-link-disabled">即將上線</span>
+          }
+        </div>
+      </div>
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .projects-hero {
+    padding: 3rem 0 2rem;
+  }
+
+  .projects-hero h1 {
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+  }
+
+  .projects-subtitle {
+    color: var(--color-text-muted);
+    font-size: 1.05rem;
+    margin: 0;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    padding-bottom: 4rem;
+  }
+
+  .project-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: box-shadow 0.2s;
+  }
+
+  .project-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  }
+
+  .card-wip {
+    border-style: dashed;
+  }
+
+  .project-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .project-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .project-title-en {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin: 0.15rem 0 0;
+  }
+
+  .project-badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.2rem 0.55rem;
+    border-radius: 99px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .badge-live {
+    background: #d1fae5;
+    color: #065f46;
+  }
+
+  .badge-in-progress {
+    background: #fef3c7;
+    color: #92400e;
+  }
+
+  .badge-archived {
+    background: var(--color-border);
+    color: var(--color-text-muted);
+  }
+
+  .project-desc {
+    font-size: 0.92rem;
+    color: var(--color-text-muted);
+    line-height: 1.65;
+    margin: 0;
+    flex: 1;
+  }
+
+  .project-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .project-tags {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .project-tag {
+    font-size: 0.72rem;
+    background: var(--color-border);
+    color: var(--color-text-muted);
+    padding: 0.15rem 0.5rem;
+    border-radius: 99px;
+  }
+
+  .project-link {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .project-link:hover {
+    text-decoration: underline;
+  }
+
+  .project-link-disabled {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+</style>

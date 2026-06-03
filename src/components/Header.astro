@@ -10,6 +10,7 @@ const pathname = Astro.url.pathname;
         <a href="/speeches" aria-current={pathname.startsWith('/speeches') ? 'page' : undefined}>Speeches</a>
         <a href="/coaching" aria-current={pathname.startsWith('/coaching') ? 'page' : undefined}>Coaching</a>
         <a href="/writing" aria-current={pathname.startsWith('/writing') ? 'page' : undefined}>Writing</a>
+        <a href="/projects" aria-current={pathname.startsWith('/projects') ? 'page' : undefined}>Projects</a>
       </nav>
       <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">
         <!-- Sun icon (shown in dark mode) -->
