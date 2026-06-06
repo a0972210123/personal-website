@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>職涯四公式：才幹、人脈、領導與傳承 — One More Step</title>
+  <style>
+    :root {
+      --navy:   #1a2340;
+      --navy2:  #243058;
+      --gold:   #e8a020;
+      --gold-l: #fef3dc;
+      --teal:   #2aa8a0;
+      --rose:   #d94f6b;
+      --slate:  #4a5568;
+      --muted:  #718096;
+      --border: #e2e8f0;
+      --surface:#ffffff;
+      --bg:     #f4f6fa;
+      --radius: 14px;
+      --shadow: 0 4px 24px rgba(26,35,64,.09);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', 'PingFang TC', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--navy);
+      line-height: 1.75;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 70%, #2d3f70 100%);
+      color: #fff;
+      padding: 64px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -80px; right: -60px;
+      width: 280px; height: 280px;
+      background: var(--gold); border-radius: 50%; opacity: .10;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; bottom: -100px; left: -50px;
+      width: 240px; height: 240px;
+      background: var(--teal); border-radius: 50%; opacity: .12;
+    }
+    .hero-meta {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 99px;
+      padding: 5px 14px;
+      font-size: .78rem; font-weight: 600; letter-spacing: .06em;
+      margin-bottom: 22px; color: rgba(255,255,255,.9);
+    }
+    .hero h1 {
+      font-size: clamp(1.8rem, 4.5vw, 3rem);
+      font-weight: 800; line-height: 1.2;
+      margin-bottom: 14px;
+    }
+    .hero h1 em { color: var(--gold); font-style: normal; }
+    .hero-sub {
+      font-size: 1.05rem; opacity: .8;
+      max-width: 580px; margin: 0 auto 28px;
+    }
+    .hero-author {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 99px; padding: 8px 18px;
+      font-size: .85rem;
+    }
+    .hero-author a { color: var(--gold); text-decoration: none; }
+    .hero-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 20px; }
+    .chip {
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+      color: #fff; padding: 5px 14px; border-radius: 99px; font-size: .8rem; font-weight: 600;
+    }
+
+    /* ── Sticky nav ── */
+    .topnav {
+      background: #fff; border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 12px rgba(26,35,64,.07);
+    }
+    .topnav-inner {
+      max-width: 900px; margin: 0 auto;
+      display: flex; align-items: center; gap: 0;
+      overflow-x: auto; scrollbar-width: none; padding: 0 16px;
+    }
+    .topnav-inner::-webkit-scrollbar { display: none; }
+    .nav-item {
+      display: flex; align-items: center; gap: 7px;
+      padding: 13px 16px;
+      white-space: nowrap; font-size: .82rem; font-weight: 600;
+      color: var(--muted); border-bottom: 3px solid transparent;
+      text-decoration: none; transition: all .18s;
+    }
+    .nav-item:hover, .nav-item.active {
+      color: var(--navy); border-bottom-color: var(--gold);
+    }
+
+    /* ── Container ── */
+    .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── Section heading ── */
+    .sec-head {
+      display: flex; align-items: center; gap: 14px;
+      padding: 56px 0 28px;
+    }
+    .sec-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; flex-shrink: 0;
+    }
+    .c-gold  { background: linear-gradient(135deg, #e8a020, #f5c843); }
+    .c-teal  { background: linear-gradient(135deg, #2aa8a0, #38d9a9); }
+    .c-rose  { background: linear-gradient(135deg, #d94f6b, #f87171); }
+    .c-navy  { background: linear-gradient(135deg, #1a2340, #3b4f8a); }
+    .c-slate { background: linear-gradient(135deg, #4a5568, #718096); }
+    .sec-icon span { color: #fff; }
+    .sec-title { font-size: 1.55rem; font-weight: 800; color: var(--navy); }
+    .sec-sub { color: var(--muted); font-size: .92rem; margin-top: 3px; }
+
+    /* ── Prose ── */
+    .prose { font-size: .95rem; color: var(--slate); line-height: 1.8; margin-bottom: 24px; }
+    .prose strong { color: var(--navy); }
+    .prose + .prose { margin-top: -8px; }
+
+    /* ── Formula cards ── */
+    .formulas { display: flex; flex-direction: column; gap: 20px; margin: 8px 0 24px; }
+    .formula-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      box-shadow: var(--shadow);
+      border-left: 5px solid var(--gold);
+      transition: transform .18s, box-shadow .18s;
+    }
+    .formula-card:hover { transform: translateX(4px); box-shadow: 0 8px 32px rgba(26,35,64,.12); }
+    .formula-card.teal  { border-left-color: var(--teal); }
+    .formula-card.rose  { border-left-color: var(--rose); }
+    .formula-card.navy  { border-left-color: var(--navy); }
+    .formula-label {
+      font-size: .72rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 8px;
+    }
+    .formula-eq {
+      font-size: 1.1rem; font-weight: 700; color: var(--navy);
+      margin-bottom: 14px; line-height: 1.5;
+    }
+    .formula-eq .op { color: var(--gold); font-weight: 900; margin: 0 4px; }
+    .formula-card.teal .formula-eq .op  { color: var(--teal); }
+    .formula-card.rose .formula-eq .op  { color: var(--rose); }
+    .formula-card.navy .formula-eq .op  { color: var(--navy2); }
+    .formula-terms { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .term-chip {
+      background: var(--gold-l); color: #92500a;
+      padding: 4px 12px; border-radius: 99px; font-size: .8rem; font-weight: 600;
+    }
+    .formula-card.teal .term-chip  { background: #dcfdf5; color: #0d5c54; }
+    .formula-card.rose .term-chip  { background: #ffe4ea; color: #8b1a2e; }
+    .formula-card.navy .term-chip  { background: #e8ecf6; color: #1a2340; }
+    .formula-note { font-size: .87rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── Concept pair ── */
+    .concept-pair {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0;
+    }
+    @media (max-width: 560px) { .concept-pair { grid-template-columns: 1fr; } }
+    .concept-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow);
+      text-align: center;
+    }
+    .concept-card .cc-icon { font-size: 2.2rem; margin-bottom: 10px; }
+    .concept-card h3 { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+    .concept-card p { font-size: .85rem; color: var(--muted); line-height: 1.6; }
+    .concept-card.bad { border-top: 4px solid var(--rose); }
+    .concept-card.good { border-top: 4px solid var(--teal); }
+
+    /* ── Highlight box ── */
+    .highlight {
+      background: linear-gradient(135deg, #f0f4ff, #fff9ec);
+      border: 1.5px solid #c9d4f5; border-left: 5px solid var(--navy);
+      border-radius: var(--radius); padding: 18px 22px; margin: 20px 0;
+      font-size: .92rem; color: var(--slate);
+    }
+    .highlight strong { color: var(--navy); }
+    .highlight.gold   { border-left-color: var(--gold); background: linear-gradient(135deg,#fff9ec,#fffef5); border-color: #f0d080; }
+    .highlight.teal   { border-left-color: var(--teal); background: linear-gradient(135deg,#f0fdfb,#f5fffd); border-color: #b2ece7; }
+
+    /* ── Quote ── */
+    .quote {
+      background: var(--navy); color: #fff;
+      border-radius: var(--radius); padding: 26px 30px;
+      margin: 20px 0; font-size: 1.05rem; font-style: italic;
+      position: relative;
+    }
+    .quote::before { content: '"'; font-size: 5rem; opacity: .12; position: absolute; top: -8px; left: 14px; line-height: 1; }
+    .quote cite { display: block; margin-top: 10px; font-size: .8rem; opacity: .65; font-style: normal; }
+
+    /* ── Steps ── */
+    .steps { display: flex; flex-direction: column; gap: 0; margin: 16px 0 24px; }
+    .step { display: flex; gap: 16px; position: relative; }
+    .step:not(:last-child)::after {
+      content: ''; position: absolute; left: 19px; top: 42px;
+      width: 2px; height: calc(100% - 8px); background: var(--border);
+    }
+    .step-num {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--navy); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: .85rem; flex-shrink: 0; z-index: 1;
+    }
+    .step-body { padding: 8px 0 26px; }
+    .step-body h4 { font-size: .95rem; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+    .step-body p  { font-size: .87rem; color: var(--muted); }
+
+    /* ── Cards grid ── */
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin: 16px 0; }
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow);
+      transition: transform .18s, box-shadow .18s;
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(26,35,64,.13); }
+    .card .card-icon { font-size: 1.8rem; margin-bottom: 10px; }
+    .card h3 { font-size: .97rem; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+    .card p  { font-size: .86rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── Summary table ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; border-radius: var(--radius); box-shadow: var(--shadow); }
+    table { width: 100%; border-collapse: collapse; font-size: .86rem; }
+    thead th {
+      background: var(--navy); color: #fff;
+      padding: 13px 16px; text-align: left; font-weight: 700;
+    }
+    thead th:first-child { border-radius: 14px 0 0 0; }
+    thead th:last-child  { border-radius: 0 14px 0 0; }
+    tbody td { padding: 12px 16px; background: #fff; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:last-child td:first-child { border-radius: 0 0 0 14px; }
+    tbody tr:last-child td:last-child  { border-radius: 0 0 14px 0; }
+    tbody tr:hover td { background: #f7f9ff; }
+    .td-q { font-weight: 700; color: var(--navy); white-space: nowrap; }
+    .td-formula { font-weight: 600; color: var(--navy2); }
+    .td-cross { color: var(--teal); font-weight: 600; font-size: .82rem; }
+    .td-care { color: var(--rose); font-weight: 600; font-size: .82rem; }
+    .td-care:empty::after { content: '—'; color: var(--border); }
+
+    /* ── Reading list ── */
+    .reading-list { display: flex; flex-direction: column; gap: 12px; margin: 16px 0; }
+    .reading-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 14px 18px;
+      text-decoration: none; color: inherit;
+      transition: border-color .18s, box-shadow .18s;
+    }
+    .reading-item:hover { border-color: var(--navy); box-shadow: 0 4px 16px rgba(26,35,64,.1); }
+    .reading-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+    .reading-body { flex: 1; }
+    .reading-title { font-size: .92rem; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+    .reading-desc  { font-size: .82rem; color: var(--muted); }
+    .reading-arrow { color: var(--muted); font-size: .9rem; flex-shrink: 0; align-self: center; }
+
+    /* ── Divider ── */
+    .divider { height: 1px; background: var(--border); margin: 12px 0; }
+
+    /* ── Three-Q section ── */
+    .three-q { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0; }
+    @media (max-width: 560px) { .three-q { grid-template-columns: 1fr; } }
+    .q-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px; text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .q-num { font-size: .7rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .q-zh  { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+    .q-en  { font-size: .8rem; color: var(--muted); font-style: italic; }
+
+    /* ── Hero journey ── */
+    .journey {
+      background: linear-gradient(135deg, var(--navy), #2d3f70);
+      border-radius: var(--radius); padding: 28px 32px; margin: 20px 0; color: #fff;
+    }
+    .journey h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 16px; color: var(--gold); }
+    .journey-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    @media (max-width: 560px) { .journey-steps { grid-template-columns: 1fr; } }
+    .j-step { background: rgba(255,255,255,.08); border-radius: 10px; padding: 14px; text-align: center; }
+    .j-step .j-icon { font-size: 1.5rem; margin-bottom: 6px; }
+    .j-step .j-label { font-size: .82rem; opacity: .9; line-height: 1.5; }
+    .j-arrow { display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.4); font-size: 1.2rem; }
+    @media (max-width: 560px) { .j-arrow { display: none; } }
+
+    /* ── Presentation tips ── */
+    .tip-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 16px 0; }
+    .tip-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 22px;
+      border-top: 4px solid var(--gold); box-shadow: var(--shadow);
+    }
+    .tip-num { font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: var(--gold); margin-bottom: 8px; }
+    .tip-name { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+    .tip-desc { font-size: .86rem; color: var(--muted); line-height: 1.65; }
+    .tip-example {
+      margin-top: 10px; background: var(--gold-l); border-radius: 8px;
+      padding: 8px 12px; font-size: .82rem; color: #7a4400;
+    }
+
+    /* ── Back link ── */
+    .back-wrap { padding: 24px 0 0; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: .85rem; color: var(--muted); text-decoration: none; font-weight: 600;
+    }
+    .back-link:hover { color: var(--navy); }
+
+    /* ── CTA ── */
+    .cta {
+      background: linear-gradient(135deg, var(--gold) 0%, #f5c843 100%);
+      border-radius: var(--radius); padding: 32px; text-align: center;
+      margin: 40px 0 64px;
+    }
+    .cta h2 { font-size: 1.4rem; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+    .cta p  { color: #5a3000; font-size: .92rem; margin-bottom: 20px; }
+    .cta-btn {
+      display: inline-block; background: var(--navy); color: #fff;
+      font-weight: 700; font-size: .92rem; padding: 12px 28px;
+      border-radius: 99px; text-decoration: none;
+      transition: transform .18s, box-shadow .18s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,35,64,.3); }
+
+    footer {
+      background: var(--navy); color: rgba(255,255,255,.45);
+      text-align: center; padding: 26px 24px; font-size: .8rem;
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-meta">💫 One More Step 學習筆記</div>
+  <h1>職涯四公式：<em>才幹、人脈、</em><br><em>領導與傳承</em></h1>
+  <p class="hero-sub">整理康寧科技大中華區總裁 曾崇凱 Daniel 的演講精華，以及延伸的思維框架</p>
+  <div class="hero-author">
+    ✍️ 文 ／ <a href="https://www.linkedin.com/in/ching-wei-ye" target="_blank" rel="noopener">葉淨維 Matt Ye</a> &nbsp;·&nbsp; 2026 / 05 / 09
+  </div>
+  <div class="hero-chips">
+    <span class="chip">🎯 職涯發展</span>
+    <span class="chip">🤝 Soft Skills</span>
+    <span class="chip">👑 Leadership</span>
+    <span class="chip">🧭 北極星思維</span>
+    <span class="chip">🦸 英雄之旅</span>
+  </div>
+</div>
+
+<!-- Sticky nav -->
+<div class="topnav">
+  <div class="topnav-inner">
+    <a class="nav-item active" href="#formulas">四條公式</a>
+    <a class="nav-item" href="#boss-leader">Boss vs Leader</a>
+    <a class="nav-item" href="#northstar">北極星</a>
+    <a class="nav-item" href="#journey">英雄之旅</a>
+    <a class="nav-item" href="#tips">演講技巧</a>
+    <a class="nav-item" href="#table">總覽表</a>
+    <a class="nav-item" href="#reading">延伸閱讀</a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="back-wrap">
+    <a class="back-link" href="/projects/one-more-step">← One More Step</a>
+  </div>
+
+  <!-- Intro -->
+  <div style="padding: 36px 0 8px;">
+    <p class="prose">
+      各位好，我是 SLC 的淨維！這次課程中，我們有幸聽到康寧科技大中華區總裁 <strong>曾崇凱 Daniel</strong> 分享他在康寧 23 年的職涯歷程，以及 AI 無法取代的 Soft Skills。
+    </p>
+    <p class="prose">
+      Daniel 將職涯分為三加一個階段，並用四條公式統整影響各階段的關鍵因素。這四條公式共同組成一個人的<strong>才幹（Competence）</strong>。
+    </p>
+  </div>
+
+  <div class="three-q">
+    <div class="q-card">
+      <div class="q-num">問題 1</div>
+      <div class="q-zh">我是誰？</div>
+      <div class="q-en">Who am I?</div>
+    </div>
+    <div class="q-card">
+      <div class="q-num">問題 2</div>
+      <div class="q-zh">我要去哪？</div>
+      <div class="q-en">Where am I going?</div>
+    </div>
+    <div class="q-card">
+      <div class="q-num">問題 3</div>
+      <div class="q-zh">要怎麼去？</div>
+      <div class="q-en">How to go?</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── Formulas ─── -->
+  <div id="formulas">
+    <div class="sec-head">
+      <div class="sec-icon c-gold"><span>⚡</span></div>
+      <div>
+        <div class="sec-title">職涯四條公式</div>
+        <div class="sec-sub">Competence = Performance × Networking × Leadership × Legacy</div>
+      </div>
+    </div>
+
+    <div class="formulas">
+
+      <!-- 1. Performance -->
+      <div class="formula-card">
+        <div class="formula-label">公式 1 — 我是誰？</div>
+        <div class="formula-eq">
+          Performance <span class="op">=</span> Alignment <span class="op">×</span> Initiation <span class="op">×</span> Visibility
+        </div>
+        <div class="formula-terms">
+          <span class="term-chip">對齊目標 Alignment</span>
+          <span class="term-chip">主動思考 Initiation</span>
+          <span class="term-chip">提升能見度 Visibility</span>
+        </div>
+        <div class="formula-note">
+          要提升個人工作表現，首先要<strong>對齊主管的目標願景（Alignment）</strong>，接著<strong>提早思考可能的問題和解方（Initiation）</strong>。這兩點能有效提升個人能見度（Visibility），讓自己成為被拔擢的人選。
+          <br><br>
+          💡 Daniel 指出，後進者最常缺乏的是「換位思考」與「同理心」——也就是站在老闆角度思考，培養「老闆思維」，讓每次工作成果都在信用存摺中累積。
+        </div>
+      </div>
+
+      <!-- 2. Networking -->
+      <div class="formula-card teal">
+        <div class="formula-label">公式 2 — 該怎麼去？</div>
+        <div class="formula-eq">
+          Networking <span class="op">=</span> Targeted Audience <span class="op">×</span> Right Engagement <span class="op">×</span> Sincerity
+        </div>
+        <div class="formula-terms">
+          <span class="term-chip">了解對象 Targeted Audience</span>
+          <span class="term-chip">適切方式 Right Engagement</span>
+          <span class="term-chip">真誠態度 Sincerity</span>
+        </div>
+        <div class="formula-note">
+          在工作中，需要匯報的上司通常不只一位。要能針對<strong>不同上司的特質（Targeted Audience）</strong>，採用<strong>適切的方式（Right Engagement）</strong>，並以<strong>真誠的心態（Sincerity）</strong>互動，才能對人、對事又對心。
+          <br><br>
+          💡 Daniel 舉例：觀察主管對咖啡的偏好，隔天回送對方點的那杯。從日常小地方開始，讓主管感受到你理解他的思考模式。工具推薦：DISC 人格測驗、PAC 溝通模型。
+        </div>
+      </div>
+
+      <!-- 3. Leadership -->
+      <div class="formula-card rose">
+        <div class="formula-label">公式 3 — 該怎麼去？</div>
+        <div class="formula-eq">
+          Leadership <span class="op">=</span> Carry Responsibility <span class="op">×</span> Share Credibility <span class="op">×</span> Personal Touch
+        </div>
+        <div class="formula-terms">
+          <span class="term-chip">共同承擔 Carry Responsibility</span>
+          <span class="term-chip">分享榮耀 Share Credibility</span>
+          <span class="term-chip">以人為本 Personal Touch</span>
+        </div>
+        <div class="formula-note">
+          身為主管，面對失誤時要和團隊<strong>一起承擔責任（Carry Responsibility）</strong>；成果良好時，依照貢獻<strong>給予成員認可（Share Credibility）</strong>；在績效之外，還要看見每個人的狀況，給予適切的<strong>關懷（Personal Touch）</strong>。
+          <br><br>
+          💡 Daniel 也區分了 Power 與 Influence 的使用時機：Power 只在直屬上下關係中可適度使用；面對其他部門、朋友或家庭，應以 Influence 帶領。
+        </div>
+      </div>
+
+      <!-- 4. Legacy -->
+      <div class="formula-card navy">
+        <div class="formula-label">公式 4 — 我要去哪？</div>
+        <div class="formula-eq">
+          Legacy <span class="op">=</span> Accept the Change <span class="op">×</span> Move On <span class="op">×</span> Create New Chapter
+        </div>
+        <div class="formula-terms">
+          <span class="term-chip">接受他 Accept</span>
+          <span class="term-chip">放下他 Move On</span>
+          <span class="term-chip">處理他 Create New Chapter</span>
+        </div>
+        <div class="formula-note">
+          從台灣區總經理到大中華區總裁，Daniel 面對巨大挑戰的態度是：<strong>接受當下發生的事（Accept the Change）→ 放下懼怕與懷疑（Move On）→ 開始處理變化帶來的新局面（Create New Chapter）</strong>，才能達成自己的願景。
+          <br><br>
+          💡 Daniel 的主管曾問他：「10 年後，你想成為什麼樣的你？你的決定會讓你離那個人更遠還是更近？」這個問題幫助釐清真正應該採取的行動。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── Boss vs Leader ─── -->
+  <div id="boss-leader">
+    <div class="sec-head">
+      <div class="sec-icon c-rose"><span>👑</span></div>
+      <div>
+        <div class="sec-title">Boss vs Leader</div>
+        <div class="sec-sub">Power 與 Influence 的差別</div>
+      </div>
+    </div>
+
+    <div class="concept-pair">
+      <div class="concept-card bad">
+        <div class="cc-icon">🪨</div>
+        <h3>Boss（Power）</h3>
+        <p>坐在巨石上發號施令，由所有員工拖著他前進。仰賴職位權力推動事情，員工服從但未必信服。</p>
+      </div>
+      <div class="concept-card good">
+        <div class="cc-icon">🏃</div>
+        <h3>Leader（Influence）</h3>
+        <p>站在隊伍最前頭，和員工們一起拖著巨石前進。靠影響力與信任驅動團隊，讓人「心甘情願跟著走」。</p>
+      </div>
+    </div>
+
+    <div class="highlight teal">
+      <strong>Daniel 的建議：</strong> Power 只有在直屬的上下關係中可以適度使用；在面對其他部門、朋友或家庭時，應該以 <strong>Influence</strong> 的方式來帶領他人。真正的 Leader 讓下屬「挺他」的關鍵，在於 Carry Responsibility + Share Credibility + Personal Touch。
+    </div>
+
+    <div class="highlight" style="margin-top:12px;">
+      📺 推薦觀看 Simon Sinek 的 TED Talk：<strong>《Why Good Leaders Make You Feel Safe》</strong>——討論 Leader 如何透過決策讓員工願意跟隨。
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── North Star ─── -->
+  <div id="northstar">
+    <div class="sec-head">
+      <div class="sec-icon c-navy"><span>🧭</span></div>
+      <div>
+        <div class="sec-title">北極星思維</div>
+        <div class="sec-sub">找出人生導航的 Northstar，用更高視野檢視當前的自己</div>
+      </div>
+    </div>
+
+    <div class="concept-pair">
+      <div class="concept-card bad">
+        <div class="cc-icon">😔</div>
+        <h3>沒有北極星</h3>
+        <p>只看見當下，遇到的障礙是<strong>挫折</strong>，讓人失去動力，容易陷入短視近利的困境。</p>
+      </div>
+      <div class="concept-card good">
+        <div class="cc-icon">⭐</div>
+        <h3>有北極星</h3>
+        <p>遇到的障礙變成<strong>學習機會</strong>，能讓自己成長茁壯，每次挑戰都是朝目標前進的一步。</p>
+      </div>
+    </div>
+
+    <div class="quote">
+      10 年後，你想成為什麼樣的你？你今天的決定，會讓你離那個人更遠，還是更近？
+      <cite>— 曾崇凱 Daniel 的主管，在 Daniel 職涯轉捩點時問他的問題</cite>
+    </div>
+
+    <p class="prose">這個問題的力量在於：把眼光從「當下的困難」拉高到「長遠的目標」，讓每一個選擇都有了方向感。當我們找到北極星，障礙就從阻礙變成了成長的燃料。</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── Hero's Journey ─── -->
+  <div id="journey">
+    <div class="sec-head">
+      <div class="sec-icon c-teal"><span>🦸</span></div>
+      <div>
+        <div class="sec-title">英雄之旅</div>
+        <div class="sec-sub">Hero's Journey — Joseph Campbell 提出的普世故事結構</div>
+      </div>
+    </div>
+
+    <p class="prose">美國學者 Joseph Campbell 分析各文化神話後，提出一個共通的故事模型，後來被廣泛應用於心理諮商，幫助人從不同敘事角度重新檢視當下困境。</p>
+
+    <div class="journey">
+      <h3>🗺 三段旅程</h3>
+      <div style="display:flex; align-items:stretch; gap:12px; flex-wrap:wrap;">
+        <div class="j-step" style="flex:1; min-width:150px;">
+          <div class="j-icon">🏡</div>
+          <div class="j-label"><strong>出發</strong><br>脫離日常，冒險進入非常世界</div>
+        </div>
+        <div class="j-arrow">→</div>
+        <div class="j-step" style="flex:1; min-width:150px;">
+          <div class="j-icon">⚔️</div>
+          <div class="j-label"><strong>試煉</strong><br>得到新力量，取得勝利</div>
+        </div>
+        <div class="j-arrow">→</div>
+        <div class="j-step" style="flex:1; min-width:150px;">
+          <div class="j-icon">🏆</div>
+          <div class="j-label"><strong>歸來</strong><br>帶著新能力歸來，與同胞分享成果</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight teal">
+      <strong>職涯應用：</strong> 每一次面對新挑戰，就是開啟新一輪英雄之旅。每次完成旅程，都會從中獲得新的能力。這些獨特的經歷與能力組合，逐漸累積成你的個人價值（Personal Brand）——讓他人「在處理某事時，第一個想到你」。
+    </div>
+
+    <div class="highlight gold" style="margin-top:12px;">
+      🤔 <strong>思考題：</strong> 你現在正在英雄之旅的哪個階段？這次冒險，你將從中獲得什麼樣的收穫？
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── Presentation Tips ─── -->
+  <div id="tips">
+    <div class="sec-head">
+      <div class="sec-icon c-slate"><span>🎤</span></div>
+      <div>
+        <div class="sec-title">實用演講技巧</div>
+        <div class="sec-sub">從 Daniel 的演講中觀察到的三個結構技巧</div>
+      </div>
+    </div>
+
+    <div class="tip-cards">
+      <div class="tip-card">
+        <div class="tip-num">技巧 01</div>
+        <div class="tip-name">關鍵字 Key Word</div>
+        <div class="tip-desc">將複雜繁瑣的概念，濃縮為一個單詞，再逐一闡述。人類傾向將複雜概念簡化，以降低認知負擔。較少的詞彙讓聽眾先掌握骨幹，再逐漸補齊枝葉。</div>
+        <div class="tip-example">📌 例：Performance、Networking、Leadership、Legacy — 先說單字，再展開公式</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">技巧 02</div>
+        <div class="tip-name">三數法則 Rule of 3</div>
+        <div class="tip-desc">將想論述的概念，以三為單位進行組合，設計口訣或諧音梗。人類傾向以「組塊（Chunking）」的方式記憶，三個一組最容易被記住。</div>
+        <div class="tip-example">📌 例：接受他 → 放下他 → 處理他（Accept → Move On → Create New Chapter）</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">技巧 03</div>
+        <div class="tip-name">過去｜現在｜未來</div>
+        <div class="tip-desc">用時間軸結構快速匯報工作或自我介紹，讓聽眾立即掌握全局，也讓你的需求與目標一目了然。</div>
+        <div class="tip-example">📌 工作匯報：上週做了… / 這週正在… / 下週將要…，需要…協助<br>📌 自我介紹：我曾是… / 現在是… / 未來要…</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── Summary Table ─── -->
+  <div id="table">
+    <div class="sec-head">
+      <div class="sec-icon c-gold"><span>📊</span></div>
+      <div>
+        <div class="sec-title">才幹總覽表</div>
+        <div class="sec-sub">Competence × Cross × Care — 三維視角看職涯發展</div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>核心問題</th>
+            <th>Competence 才幹</th>
+            <th>Cross 職場現實</th>
+            <th>Care 職涯風險</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-q">我要去哪？<br><small style="font-weight:400; color:#718096;">Where am I going?</small></td>
+            <td class="td-formula">Legacy<br>= Accept × Move On × Create New Chapter</td>
+            <td class="td-cross">坐得久不久看團隊<br><small>Lasting by teams</small></td>
+            <td class="td-care">跟不上節奏與趨勢<br><small>Phase out</small></td>
+          </tr>
+          <tr>
+            <td class="td-q">該怎麼去？<br><small style="font-weight:400; color:#718096;">How to go?</small></td>
+            <td class="td-formula">Leadership<br>= Carry Responsibility × Share Credibility × Personal Touch</td>
+            <td class="td-cross">坐得順不順看同事<br><small>Luck by peers</small></td>
+            <td class="td-care"></td>
+          </tr>
+          <tr>
+            <td class="td-q">該怎麼去？<br><small style="font-weight:400; color:#718096;">How to go?</small></td>
+            <td class="td-formula">Networking<br>= Targeted Audience × Right Engagement × Sincerity</td>
+            <td class="td-cross">坐得穩不穩看自己<br><small>Steady by self</small></td>
+            <td class="td-care">能者多勞，勞者必亡<br><small>Burnout</small></td>
+          </tr>
+          <tr>
+            <td class="td-q">我是誰？<br><small style="font-weight:400; color:#718096;">Who am I?</small></td>
+            <td class="td-formula">Performance<br>= Alignment × Initiation × Visibility</td>
+            <td class="td-cross">坐哪個位置看老闆<br><small>Position by boss</small></td>
+            <td class="td-care"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── Reading List ─── -->
+  <div id="reading">
+    <div class="sec-head">
+      <div class="sec-icon c-teal"><span>📚</span></div>
+      <div>
+        <div class="sec-title">延伸閱讀</div>
+        <div class="sec-sub">文中提到的工具、書籍與影片</div>
+      </div>
+    </div>
+
+    <div class="reading-list">
+      <a class="reading-item" href="https://www.books.com.tw/booksComment/getCommemt/E050158862" target="_blank" rel="noopener">
+        <div class="reading-icon">📖</div>
+        <div class="reading-body">
+          <div class="reading-title">至少努力當上主管一次吧：站高一點，擁抱職場新視野</div>
+          <div class="reading-desc">EMBA 學長郭家齊著作 — 培養「老闆思維」，讓工作成果更接近主管需求</div>
+        </div>
+        <div class="reading-arrow">→</div>
+      </a>
+
+      <a class="reading-item" href="https://www.managertoday.com.tw/glossary/view/183" target="_blank" rel="noopener">
+        <div class="reading-icon">🧩</div>
+        <div class="reading-body">
+          <div class="reading-title">DISC 人格行為模式分析</div>
+          <div class="reading-desc">Dominance · Influence · Steady · Compliance — 了解自己與他人的溝通風格，選擇適當的 Engagement 方式</div>
+        </div>
+        <div class="reading-arrow">→</div>
+      </a>
+
+      <a class="reading-item" href="https://huangleon.com/blog/transactional-analysis" target="_blank" rel="noopener">
+        <div class="reading-icon">💬</div>
+        <div class="reading-body">
+          <div class="reading-title">PAC 溝通模型（父母 · 成人 · 兒童）</div>
+          <div class="reading-desc">Transactional Analysis — 判斷當下對話狀態，調整回應方式，達到雙贏溝通</div>
+        </div>
+        <div class="reading-arrow">→</div>
+      </a>
+
+      <a class="reading-item" href="https://www.youtube.com/watch?v=lmyZMtPVodo" target="_blank" rel="noopener">
+        <div class="reading-icon">🎥</div>
+        <div class="reading-body">
+          <div class="reading-title">Why Good Leaders Make You Feel Safe — Simon Sinek TED Talk</div>
+          <div class="reading-desc">討論 Leader 如何透過讓員工感到安全的決策，建立讓人願意跟隨的文化</div>
+        </div>
+        <div class="reading-arrow">→</div>
+      </a>
+
+      <a class="reading-item" href="https://www.youtube.com/watch?v=Hhk4N9A0oCA" target="_blank" rel="noopener">
+        <div class="reading-icon">🎥</div>
+        <div class="reading-body">
+          <div class="reading-title">What Makes a Hero? — TED-Ed 影片</div>
+          <div class="reading-desc">Matthew Winkler 解析英雄之旅的普世結構 — 思考：你現在在旅程的哪個階段？</div>
+        </div>
+        <div class="reading-arrow">→</div>
+      </a>
+
+      <a class="reading-item" href="https://zh.wikipedia.org/wiki/%E8%8B%B1%E9%9B%84%E6%97%85%E7%A8%8B" target="_blank" rel="noopener">
+        <div class="reading-icon">🌐</div>
+        <div class="reading-body">
+          <div class="reading-title">英雄旅程 — Wikipedia</div>
+          <div class="reading-desc">Joseph Campbell 的單一神話理論，以及在現代心理諮商與敘事治療中的應用</div>
+        </div>
+        <div class="reading-arrow">→</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <h2>你現在在旅程的哪個階段？</h2>
+    <p>找到你的北極星，每一個障礙都將成為成長的養分。<br>連結 Matt，一起討論職涯與學習。</p>
+    <a class="cta-btn" href="https://www.linkedin.com/in/ching-wei-ye" target="_blank" rel="noopener">LinkedIn → 葉淨維 Matt Ye</a>
+  </div>
+</div>
+
+<footer>
+  <p>整理自 2026/05/09 SLC 課程 — 康寧科技大中華區總裁 曾崇凱 Daniel 演講</p>
+  <p style="margin-top:5px;">文 ／ <a href="https://mattye.dev" target="_blank">葉淨維 Matt Ye</a> · <a href="/projects/one-more-step">← One More Step</a></p>
+</footer>
+
+<script>
+  /* Sticky nav active state on scroll */
+  const ids = ['formulas','boss-leader','northstar','journey','tips','table','reading'];
+  const navItems = document.querySelectorAll('.nav-item');
+  function onScroll() {
+    let cur = ids[0];
+    for (const id of ids) {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top < 100) cur = id;
+    }
+    navItems.forEach(n => n.classList.toggle('active', n.getAttribute('href') === '#' + cur));
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+</script>
+</body>
+</html>
