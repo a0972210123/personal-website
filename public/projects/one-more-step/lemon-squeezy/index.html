@@ -51,6 +51,16 @@
       background: var(--ls-teal);
       border-radius: 50%; opacity: .15;
     }
+    .hero-back {
+      display: inline-block;
+      position: relative; z-index: 1;
+      margin-bottom: 20px;
+      font-size: .82rem; font-weight: 600;
+      color: rgba(255,255,255,.75);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .hero-back:hover { color: #fff; }
     .hero-badge {
       display: inline-block;
       background: rgba(255,194,51,.2);
@@ -109,7 +119,7 @@
     .prog-dot {
       width: 24px; height: 24px;
       border-radius: 50%;
-      background: var(--border);
+      background: #9896b8;
       display: flex; align-items: center; justify-content: center;
       font-size: .7rem; font-weight: 800;
       color: #fff;
@@ -258,13 +268,13 @@
     .check-item.done { background: #f0fdf4; border-color: #86efac; }
     .check-item .cb {
       width: 22px; height: 22px; border-radius: 6px;
-      border: 2px solid var(--border);
+      border: 2px solid #b5b2d6;
       display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; font-size: .85rem; color: #fff;
+      flex-shrink: 0; font-size: .85rem; color: #c8c4e0;
       transition: all .2s;
-      background: #fff;
+      background: #f5f4fc;
     }
-    .check-item.done .cb { background: var(--ls-green); border-color: var(--ls-green); }
+    .check-item.done .cb { background: var(--ls-green); border-color: var(--ls-green); color: #fff; }
     .check-item label { font-size: .9rem; color: var(--text); cursor: pointer; }
     .check-item.done label { color: var(--muted); text-decoration: line-through; }
 
@@ -381,6 +391,7 @@
 
 <!-- Hero -->
 <div class="hero">
+  <a href="/projects/one-more-step" class="hero-back">← One More Step</a>
   <div class="hero-badge">📖 2024 學習指南</div>
   <h1>用 <span>Lemon Squeezy</span><br>開始你的數位創業</h1>
   <p>從 Creator Economy 到賺到第一筆錢，這份互動指南帶你一步步看懂平台的核心概念。</p>
@@ -837,9 +848,12 @@
       resultEl.textContent = '✅ 答對了！這正是 Lemon Squeezy 的核心理念。';
     } else {
       resultEl.classList.add('wrong');
-      resultEl.textContent = '❌ 再想想！答案是 B，請重新閱讀上方說明。';
-      // highlight correct
-      opts.forEach(o => { if (o.textContent.startsWith('B')) o.classList.add('correct'); });
+      // Dynamically find the correct option (has 'true' in onclick attribute)
+      let correctOpt = null;
+      opts.forEach(o => { if (o.getAttribute('onclick')?.includes('true')) correctOpt = o; });
+      const correctLabel = correctOpt ? correctOpt.textContent.trim().charAt(0) : '?';
+      resultEl.textContent = `❌ 再想想！正確答案是 ${correctLabel}，請重新閱讀上方說明再試試。`;
+      if (correctOpt) correctOpt.classList.add('correct');
     }
   }
 
