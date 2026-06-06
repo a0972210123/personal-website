@@ -64,6 +64,7 @@ const fullTitle = title === siteName ? title : `${title} · ${siteName}`;
   <body>
     <Header />
     <main>
+      <slot name="full-width" />
       <div class="container">
         <slot />
       </div>
