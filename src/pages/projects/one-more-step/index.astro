@@ -9,6 +9,14 @@ const docs = [
     description: '探討人工智慧時代的智慧財產權治理架構，涵蓋著作權、專利、開源授權等核心議題。',
     tags: ['IP 治理', 'AI', '法律'],
   },
+  {
+    slug: 'lemon-squeezy',
+    title: 'Lemon Squeezy 數位創業指南',
+    titleEn: 'Lemon Squeezy Creator\'s Guide',
+    description: '從創作者經濟到開第一間網路商店：數位產品類型、平台功能全覽、結帳設定，以及讓你快速上手的互動測驗與行動清單。',
+    tags: ['電商', '數位產品', '創業'],
+    url: '/projects/one-more-step/lemon-squeezy/',
+  },
 ];
 ---
 <BaseLayout
@@ -23,7 +31,7 @@ const docs = [
 
   <div class="docs-grid">
     {docs.map(doc => (
-      <a href={`/projects/one-more-step/${doc.slug}`} class="doc-card">
+      <a href={doc.url ?? `/projects/one-more-step/${doc.slug}`} class="doc-card">
         <div class="doc-card-body">
           <h2 class="doc-title">{doc.title}</h2>
           <p class="doc-title-en">{doc.titleEn}</p>
