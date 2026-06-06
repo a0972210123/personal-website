@@ -1,5 +1,5 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const projects = [
   {
@@ -12,10 +12,20 @@ const projects = [
     tags: ['互動工具', 'Generative Art'],
   },
 ];
+
+const onMoreStepDocs = [
+  {
+    slug: 'ip-governance-ai',
+    title: 'IP 治理與 AI',
+    titleEn: 'IP Governance & AI',
+    description: '探討人工智慧時代的智慧財產權治理架構，涵蓋著作權、專利、開源授權等核心議題。',
+    tags: ['IP 治理', 'AI', '法律'],
+  },
+];
 ---
 <BaseLayout
   title="Projects — Matt Ye"
-  description="葉淨維 Matt Ye 的 Side Projects — 互動工具、實驗性作品。"
+  description="葉淨維 Matt Ye 的 Side Projects — 互動工具、實驗性作品，以及 One More Step 學習筆記。"
 >
   <section class="projects-hero">
     <h1>Side <span class="accent-text">Projects</span></h1>
@@ -47,6 +57,34 @@ const projects = [
       </div>
     ))}
   </div>
+
+  <section class="oms-section">
+    <div class="oms-section-header">
+      <div>
+        <h2 class="oms-title">One More <span class="accent-text">Step</span></h2>
+        <p class="oms-subtitle">學習文件。把複雜的東西搞懂，然後寫下來。</p>
+      </div>
+      <a href="/projects/one-more-step" class="oms-view-all">全部 →</a>
+    </div>
+
+    <div class="oms-grid">
+      {onMoreStepDocs.map(doc => (
+        <a href={`/projects/one-more-step/${doc.slug}`} class="oms-card">
+          <div class="oms-card-body">
+            <h3 class="oms-card-title">{doc.title}</h3>
+            <p class="oms-card-title-en">{doc.titleEn}</p>
+            <p class="oms-card-desc">{doc.description}</p>
+          </div>
+          <div class="oms-card-footer">
+            <div class="project-tags">
+              {doc.tags.map(tag => <span class="project-tag">{tag}</span>)}
+            </div>
+            <span class="project-link">閱讀 →</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
@@ -70,7 +108,6 @@ const projects = [
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5rem;
-    padding-bottom: 4rem;
   }
 
   .project-card {
@@ -181,5 +218,99 @@ const projects = [
     font-size: 0.85rem;
     color: var(--color-text-muted);
     white-space: nowrap;
+  }
+
+  /* One More Step section */
+  .oms-section {
+    margin-top: 3.5rem;
+    padding-bottom: 4rem;
+  }
+
+  .oms-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+  }
+
+  .oms-title {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 700;
+    margin: 0 0 0.4rem;
+  }
+
+  .oms-subtitle {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+    margin: 0;
+  }
+
+  .oms-view-all {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .oms-view-all:hover {
+    text-decoration: underline;
+  }
+
+  .oms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .oms-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+
+  .oms-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border-color: var(--color-accent);
+  }
+
+  .oms-card-body {
+    flex: 1;
+  }
+
+  .oms-card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 0.15rem;
+  }
+
+  .oms-card-title-en {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin: 0 0 0.75rem;
+  }
+
+  .oms-card-desc {
+    font-size: 0.92rem;
+    color: var(--color-text-muted);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .oms-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
   }
 </style>
