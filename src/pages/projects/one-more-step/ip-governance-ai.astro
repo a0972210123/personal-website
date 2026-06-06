@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="IP 治理與 AI — One More Step — Matt Ye"
+  description="探討人工智慧時代的智慧財產權治理架構，涵蓋著作權、專利、開源授權等核心議題。"
+>
+  <article class="doc-article">
+    <header class="doc-header">
+      <a href="/projects/one-more-step" class="back-link">← One More Step</a>
+      <h1>IP 治理與 AI</h1>
+      <p class="doc-subtitle">IP Governance & AI</p>
+    </header>
+
+    <div class="doc-content">
+      <!-- 內容待填入 -->
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .doc-article {
+    padding-bottom: 4rem;
+  }
+
+  .doc-header {
+    padding: 3rem 0 2.5rem;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 2.5rem;
+  }
+
+  .back-link {
+    display: inline-block;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    margin-bottom: 1rem;
+  }
+
+  .back-link:hover {
+    color: var(--color-text);
+  }
+
+  .doc-header h1 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 700;
+    margin: 0 0 0.4rem;
+  }
+
+  .doc-subtitle {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .doc-content {
+    max-width: 680px;
+    line-height: 1.8;
+  }
+</style>
