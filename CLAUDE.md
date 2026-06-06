@@ -25,7 +25,14 @@
 1. **每次收到需求，開一個新 PR**，不直接 push 到 `main`
 2. PR 標題格式：`feat:` / `fix:` / `content:` / `style:` / `chore:` + 一句話描述
 3. PR 說明要包含：做了什麼、為什麼這樣做、需要注意的地方
-4. 等待 owner review + merge，不自行 merge
+4. 等待 owner review，owner 明確說「可以 merge」後才 merge
+5. **Merge 前必做：** 用 `mcp__github__get_file_contents` 或 `list_commits` 確認 remote branch 的最新 commit SHA 與本地一致，確保所有 push 都已同步到 GitHub
+6. **Merge 方式：** 固定使用 `merge commit`（非 squash、非 rebase）。Squash 在 claude.ai/code 環境中可能因 push proxy 延遲，導致遺漏後續 commit
+
+### Merge 前 checklist
+- [ ] Cloudflare Pages preview 已確認頁面內容正確
+- [ ] `mcp__github__list_commits` 確認 PR branch 的最新 SHA 包含所有預期變更
+- [ ] PR 狀態為 ready（非 draft）才能 merge
 
 ---
 
@@ -86,13 +93,13 @@ draft: false   # true 時不顯示在列表
 ---
 
 ## 待辦事項（之後的 PR）
-- [ ] 加入 Google Analytics 4
+- [x] 加入 Google Analytics 4（G-1RKL72DPPW）
 - [ ] 加入 Google Search Console verification meta tag
-- [ ] 建立 `llms.txt`
+- [x] 建立 `llms.txt`
 - [ ] 加入個人照片
-- [ ] 設定自訂網域
+- [x] 設定自訂網域（mattye.dev）
 - [ ] 加入 RSS feed（`@astrojs/rss`）
-- [ ] 加入 sitemap（`@astrojs/sitemap`）
+- [x] 加入 sitemap（`@astrojs/sitemap`）
 - [ ] Dark mode support
 
 ---
