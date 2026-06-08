@@ -28,11 +28,30 @@ draft: false
 
 它用**消費者物價指數**（CPI，Consumer Price Index）來衡量——政府定期追蹤一籃子商品（食物、房租、交通、醫療等）的價格變化，計算出漲幅的百分比。
 
-台灣近幾年的 CPI 大約是：
-- 2021 年：約 2.0%
-- 2022 年：約 3.0%（能源和食物帶動，是近十年高點）
-- 2023 年：約 2.5%
-- 2024 年：約 2.2%
+台灣近幾年的年均 CPI 漲幅：
+
+<div class="chart-bars">
+  <div class="chart-row">
+    <span class="chart-label">2021</span>
+    <div class="chart-track"><div class="chart-fill" style="width: 50%"></div></div>
+    <span class="chart-value">2.0%</span>
+  </div>
+  <div class="chart-row">
+    <span class="chart-label">2022</span>
+    <div class="chart-track"><div class="chart-fill" style="width: 75%"></div></div>
+    <span class="chart-value">3.0%</span>
+  </div>
+  <div class="chart-row">
+    <span class="chart-label">2023</span>
+    <div class="chart-track"><div class="chart-fill" style="width: 63%"></div></div>
+    <span class="chart-value">2.5%</span>
+  </div>
+  <div class="chart-row">
+    <span class="chart-label">2024</span>
+    <div class="chart-track"><div class="chart-fill" style="width: 55%"></div></div>
+    <span class="chart-value">2.2%</span>
+  </div>
+</div>
 
 看起來很小對不對？但時間拉長，效果很驚人。
 
@@ -40,13 +59,13 @@ draft: false
 
 ## 72 法則：快速算出錢縮水的速度
 
-**72 法則**：用 72 除以通膨率，就能算出錢的購買力腰斬要多少年。
-
-以 2% 的通膨率：72 ÷ 2 = **36 年**
+<div class="callout">
+  <span class="callout-number">72 ÷ 通膨率 = 購買力腰斬年數</span>
+  2% 通膨率 → <strong>36 年</strong>後購買力剩一半<br>
+  3% 通膨率 → <strong>24 年</strong>後購買力剩一半
+</div>
 
 也就是說，你今天存的 100 萬，到你們 85 歲的時候，購買力只剩 50 萬左右——即使帳面上數字沒變。
-
-以 3% 的通膨率，只要 24 年就腰斬。
 
 ---
 
@@ -67,13 +86,15 @@ draft: false
 
 ## 通膨對存款的傷害
 
-假設銀行定存利率是 1.5%，通膨是 2.5%。
+假設銀行定存利率是 1.5%，通膨是 2.5%：
 
-你賺了 1.5%，但購買力縮水了 2.5%。
+<div class="formula">
+  實質報酬率 = 名目利率 − 通膨率<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= 1.5% − 2.5%<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= <strong style="color: #dc2626">−1%</strong>
+</div>
 
-**實質報酬率 = 名目利率 - 通膨率 = 1.5% - 2.5% = -1%**
-
-你實際上是虧的。帳面數字在長大，但能買到的東西在變少。這就是為什麼「只存定存」長期而言是一種慢動作的損失。
+你賺了 1.5%，但購買力縮水了 2.5%。帳面數字在長大，但能買到的東西在變少。這就是為什麼「只存定存」長期而言是一種慢動作的損失。
 
 這不是說定存不好——它有流動性、安全性的優點。但它無法解決通膨的問題，這個缺口需要投資來補。
 
@@ -96,12 +117,12 @@ draft: false
 這是個大題目，後面幾篇會細談。先給你們一個直覺的框架：
 
 | 資產類型 | 通膨保護力 | 說明 |
-|----------|-----------|------|
-| 現金 / 定存 | ✗ 差 | 實質報酬常為負 |
-| 股票（整體市場） | ✓ 好 | 企業能把成本轉嫁，長期跟上通膨 |
-| 房地產 | ✓ 中至好 | 實體資產，但流動性差 |
-| 黃金 | △ 不穩定 | 短期避風港，長期不一定跑贏通膨 |
-| 債券（長期固定利率） | ✗ 差 | 通膨升溫時價值下跌 |
+|----------|:----------:|------|
+| 現金 / 定存 | <span class="protect-bad">✗ 差</span> | 實質報酬率常為負 |
+| 股票（整體市場） | <span class="protect-good">✓ 好</span> | 企業能把成本轉嫁，長期跟上通膨 |
+| 房地產 | <span class="protect-mid">△ 中至好</span> | 實體資產，但流動性差 |
+| 黃金 | <span class="protect-mixed">？ 不穩定</span> | 短期避風港，長期不一定跑贏通膨 |
+| 長期固定利率債券 | <span class="protect-bad">✗ 差</span> | 通膨升溫時價值下跌 |
 
 一個常見的迷思：「通膨來了就買黃金」。黃金短期確實常被當避風港，但長期來看，它的真實報酬率並不穩定，遠不如持有好公司的股票。
 
