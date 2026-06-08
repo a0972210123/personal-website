@@ -5,6 +5,14 @@ import { getCollection } from 'astro:content';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+const seriesLabels: Record<string, string> = {
+  'family-investing': '投資專欄',
+};
+
+const seriesList = [...new Set(
+  posts.map(p => p.data.series).filter((s): s is string => Boolean(s))
+)];
 ---
 <BaseLayout
   title="Writing"
@@ -14,10 +22,21 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     <h1>Writing</h1>
   </div>
 
+  {seriesList.length > 0 && (
+    <div class="filter-bar" id="filter-bar">
+      <button class="filter-btn" data-filter="">全部</button>
+      {seriesList.map(s => (
+        <button class="filter-btn" data-filter={s}>
+          {seriesLabels[s] ?? s}
+        </button>
+      ))}
+    </div>
+  )}
+
   {posts.length === 0 ? (
     <p style="color: var(--color-text-muted)">文章即將上線。</p>
   ) : (
-    <ul class="post-list">
+    <ul class="post-list" id="post-list">
       {posts.map(post => (
         <PostCard
           id={post.id}
@@ -25,8 +44,67 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
           description={post.data.description}
           pubDate={post.data.pubDate}
           lang={post.data.lang}
+          series={post.data.series}
         />
       ))}
     </ul>
   )}
 </BaseLayout>
+
+<style>
+  .filter-bar {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 0.3rem 0.8rem;
+    border-radius: 99px;
+    border: 1px solid var(--color-border);
+    background: transparent;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .filter-btn:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .filter-btn.active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #fff;
+  }
+</style>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const initialSeries = params.get('series') ?? '';
+
+  function applyFilter(series: string) {
+    document.querySelectorAll<HTMLElement>('#post-list .post-card').forEach(item => {
+      item.style.display = (series === '' || item.dataset.series === series) ? '' : 'none';
+    });
+
+    document.querySelectorAll<HTMLButtonElement>('.filter-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.filter === series);
+    });
+
+    const url = new URL(window.location.href);
+    series ? url.searchParams.set('series', series) : url.searchParams.delete('series');
+    history.replaceState(null, '', url.toString());
+  }
+
+  applyFilter(initialSeries);
+
+  document.getElementById('filter-bar')?.addEventListener('click', e => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('.filter-btn');
+    if (btn) applyFilter(btn.dataset.filter ?? '');
+  });
+</script>

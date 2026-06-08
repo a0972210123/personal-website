@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
 
 const projects = [
   {
@@ -22,6 +23,12 @@ const projects = [
     internal: true,
   },
 ];
+
+const investingPosts = (await getCollection('blog', ({ data }) =>
+  !data.draft && data.series === 'family-investing'
+))
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .slice(0, 3);
 ---
 <BaseLayout
   title="Projects — Matt Ye"
@@ -56,6 +63,41 @@ const projects = [
         </div>
       </div>
     ))}
+
+    <!-- Investing Series Card -->
+    <div class="project-card">
+      <div class="project-card-header">
+        <div>
+          <h2 class="project-title">寫給家人：投資心態</h2>
+          <p class="project-title-en">Family · Investing Mindset</p>
+        </div>
+        <span class="project-badge badge-series">連載中</span>
+      </div>
+
+      {investingPosts.length > 0 ? (
+        <ul class="series-mini-list">
+          {investingPosts.map(post => {
+            const dateStr = post.data.pubDate.toLocaleDateString('zh-TW', { month: 'numeric', day: 'numeric' });
+            return (
+              <li class="series-mini-item">
+                <a href={`/writing/${post.id}`} class="series-mini-title">{post.data.title}</a>
+                <span class="series-mini-date">{dateStr}</span>
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <p class="project-desc">從基礎金融知識到價值投資心法，寫給我的家人。文章即將上線。</p>
+      )}
+
+      <div class="project-footer">
+        <div class="project-tags">
+          <span class="project-tag">價值投資</span>
+          <span class="project-tag">總體經濟</span>
+        </div>
+        <a href="/writing?series=family-investing" class="project-link">查看全部 →</a>
+      </div>
+    </div>
   </div>
 </BaseLayout>
 
@@ -144,6 +186,11 @@ const projects = [
     color: var(--color-text-muted);
   }
 
+  .badge-series {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+
   .project-desc {
     font-size: 0.92rem;
     color: var(--color-text-muted);
@@ -192,4 +239,41 @@ const projects = [
     white-space: nowrap;
   }
 
+  .series-mini-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    flex: 1;
+  }
+
+  .series-mini-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+
+  .series-mini-title {
+    font-size: 0.88rem;
+    color: var(--color-text);
+    text-decoration: none;
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .series-mini-title:hover {
+    color: var(--color-accent);
+  }
+
+  .series-mini-date {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
 </style>
