@@ -271,13 +271,13 @@ flowchart TB
   classDef mk fill:#fff0f3,stroke:#f43f5e,color:#9f1239
 
   subgraph IS["📊 損益表 Income Statement"]
-    Rev["營業收入\nRevenue"]:::is
-    COGS["銷貨成本\nCOGS"]:::is
-    GP["毛利\nGross Profit"]:::is
-    OpEx["營業費用+D&A\nOpEx + D&A"]:::is
-    EBIT["EBIT\n稅前息前盈餘"]:::is
+    Rev["營業收入<br>Revenue"]:::is
+    COGS["銷貨成本<br>COGS"]:::is
+    GP["毛利<br>Gross Profit"]:::is
+    OpEx["營業費用 OpEx+DA"]:::is
+    EBIT["EBIT<br>稅前息前盈餘"]:::is
     EBITDA["EBITDA"]:::is
-    NI["淨利\nNet Income"]:::is
+    NI["淨利<br>Net Income"]:::is
     Rev --> GP
     COGS --> GP
     GP --> EBIT
@@ -287,26 +287,26 @@ flowchart TB
   end
 
   subgraph BS["⚖️ 資產負債表 Balance Sheet"]
-    TA["總資產\nTotal Assets"]:::bs
-    TL["總負債\nTotal Liabilities"]:::bs
-    EQ["股東權益\nEquity"]:::bs
+    TA["總資產<br>Total Assets"]:::bs
+    TL["總負債<br>Total Liabilities"]:::bs
+    EQ["股東權益<br>Equity"]:::bs
     TA --> EQ
     TL --> EQ
   end
 
   subgraph CF["💧 現金流量表 Cash Flow"]
-    OCF["營業現金流\nOperating CF"]:::cf
-    CapEx["資本支出\nCapEx"]:::cf
-    FCF["自由現金流\nFCF"]:::cf
+    OCF["營業現金流<br>Operating CF"]:::cf
+    CapEx["資本支出<br>CapEx"]:::cf
+    FCF["自由現金流<br>FCF"]:::cf
     OCF --> FCF
     CapEx --> FCF
   end
 
-  NI -->|"轉入保留盈餘"| EQ
-  NI -->|"間接法起算"| OCF
+  NI -->|轉入保留盈餘| EQ
+  NI -->|間接法起算| OCF
 
-  NI --> EPS["EPS\n每股盈餘"]:::dr
-  EQ --> BVPS["每股淨值\nBV/Share"]:::dr
+  NI --> EPS["EPS<br>每股盈餘"]:::dr
+  EQ --> BVPS["每股淨值<br>BV/Share"]:::dr
   EBIT --> ROIC["ROIC"]:::dr
   EQ --> ROIC
   EBITDA --> EVM["EV/EBITDA"]:::dr
