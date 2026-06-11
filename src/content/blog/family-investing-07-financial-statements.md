@@ -147,7 +147,7 @@ draft: false
         <div class="dpt-cell">
           <div class="dpt-node bs">
             <div class="dpt-name">股東權益</div>
-            <div class="dpt-break">= 股本＋保留盈餘<br>（歷年淨利累積）</div>
+            <div class="dpt-break">= 股本＋資本公積＋<br>保留盈餘（歷年淨利累積）…</div>
           </div>
         </div>
       </div>
@@ -384,7 +384,7 @@ FCF = 營業現金流（OCF）− 資本支出（CapEx）
     <div class="stat-label">ROIC</div>
   </div>
   <div class="stat-box">
-    <div class="stat-number">約 3,600 億</div>
+    <div class="stat-number">約 2,900 億</div>
     <div class="stat-label">自由現金流 FCF<br>（TWD）</div>
   </div>
   <div class="stat-box">
@@ -393,7 +393,7 @@ FCF = 營業現金流（OCF）− 資本支出（CapEx）
   </div>
 </div>
 
-注意 FCF（約 3,600 億）遠低於淨利（8,385 億）——這不是壞事，而是台積電正在大規模擴廠（每年 CapEx 超過 7,000 億元），把大量現金投入未來的生產能力。判斷「FCF 低是好事還是壞事」，需要結合公司的成長計劃來看。
+注意 FCF（約 2,900 億＝營業現金流 1.24 兆 − CapEx 約 9,500 億）遠低於淨利（8,385 億）——這不是壞事，而是台積電正在大規模擴廠，把大量現金投入未來的生產能力。判斷「FCF 低是好事還是壞事」，需要結合公司的成長計劃來看。
 
 *資料來源：台積電 2023 年年報*
 
@@ -420,4 +420,4 @@ FCF = 營業現金流（OCF）− 資本支出（CapEx）
 4. Aswath Damodaran, *Investment Valuation: Tools and Techniques for Determining the Value of Any Asset*, 4th ed., Wiley Finance, 2024
 5. 台積電 2023 年年報（Annual Report 2023）— https://ir.tsmc.com
 6. 林明樟（MJ Lin），《財報就像一本故事書》，天下雜誌，財務報表視覺化教學法——三表關聯圖的設計概念參考其圖示化框架
-7. DuPont 分析（DuPont Analysis）——1920 年代由杜邦公司財務主管 Donaldson Brown 發展的 ROE 分解框架；現代定義與三因子／五因子拆解見上列 CFA Level I 教材
+7. DuPont 分析（DuPont Analysis）——1910 年代由杜邦公司的 Donaldson Brown 提出、1920 年代起推廣普及的 ROE 分解框架；現代定義與三因子／五因子拆解見上列 CFA Level I 教材
