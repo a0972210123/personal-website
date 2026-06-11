@@ -1105,6 +1105,111 @@ footer .container {
   font-size: 0.7rem;
 }
 
+/* ===== DuPont Tree (Tab 1, pure CSS org-chart) ===== */
+.dpt-scroll { overflow-x: auto; padding-bottom: 0.3rem; }
+.dpt { min-width: 600px; }
+.dpt-market { display: flex; justify-content: center; gap: 0.6rem; }
+.dpt-bridge {
+  text-align: center;
+  font-size: 0.68rem;
+  color: var(--color-text-muted);
+  padding: 0.35rem 0 0;
+  line-height: 1.4;
+}
+.dpt-bridge::after { content: "↓"; display: block; line-height: 1.2; }
+.dpt-rootrow { display: flex; justify-content: center; }
+.dpt-down { width: 0; height: 13px; border-left: 1.5px solid #94a3b8; margin: 0 auto; }
+.dpt-row { display: flex; }
+.dpt-cell {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding-top: 13px;
+}
+.dpt-cell::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 13px;
+  border-left: 1.5px solid #94a3b8;
+}
+.dpt-cell::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-top: 1.5px solid #94a3b8;
+}
+.dpt-cell:first-child::after { left: 50%; }
+.dpt-cell:last-child::after { right: 50%; }
+.dpt-cell > .dpt-row { width: 100%; }
+.dpt-node {
+  width: 94%;
+  max-width: 185px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 0.4rem 0.45rem;
+  text-align: center;
+  line-height: 1.35;
+}
+.dpt-market .dpt-node { width: auto; padding: 0.4rem 0.8rem; }
+.dpt-name { font-size: 0.76rem; font-weight: 700; color: #0f172a; }
+.dpt-role {
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #64748b;
+  margin-bottom: 0.05rem;
+}
+.dpt-formula {
+  font-size: 0.62rem;
+  font-family: var(--font-mono);
+  color: #334155;
+  margin-top: 0.15rem;
+}
+.dpt-break {
+  font-size: 0.6rem;
+  font-family: var(--font-mono);
+  margin-top: 0.25rem;
+  padding-top: 0.2rem;
+  border-top: 1px dashed rgba(100,116,139,0.5);
+  color: #475569;
+  line-height: 1.5;
+}
+.dpt-node.root { border-color: #8b5cf6; background: #f5f3ff; }
+.dpt-node.root .dpt-name { color: #4c1d95; font-size: 0.84rem; }
+.dpt-node.root .dpt-formula { color: #5b21b6; }
+.dpt-node.mkt { border-color: #fda4af; background: #fff0f3; }
+.dpt-node.mkt .dpt-name { color: #9f1239; }
+.dpt-node.mkt .dpt-formula { color: #be123c; }
+.dpt-node.is { border-color: #93c5fd; background: #eff6ff; }
+.dpt-node.is .dpt-name { color: #1e3a8a; }
+.dpt-node.is .dpt-break { color: #1e40af; border-top-color: #93c5fd; }
+.dpt-node.bs { border-color: #fcd34d; background: #fffbeb; }
+.dpt-node.bs .dpt-name { color: #78350f; }
+.dpt-node.bs .dpt-break { color: #92400e; border-top-color: #fcd34d; }
+.dpt-extra {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--color-border);
+}
+.dpt-extra-title {
+  font-size: 0.67rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  margin-bottom: 0.45rem;
+}
+.dpt-extra-grid { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.sflow-chip.mkt { background: #fff0f3; border-color: #fda4af; color: #9f1239; }
+
 /* ===== Statement overview cards (3-col) ===== */
 .stmt-grid {
   display: grid;
