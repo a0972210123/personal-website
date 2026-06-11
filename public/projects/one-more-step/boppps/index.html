@@ -240,6 +240,111 @@
     .letter-P3 { background: rgba(219,39,119,0.1); color: var(--P3); }
     .letter-S { background: rgba(37,99,235,0.1); color: var(--S); }
 
+    /* ── FRAMEWORK DETAILS (expandable) ── */
+    .frameworks-section { margin-top: 1.75rem; }
+    .frameworks-heading {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-muted);
+      margin-bottom: 0.6rem;
+    }
+    .fw-detail {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--card-bg);
+      margin-bottom: 0.5rem;
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+    }
+    .fw-detail summary {
+      padding: 0.7rem 1rem;
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--color-text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      list-style: none;
+      user-select: none;
+      transition: background 0.15s;
+    }
+    .fw-detail summary::-webkit-details-marker { display: none; }
+    .fw-detail summary:hover { background: var(--color-surface); }
+    .fw-detail[open] > summary { border-bottom: 1px solid var(--color-border); background: var(--color-surface); }
+    .fw-arrow { font-size: 0.7rem; color: var(--color-text-muted); transition: transform 0.2s; margin-left: auto; }
+    .fw-detail[open] .fw-arrow { transform: rotate(90deg); }
+    .fw-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      background: rgba(91,79,255,0.08);
+      color: var(--color-accent);
+      border: 1px solid rgba(91,79,255,0.15);
+      flex-shrink: 0;
+    }
+    .fw-body {
+      padding: 1rem 1.25rem;
+      font-size: 0.87rem;
+      color: var(--color-text-muted);
+      line-height: 1.75;
+    }
+    .fw-body h4 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin: 1rem 0 0.5rem;
+    }
+    .fw-body h4:first-child { margin-top: 0; }
+    .fw-rows { display: flex; flex-direction: column; gap: 0.4rem; }
+    .fw-row {
+      display: grid;
+      grid-template-columns: 10rem 1fr;
+      gap: 0.75rem;
+      align-items: baseline;
+      font-size: 0.85rem;
+    }
+    .fw-row-key {
+      font-weight: 600;
+      color: var(--color-text);
+      font-size: 0.85rem;
+    }
+    .fw-row-key em { font-style: normal; color: var(--color-accent); }
+    .fw-levels { display: flex; flex-direction: column; gap: 0.3rem; }
+    .fw-level {
+      display: grid;
+      grid-template-columns: 1.4rem 9rem 1fr;
+      gap: 0.5rem;
+      align-items: baseline;
+      font-size: 0.84rem;
+    }
+    .fw-lv-num { font-weight: 700; color: var(--color-accent); font-family: var(--font-mono); font-size: 0.75rem; }
+    .fw-lv-name { font-weight: 600; color: var(--color-text); }
+    .fw-lv-desc { color: var(--color-text-muted); }
+    .fw-example {
+      background: rgba(91,79,255,0.05);
+      border: 1px solid rgba(91,79,255,0.14);
+      border-radius: 6px;
+      padding: 0.65rem 0.9rem;
+      margin-top: 0.85rem;
+      font-size: 0.83rem;
+      line-height: 1.65;
+    }
+    .fw-example strong { color: var(--color-accent); }
+    .fw-source { font-size: 0.75rem; color: var(--color-text-muted); margin-top: 0.5rem; font-style: italic; }
+    @media (max-width: 600px) {
+      .fw-row { grid-template-columns: 1fr; gap: 0.15rem; }
+      .fw-level { grid-template-columns: 1.4rem 1fr; }
+      .fw-lv-desc { grid-column: 2; }
+    }
+
     /* ── TIME TABLE ── */
     .time-table-wrap { overflow-x: auto; margin-top: 1.5rem; -webkit-overflow-scrolling: touch; }
     table {
@@ -519,6 +624,176 @@
             <li>技能目標參考 Simpson 層次（知覺→準備→引導→機械化→複合→適應→獨創）</li>
             <li>情意目標參考 Bloom 情意領域（接受→反應→重視→組織→品格）</li>
           </ul>
+
+          <div class="frameworks-section">
+            <p class="frameworks-heading">框架詳解</p>
+
+            <!-- SMART -->
+            <details class="fw-detail">
+              <summary>
+                <span class="fw-label">SMART</span>
+                目標設定原則
+                <span class="fw-arrow">▶</span>
+              </summary>
+              <div class="fw-body">
+                <p>源自管理學（Doran, 1981），後廣泛用於教育目標設計。五個維度確保目標對學習者有可操作性，而非停留在「學生能了解…」的模糊陳述。</p>
+                <div class="fw-rows" style="margin-top:0.75rem;">
+                  <div class="fw-row">
+                    <span class="fw-row-key"><em>S</em>pecific 具體</span>
+                    <span>清楚說明「誰在哪個情境下做什麼」，避免「了解」「認識」等無法觀察的動詞。</span>
+                  </div>
+                  <div class="fw-row">
+                    <span class="fw-row-key"><em>M</em>easurable 可量化</span>
+                    <span>設定可觀察的指標，如「至少說出三個例子」或「完成率達 80%」。</span>
+                  </div>
+                  <div class="fw-row">
+                    <span class="fw-row-key"><em>A</em>chievable 可實現</span>
+                    <span>目標難度應落在 Vygotsky 的最近發展區（ZPD）內：夠挑戰，但可達成；太難讓人放棄，太易則無學習效益。</span>
+                  </div>
+                  <div class="fw-row">
+                    <span class="fw-row-key"><em>R</em>elevant 切實相關</span>
+                    <span>與整體課程學習成果（Course Learning Outcomes）或學習者的真實需求對齊。</span>
+                  </div>
+                  <div class="fw-row">
+                    <span class="fw-row-key"><em>T</em>ime-bound 有期限</span>
+                    <span>明確指出「在本節課結束前」或「本週內」，幫助設計評量時間點。</span>
+                  </div>
+                </div>
+                <div class="fw-source">Doran, G. T. (1981). There's a S.M.A.R.T. way to write management's goals and objectives. <em>Management Review, 70</em>(11), 35–36.</div>
+              </div>
+            </details>
+
+            <!-- ABCD -->
+            <details class="fw-detail">
+              <summary>
+                <span class="fw-label">ABCD</span>
+                行為目標四要素（Robert Mager, 1962）
+                <span class="fw-arrow">▶</span>
+              </summary>
+              <div class="fw-body">
+                <p>由 Robert F. Mager 在《Preparing Instructional Objectives》（1962）提出，要求每條目標都應包含四個成分，讓評量者能清楚判斷「學生有沒有達到目標」。</p>
+                <div class="fw-rows" style="margin-top:0.75rem;">
+                  <div class="fw-row">
+                    <span class="fw-row-key"><em>A</em>udience 對象</span>
+                    <span>具體指出學習者是誰，如「國小五年級學生」「初入職護理師」。</span>
+                  </div>
+                  <div class="fw-row">
+                    <span class="fw-row-key"><em>B</em>ehavior 行為</span>
+                    <span>使用可觀察的行動動詞（描述、計算、示範、分析）。<strong style="color:var(--color-text);">禁用「了解」「知道」「欣賞」</strong>等無法觀察的內隱動詞。</span>
+                  </div>
+                  <div class="fw-row">
+                    <span class="fw-row-key"><em>C</em>ondition 條件</span>
+                    <span>學習者在什麼資源或限制下執行？如「在不看筆記的情況下」「使用 AI 工具協助」「給定資料集」。</span>
+                  </div>
+                  <div class="fw-row">
+                    <span class="fw-row-key"><em>D</em>egree 程度</span>
+                    <span>達成標準是什麼？如「正確率 90% 以上」「在 5 分鐘內」「無需提示即可完成」。</span>
+                  </div>
+                </div>
+                <div class="fw-example">
+                  <strong>完整範例：</strong>「在課程結束後，<strong>國小五年級學生（A）</strong>能夠不看筆記<strong>（C）</strong>，<strong>說出 AI agent 的兩個實際應用場景（B）</strong>，至少舉出一個課堂以外的生活例子<strong>（D）</strong>。」
+                </div>
+                <div class="fw-source">Mager, R. F. (1962). <em>Preparing instructional objectives</em>. Fearon Publishers.</div>
+              </div>
+            </details>
+
+            <!-- Simpson -->
+            <details class="fw-detail">
+              <summary>
+                <span class="fw-label">Simpson</span>
+                技能（心理動作）目標層次
+                <span class="fw-arrow">▶</span>
+              </summary>
+              <div class="fw-body">
+                <p>Elizabeth Jane Simpson（1966）延伸 Bloom 的分類系統，專門描述<strong style="color:var(--color-text);">動作技能的習得歷程</strong>——從觀察模仿到自動化，最終能獨創新動作。適用於實驗操作、樂器演奏、手術技能、體育運動等領域的目標撰寫。</p>
+                <div class="fw-levels" style="margin-top:0.75rem;">
+                  <div class="fw-level">
+                    <span class="fw-lv-num">1</span>
+                    <span class="fw-lv-name">知覺 Perception</span>
+                    <span class="fw-lv-desc">透過感官察覺動作線索（如觀看示範、聆聽節拍、感受力道）。</span>
+                  </div>
+                  <div class="fw-level">
+                    <span class="fw-lv-num">2</span>
+                    <span class="fw-lv-name">準備 Set</span>
+                    <span class="fw-lv-desc">身心預備就緒：正確姿勢、心理期待、情緒準備。</span>
+                  </div>
+                  <div class="fw-level">
+                    <span class="fw-lv-num">3</span>
+                    <span class="fw-lv-name">引導反應 Guided Response</span>
+                    <span class="fw-lv-desc">在指導下練習，允許犯錯與修正，靠模仿和試誤學習。</span>
+                  </div>
+                  <div class="fw-level">
+                    <span class="fw-lv-num">4</span>
+                    <span class="fw-lv-name">機械化 Mechanism</span>
+                    <span class="fw-lv-desc">動作漸趨自動化，不需刻意思考每個步驟，執行有一定信心。</span>
+                  </div>
+                  <div class="fw-level">
+                    <span class="fw-lv-num">5</span>
+                    <span class="fw-lv-name">複合外顯反應 Complex Overt Response</span>
+                    <span class="fw-lv-desc">熟練、迅速、流暢，整合多個子動作，幾乎不費力。</span>
+                  </div>
+                  <div class="fw-level">
+                    <span class="fw-lv-num">6</span>
+                    <span class="fw-lv-name">適應 Adaptation</span>
+                    <span class="fw-lv-desc">能修改習得的動作以因應新情境或特殊條件。</span>
+                  </div>
+                  <div class="fw-level">
+                    <span class="fw-lv-num">7</span>
+                    <span class="fw-lv-name">獨創 Origination</span>
+                    <span class="fw-lv-desc">創造全新動作模式，融合舊技能解決未曾遭遇的問題。</span>
+                  </div>
+                </div>
+                <div class="fw-example">
+                  <strong>教學設計意義：</strong>撰寫技能類目標時，先確認學習者目前在哪個層次，再設定本節課期望達到哪個層次。初學者的一堂課往往只能從「知覺」推進到「引導反應」，不必一次跳到「機械化」。
+                </div>
+                <div class="fw-source">Simpson, E. J. (1966). The classification of educational objectives: Psychomotor domain. <em>Illinois Journal of Home Economics, 10</em>(4), 110–144.</div>
+              </div>
+            </details>
+
+            <!-- Bloom Affective -->
+            <details class="fw-detail">
+              <summary>
+                <span class="fw-label">Bloom 情意</span>
+                情意目標層次（Krathwohl et al., 1964）
+                <span class="fw-arrow">▶</span>
+              </summary>
+              <div class="fw-body">
+                <p>由 Krathwohl、Bloom 與 Masia 於《Taxonomy of Educational Objectives, Handbook II: Affective Domain》（1964）提出。描述<strong style="color:var(--color-text);">態度、價值觀、情感的內化歷程</strong>，從被動接受到形成穩定的人格特質。情意目標通常較難評量，但在品格教育、醫學倫理、環境教育中至關重要。</p>
+                <div class="fw-levels" style="margin-top:0.75rem;">
+                  <div class="fw-level">
+                    <span class="fw-lv-num">1</span>
+                    <span class="fw-lv-name">接受 Receiving</span>
+                    <span class="fw-lv-desc">願意留意、不抗拒；被動開放，意識到某事物的存在。</span>
+                  </div>
+                  <div class="fw-level">
+                    <span class="fw-lv-num">2</span>
+                    <span class="fw-lv-name">反應 Responding</span>
+                    <span class="fw-lv-desc">主動參與、願意回應；不只是旁觀，而是投入互動。</span>
+                  </div>
+                  <div class="fw-level">
+                    <span class="fw-lv-num">3</span>
+                    <span class="fw-lv-name">重視 Valuing</span>
+                    <span class="fw-lv-desc">認為此事值得投入，自發行動，而非僅因外部要求。</span>
+                  </div>
+                  <div class="fw-level">
+                    <span class="fw-lv-num">4</span>
+                    <span class="fw-lv-name">組織 Organization</span>
+                    <span class="fw-lv-desc">將多種價值整合為一套個人系統，能處理不同價值間的衝突與優先順序。</span>
+                  </div>
+                  <div class="fw-level">
+                    <span class="fw-lv-num">5</span>
+                    <span class="fw-lv-name">品格 Characterization</span>
+                    <span class="fw-lv-desc">價值觀完全內化為人格特質，行為一致且可預測，無需外部監督。</span>
+                  </div>
+                </div>
+                <div class="fw-example">
+                  <strong>教學設計意義：</strong>一節 40 分鐘課很難超越「反應」層次，但透過多次課程積累、反思作業、真實情境，可逐步推進學習者到「重視」甚至「組織」層次。Bridge-in 的吸引設計，本質上是在催化第一層「接受」。
+                </div>
+                <div class="fw-source">Krathwohl, D. R., Bloom, B. S., & Masia, B. B. (1964). <em>Taxonomy of educational objectives: Handbook II: Affective domain</em>. David McKay.</div>
+              </div>
+            </details>
+          </div>
+
           <div class="boppps-meta">
             <span class="chip">&lt;5% 時間</span>
             <span class="chip">1–3 個目標</span>
