@@ -763,6 +763,133 @@ footer .container {
   line-height: 1.4;
 }
 
+/* ===== Moat grid (5 sources) ===== */
+.moat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.9rem;
+  margin: 1.5rem 0;
+}
+@media (max-width: 480px) {
+  .moat-grid { grid-template-columns: 1fr; }
+}
+.moat-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.moat-card-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 0.9rem 0.6rem;
+  border-bottom: 1px solid var(--color-border);
+}
+.moat-icon {
+  font-size: 1.3rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.moat-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+.moat-en {
+  font-size: 0.68rem;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+}
+.moat-body {
+  padding: 0.65rem 0.9rem;
+  font-size: 0.82rem;
+  color: var(--color-text);
+  line-height: 1.6;
+}
+.moat-example {
+  margin-top: 0.4rem;
+  font-size: 0.76rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+/* Moat analysis block (company assessment) */
+.moat-analysis {
+  margin: 1.5rem 0;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.moat-analysis-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.moat-company {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+.moat-strength {
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  padding: 0.2em 0.6em;
+  border-radius: 4px;
+  letter-spacing: 0.03em;
+}
+.moat-strength.wide {
+  background: #dcfce7;
+  color: #166534;
+}
+.moat-strength.narrow {
+  background: #fef9c3;
+  color: #854d0e;
+}
+.moat-strength.none {
+  background: #fee2e2;
+  color: #991b1b;
+}
+.moat-check-list {
+  display: flex;
+  flex-direction: column;
+}
+.moat-check-row {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.65rem 1rem;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  border-bottom: 1px solid var(--color-border);
+}
+.moat-check-row:last-child { border-bottom: none; }
+.moat-check-icon {
+  font-size: 1rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  width: 1.2rem;
+  text-align: center;
+  padding-top: 0.05rem;
+}
+.moat-check-row.yes .moat-check-icon { color: #059669; }
+.moat-check-row.partial .moat-check-icon { color: #d97706; }
+.moat-check-row.no .moat-check-icon { color: #dc2626; }
+.moat-check-label {
+  font-weight: 600;
+  color: var(--color-text);
+  margin-right: 0.4rem;
+}
+.moat-check-detail {
+  color: var(--color-text-muted);
+}
+
 /* ===== Tags ===== */
 .tags { display: flex; gap: var(--spacing-xs); flex-wrap: wrap; margin-top: var(--spacing-xs); }
 
