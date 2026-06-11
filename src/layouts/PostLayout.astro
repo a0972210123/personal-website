@@ -37,4 +37,50 @@ const dateFormatted = pubDate.toLocaleDateString(
   <article class="prose">
     <slot />
   </article>
+
+  <!-- Tab switching + lazy Mermaid for diagram posts -->
+  <script is:inline>
+  (function() {
+    function initTabs() {
+      document.querySelectorAll('.dtabs').forEach(function(tabs) {
+        tabs.querySelectorAll('.dtab-btn').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            var panelId = btn.dataset.panel;
+            tabs.querySelectorAll('.dtab-btn').forEach(function(b) { b.classList.remove('dtab-active'); });
+            tabs.querySelectorAll('.dtab-panel').forEach(function(p) { p.classList.remove('dtab-active'); });
+            btn.classList.add('dtab-active');
+            document.getElementById(panelId).classList.add('dtab-active');
+            if (panelId === 'panel-flow' && window.__renderMermaid) {
+              window.__renderMermaid();
+            }
+          });
+        });
+      });
+    }
+
+    function initMermaid() {
+      if (!document.querySelector('.mermaid')) return;
+      var rendered = false;
+      window.__renderMermaid = function() {
+        if (rendered) return;
+        rendered = true;
+        import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs').then(function(m) {
+          m.default.initialize({
+            startOnLoad: false,
+            theme: 'base',
+            securityLevel: 'loose',
+            themeVariables: { fontFamily: 'inherit', fontSize: '13px' }
+          });
+          m.default.run({ querySelector: '#panel-flow .mermaid' });
+        }).catch(function(e) { console.warn('Mermaid failed:', e); });
+      };
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() { initTabs(); initMermaid(); });
+    } else {
+      initTabs(); initMermaid();
+    }
+  })();
+  </script>
 </BaseLayout>

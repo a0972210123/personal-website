@@ -48,9 +48,16 @@ draft: false
 
 ## 公式樹：從本益比到第一線營收
 
-下面這張圖，把你在財務分析中常見的主要指標按計算層級排列。**由上往下讀**：第一層是估值倍數（你在看盤時直接看到的數字），往下一路追溯到最底層的第一線營運數字——每天實際發生的收入和成本。
+兩種圖示從不同角度呈現同一套關係——切換查看：
 
-顏色代表數字的來源：
+<div class="dtabs">
+<div class="dtab-nav">
+  <button class="dtab-btn dtab-active" data-panel="panel-tree">📐 公式層級樹</button>
+  <button class="dtab-btn" data-panel="panel-flow">🔗 三表關聯圖</button>
+</div>
+
+<div class="dtab-panel dtab-active" id="panel-tree">
+<p style="font-size:0.85rem;color:var(--color-text-muted);margin:0 0 0.9rem;">由上往下讀：第一層是估值倍數，往下追溯到最底層第一線營運數字。顏色代表來源報表：</p>
 
 <div class="ftree">
   <div class="ftree-legend">
@@ -249,6 +256,72 @@ draft: false
     </div>
   </div>
 </div>
+</div><!-- end panel-tree -->
+
+<div class="dtab-panel" id="panel-flow">
+<p style="font-size:0.85rem;color:var(--color-text-muted);margin:0 0 0.9rem;">三大報表為主節點（藍 = 損益表、橙 = 資產負債表、綠 = 現金流量表），跨表箭頭顯示數字的實際流向，右側為衍生指標與估值倍數。靈感參考林明樟（MJ Lin）財報圖示化教學法。</p>
+
+<div class="mermaid-wrap">
+<div class="mermaid">
+flowchart TB
+  classDef is fill:#eff6ff,stroke:#3b82f6,color:#1e3a8a
+  classDef bs fill:#fffbeb,stroke:#f59e0b,color:#78350f
+  classDef cf fill:#ecfdf5,stroke:#10b981,color:#064e3b
+  classDef dr fill:#f5f3ff,stroke:#8b5cf6,color:#4c1d95
+  classDef mk fill:#fff0f3,stroke:#f43f5e,color:#9f1239
+
+  subgraph IS["📊 損益表 Income Statement"]
+    Rev["營業收入\nRevenue"]:::is
+    COGS["銷貨成本\nCOGS"]:::is
+    GP["毛利\nGross Profit"]:::is
+    OpEx["營業費用+D&A\nOpEx + D&A"]:::is
+    EBIT["EBIT\n稅前息前盈餘"]:::is
+    EBITDA["EBITDA"]:::is
+    NI["淨利\nNet Income"]:::is
+    Rev --> GP
+    COGS --> GP
+    GP --> EBIT
+    OpEx --> EBIT
+    EBIT --> EBITDA
+    EBIT --> NI
+  end
+
+  subgraph BS["⚖️ 資產負債表 Balance Sheet"]
+    TA["總資產\nTotal Assets"]:::bs
+    TL["總負債\nTotal Liabilities"]:::bs
+    EQ["股東權益\nEquity"]:::bs
+    TA --> EQ
+    TL --> EQ
+  end
+
+  subgraph CF["💧 現金流量表 Cash Flow"]
+    OCF["營業現金流\nOperating CF"]:::cf
+    CapEx["資本支出\nCapEx"]:::cf
+    FCF["自由現金流\nFCF"]:::cf
+    OCF --> FCF
+    CapEx --> FCF
+  end
+
+  NI -->|"轉入保留盈餘"| EQ
+  NI -->|"間接法起算"| OCF
+
+  NI --> EPS["EPS\n每股盈餘"]:::dr
+  EQ --> BVPS["每股淨值\nBV/Share"]:::dr
+  EBIT --> ROIC["ROIC"]:::dr
+  EQ --> ROIC
+  EBITDA --> EVM["EV/EBITDA"]:::dr
+
+  EPS --> PE["📈 P/E"]:::mk
+  BVPS --> PB["📈 P/B"]:::mk
+  ROIC --> Moat["🏰 護城河判斷"]:::mk
+  EVM --> EVval["📈 EV估值"]:::mk
+  FCF --> DCF["📈 FCF/DCF估值"]:::mk
+</div>
+</div>
+<p class="mermaid-note">圖表為互動式，首次切換到此頁籤時從 CDN 載入 Mermaid.js 渲染。</p>
+</div><!-- end panel-flow -->
+
+</div><!-- end .dtabs -->
 
 ---
 
@@ -395,3 +468,4 @@ FCF = 營業現金流（OCF）− 資本支出（CapEx）
 3. Richard A. Brealey, Stewart C. Myers, Franklin Allen, Alex Edmans, *Principles of Corporate Finance*, 14th ed., McGraw-Hill, 2025
 4. Aswath Damodaran, *Investment Valuation: Tools and Techniques for Determining the Value of Any Asset*, 4th ed., Wiley Finance, 2024
 5. 台積電 2023 年年報（Annual Report 2023）— https://ir.tsmc.com
+6. 林明樟（MJ Lin），《財報就像一本故事書》，天下雜誌，財務報表視覺化教學法——三表關聯圖的設計概念參考其圖示化框架

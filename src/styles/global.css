@@ -890,6 +890,59 @@ footer .container {
   color: var(--color-text-muted);
 }
 
+/* ===== Diagram Tabs ===== */
+.dtabs {
+  margin: 1.5rem 0;
+}
+.dtab-nav {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: -1px;
+}
+.dtab-btn {
+  padding: 0.45rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid var(--color-border);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+.dtab-btn:hover { color: var(--color-text); }
+.dtab-btn.dtab-active {
+  background: var(--color-bg);
+  color: var(--color-accent);
+  border-color: var(--color-border);
+}
+.dtab-panel {
+  display: none;
+  border: 1px solid var(--color-border);
+  border-radius: 0 8px 8px 8px;
+  padding: 1.1rem 1.1rem 0.8rem;
+  background: var(--color-surface);
+}
+.dtab-panel.dtab-active { display: block; }
+.dtab-panel .ftree {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+}
+.mermaid-wrap {
+  overflow-x: auto;
+  min-height: 120px;
+}
+.mermaid-note {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  margin-top: 0.75rem;
+  line-height: 1.5;
+}
+
 /* ===== Statement overview cards (3-col) ===== */
 .stmt-grid {
   display: grid;
