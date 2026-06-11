@@ -293,9 +293,7 @@ draft: false
         <div class="sflow-line">總負債 <span class="sflow-num">Liabilities</span></div>
         <div class="sflow-sep"></div>
         <div class="sflow-line result key">股東權益 Equity</div>
-        <div class="sflow-inflow">← 淨利轉入保留盈餘</div>
         <div class="sflow-eq">資產 = 負債 + 股東權益</div>
-        <div class="sflow-inflow">← CF 期末現金餘額</div>
       </div>
     </div>
     <div class="sflow-stmt cf">
@@ -305,14 +303,31 @@ draft: false
         <span class="sflow-stmt-en">Cash Flow Statement</span>
       </div>
       <div class="sflow-stmt-body">
-        <div class="sflow-inflow">← 淨利（間接法起算）</div>
         <div class="sflow-line sub">± 折舊 ± 營運資金變動</div>
         <div class="sflow-line result key">營業現金流 OCF</div>
         <div class="sflow-line sub">− 資本支出 CapEx</div>
         <div class="sflow-line result">自由現金流 FCF</div>
-        <div class="sflow-sep"></div>
-        <div class="sflow-line sub">期末現金 → BS 現金科目</div>
       </div>
+    </div>
+  </div>
+  <div class="sflow-connections">
+    <div class="sflow-conn">
+      <span class="sflow-conn-badge is">損益表 · 淨利</span>
+      <span class="sflow-conn-arrow">→</span>
+      <span class="sflow-conn-badge bs">資產負債表 · 保留盈餘</span>
+      <span class="sflow-conn-label">淨利轉入股東權益（每期末累計）</span>
+    </div>
+    <div class="sflow-conn">
+      <span class="sflow-conn-badge is">損益表 · 淨利</span>
+      <span class="sflow-conn-arrow">→</span>
+      <span class="sflow-conn-badge cf">現金流量表 · OCF</span>
+      <span class="sflow-conn-label">間接法：淨利為現金流量表起算點</span>
+    </div>
+    <div class="sflow-conn">
+      <span class="sflow-conn-badge cf">現金流量表 · 期末現金</span>
+      <span class="sflow-conn-arrow">→</span>
+      <span class="sflow-conn-badge bs">資產負債表 · 現金科目</span>
+      <span class="sflow-conn-label">期末現金餘額恆等於資產負債表現金（三表勾稽）</span>
     </div>
   </div>
   <div class="sflow-derived-section">

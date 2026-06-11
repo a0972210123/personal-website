@@ -1066,6 +1066,44 @@ footer .container {
 .sflow-chip.bs    { background: #fffbeb; border-color: #fcd34d; color: #92400e; }
 .sflow-chip.cf    { background: #ecfdf5; border-color: #6ee7b7; color: #065f46; }
 .sflow-chip.cross { background: #f5f3ff; border-color: #c4b5fd; color: #4c1d95; }
+.sflow-connections {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0.5rem 0;
+  padding: 0.6rem 0.8rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+.sflow-conn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  line-height: 1.4;
+}
+.sflow-conn-badge {
+  padding: 0.15em 0.5em;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.7rem;
+  border: 1px solid;
+  white-space: nowrap;
+}
+.sflow-conn-badge.is { background: #eff6ff; border-color: #93c5fd; color: #1e40af; }
+.sflow-conn-badge.bs { background: #fffbeb; border-color: #fcd34d; color: #92400e; }
+.sflow-conn-badge.cf { background: #ecfdf5; border-color: #6ee7b7; color: #065f46; }
+.sflow-conn-arrow {
+  font-weight: 700;
+  color: var(--color-accent);
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+.sflow-conn-label {
+  color: var(--color-text-muted);
+  font-size: 0.7rem;
+}
 
 /* ===== Statement overview cards (3-col) ===== */
 .stmt-grid {
