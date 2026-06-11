@@ -943,6 +943,130 @@ footer .container {
   line-height: 1.5;
 }
 
+/* ===== Statement Flow Diagram (Tab 2, pure CSS) ===== */
+.sflow-wrap { font-size: 0.78rem; }
+.sflow-stmts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+@media (max-width: 540px) {
+  .sflow-stmts { grid-template-columns: 1fr; }
+}
+.sflow-stmt {
+  border-radius: 8px;
+  border: 1px solid;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.sflow-stmt.is { border-color: #93c5fd; }
+.sflow-stmt.bs { border-color: #fcd34d; }
+.sflow-stmt.cf { border-color: #6ee7b7; }
+.sflow-stmt-head {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0.65rem 0.4rem;
+  border-bottom: 1px solid;
+}
+.sflow-stmt.is .sflow-stmt-head { background: #dbeafe; border-bottom-color: #93c5fd; }
+.sflow-stmt.bs .sflow-stmt-head { background: #fef3c7; border-bottom-color: #fcd34d; }
+.sflow-stmt.cf .sflow-stmt-head { background: #d1fae5; border-bottom-color: #6ee7b7; }
+.sflow-icon { font-size: 1rem; line-height: 1; margin-bottom: 0.2rem; }
+.sflow-stmt-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+.sflow-stmt-en {
+  font-size: 0.6rem;
+  font-family: var(--font-mono);
+  color: var(--color-text-muted);
+  margin-top: 0.1rem;
+}
+.sflow-stmt-body {
+  padding: 0.45rem 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+  flex: 1;
+}
+.sflow-stmt.is .sflow-stmt-body { background: #eff6ff; }
+.sflow-stmt.bs .sflow-stmt-body { background: #fffbeb; }
+.sflow-stmt.cf .sflow-stmt-body { background: #ecfdf5; }
+.sflow-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.25rem;
+  padding: 0.08rem 0;
+  color: var(--color-text);
+  line-height: 1.4;
+}
+.sflow-line.sub {
+  padding-left: 0.7rem;
+  color: var(--color-text-muted);
+  font-size: 0.7rem;
+}
+.sflow-line.result { font-weight: 600; }
+.sflow-line.key { color: var(--color-accent); }
+.sflow-num {
+  font-size: 0.6rem;
+  font-family: var(--font-mono);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.sflow-inflow {
+  font-size: 0.68rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+  border-left: 2px solid var(--color-accent);
+  padding-left: 0.4rem;
+  margin: 0.2rem 0;
+  line-height: 1.4;
+}
+.sflow-sep {
+  height: 1px;
+  background: var(--color-border);
+  margin: 0.2rem 0;
+}
+.sflow-eq {
+  font-size: 0.65rem;
+  font-family: var(--font-mono);
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: 0.15rem 0;
+}
+.sflow-derived-section { margin-top: 0.4rem; }
+.sflow-derived-title {
+  font-size: 0.67rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  margin-bottom: 0.4rem;
+}
+.sflow-derived-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+.sflow-chip {
+  padding: 0.18em 0.55em;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  border: 1px solid;
+}
+.sflow-chip.is    { background: #eff6ff; border-color: #93c5fd; color: #1e40af; }
+.sflow-chip.bs    { background: #fffbeb; border-color: #fcd34d; color: #92400e; }
+.sflow-chip.cf    { background: #ecfdf5; border-color: #6ee7b7; color: #065f46; }
+.sflow-chip.cross { background: #f5f3ff; border-color: #c4b5fd; color: #4c1d95; }
+
 /* ===== Statement overview cards (3-col) ===== */
 .stmt-grid {
   display: grid;

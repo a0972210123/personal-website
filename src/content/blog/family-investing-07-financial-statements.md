@@ -259,66 +259,77 @@ draft: false
 </div><!-- end panel-tree -->
 
 <div class="dtab-panel" id="panel-flow">
-<p style="font-size:0.85rem;color:var(--color-text-muted);margin:0 0 0.9rem;">三大報表為主節點（藍 = 損益表、橙 = 資產負債表、綠 = 現金流量表），跨表箭頭顯示數字的實際流向，右側為衍生指標與估值倍數。靈感參考林明樟（MJ Lin）財報圖示化教學法。</p>
-
-<div class="mermaid-wrap">
-<div class="mermaid">
-flowchart TB
-  classDef is fill:#eff6ff,stroke:#3b82f6,color:#1e3a8a
-  classDef bs fill:#fffbeb,stroke:#f59e0b,color:#78350f
-  classDef cf fill:#ecfdf5,stroke:#10b981,color:#064e3b
-  classDef dr fill:#f5f3ff,stroke:#8b5cf6,color:#4c1d95
-  classDef mk fill:#fff0f3,stroke:#f43f5e,color:#9f1239
-
-  subgraph IS["📊 損益表 Income Statement"]
-    Rev["營業收入<br>Revenue"]:::is
-    COGS["銷貨成本<br>COGS"]:::is
-    GP["毛利<br>Gross Profit"]:::is
-    OpEx["營業費用 OpEx+DA"]:::is
-    EBIT["EBIT<br>稅前息前盈餘"]:::is
-    EBITDA["EBITDA"]:::is
-    NI["淨利<br>Net Income"]:::is
-    Rev --> GP
-    COGS --> GP
-    GP --> EBIT
-    OpEx --> EBIT
-    EBIT --> EBITDA
-    EBIT --> NI
-  end
-
-  subgraph BS["⚖️ 資產負債表 Balance Sheet"]
-    TA["總資產<br>Total Assets"]:::bs
-    TL["總負債<br>Total Liabilities"]:::bs
-    EQ["股東權益<br>Equity"]:::bs
-    TA --> EQ
-    TL --> EQ
-  end
-
-  subgraph CF["💧 現金流量表 Cash Flow"]
-    OCF["營業現金流<br>Operating CF"]:::cf
-    CapEx["資本支出<br>CapEx"]:::cf
-    FCF["自由現金流<br>FCF"]:::cf
-    OCF --> FCF
-    CapEx --> FCF
-  end
-
-  NI -->|轉入保留盈餘| EQ
-  NI -->|間接法起算| OCF
-
-  NI --> EPS["EPS<br>每股盈餘"]:::dr
-  EQ --> BVPS["每股淨值<br>BV/Share"]:::dr
-  EBIT --> ROIC["ROIC"]:::dr
-  EQ --> ROIC
-  EBITDA --> EVM["EV/EBITDA"]:::dr
-
-  EPS --> PE["📈 P/E"]:::mk
-  BVPS --> PB["📈 P/B"]:::mk
-  ROIC --> Moat["🏰 護城河判斷"]:::mk
-  EVM --> EVval["📈 EV估值"]:::mk
-  FCF --> DCF["📈 FCF/DCF估值"]:::mk
+<p style="font-size:0.85rem;color:var(--color-text-muted);margin:0 0 0.9rem;">三大報表為主節點（藍=損益表、橙=資產負債表、綠=現金流量表），跨表箭頭顯示數字的實際流向，底部為衍生指標。設計概念參考林明樟（MJ Lin）財報圖示化教學法。</p>
+<div class="sflow-wrap">
+  <div class="sflow-stmts">
+    <div class="sflow-stmt is">
+      <div class="sflow-stmt-head">
+        <span class="sflow-icon">📊</span>
+        <span class="sflow-stmt-title">損益表</span>
+        <span class="sflow-stmt-en">Income Statement</span>
+      </div>
+      <div class="sflow-stmt-body">
+        <div class="sflow-line">營業收入 <span class="sflow-num">Revenue</span></div>
+        <div class="sflow-line sub">− 銷貨成本 COGS</div>
+        <div class="sflow-line result">毛利 <span class="sflow-num">Gross Profit</span></div>
+        <div class="sflow-line sub">− 營業費用 OpEx</div>
+        <div class="sflow-line result">EBIT</div>
+        <div class="sflow-line sub">+ 折舊攤銷 D&amp;A</div>
+        <div class="sflow-line result">EBITDA</div>
+        <div class="sflow-sep"></div>
+        <div class="sflow-line result key">淨利 Net Income →</div>
+      </div>
+    </div>
+    <div class="sflow-stmt bs">
+      <div class="sflow-stmt-head">
+        <span class="sflow-icon">⚖️</span>
+        <span class="sflow-stmt-title">資產負債表</span>
+        <span class="sflow-stmt-en">Balance Sheet</span>
+      </div>
+      <div class="sflow-stmt-body">
+        <div class="sflow-line">總資產 <span class="sflow-num">Assets</span></div>
+        <div class="sflow-line sub">流動資產（含現金）</div>
+        <div class="sflow-line sub">非流動資產</div>
+        <div class="sflow-line">總負債 <span class="sflow-num">Liabilities</span></div>
+        <div class="sflow-sep"></div>
+        <div class="sflow-line result key">股東權益 Equity</div>
+        <div class="sflow-inflow">← 淨利轉入保留盈餘</div>
+        <div class="sflow-eq">資產 = 負債 + 股東權益</div>
+        <div class="sflow-inflow">← CF 期末現金餘額</div>
+      </div>
+    </div>
+    <div class="sflow-stmt cf">
+      <div class="sflow-stmt-head">
+        <span class="sflow-icon">💧</span>
+        <span class="sflow-stmt-title">現金流量表</span>
+        <span class="sflow-stmt-en">Cash Flow Statement</span>
+      </div>
+      <div class="sflow-stmt-body">
+        <div class="sflow-inflow">← 淨利（間接法起算）</div>
+        <div class="sflow-line sub">± 折舊 ± 營運資金變動</div>
+        <div class="sflow-line result key">營業現金流 OCF</div>
+        <div class="sflow-line sub">− 資本支出 CapEx</div>
+        <div class="sflow-line result">自由現金流 FCF</div>
+        <div class="sflow-sep"></div>
+        <div class="sflow-line sub">期末現金 → BS 現金科目</div>
+      </div>
+    </div>
+  </div>
+  <div class="sflow-derived-section">
+    <div class="sflow-derived-title">↓ 衍生指標與估值倍數</div>
+    <div class="sflow-derived-grid">
+      <span class="sflow-chip is">EPS</span>
+      <span class="sflow-chip is">P/E</span>
+      <span class="sflow-chip is">ROE</span>
+      <span class="sflow-chip bs">每股淨值 BVPS</span>
+      <span class="sflow-chip bs">P/B</span>
+      <span class="sflow-chip cf">FCF</span>
+      <span class="sflow-chip cf">DCF 估值</span>
+      <span class="sflow-chip cross">ROIC</span>
+      <span class="sflow-chip cross">EV/EBITDA</span>
+    </div>
+  </div>
 </div>
-</div>
-<p class="mermaid-note">圖表為互動式，首次切換到此頁籤時從 CDN 載入 Mermaid.js 渲染。</p>
 </div><!-- end panel-flow -->
 
 </div><!-- end .dtabs -->
