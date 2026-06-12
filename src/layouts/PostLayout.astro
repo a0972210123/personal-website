@@ -37,4 +37,29 @@ const dateFormatted = pubDate.toLocaleDateString(
   <article class="prose">
     <slot />
   </article>
+
+  <!-- Tab switching for diagram posts -->
+  <script is:inline>
+  (function() {
+    function initTabs() {
+      document.querySelectorAll('.dtabs').forEach(function(tabs) {
+        tabs.querySelectorAll('.dtab-btn').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            var panelId = btn.dataset.panel;
+            tabs.querySelectorAll('.dtab-btn').forEach(function(b) { b.classList.remove('dtab-active'); });
+            tabs.querySelectorAll('.dtab-panel').forEach(function(p) { p.classList.remove('dtab-active'); });
+            btn.classList.add('dtab-active');
+            document.getElementById(panelId).classList.add('dtab-active');
+          });
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initTabs);
+    } else {
+      initTabs();
+    }
+  })();
+  </script>
 </BaseLayout>
