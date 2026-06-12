@@ -1213,25 +1213,54 @@ footer .container {
 /* ===== Per-statement detail (Tab content) ===== */
 .sdetail { display: flex; flex-direction: column; }
 .sdetail-row {
-  display: grid;
-  grid-template-columns: 11rem 1fr;
-  gap: 0.2rem 1rem;
-  padding: 0.6rem 0;
+  padding: 0.75rem 0.7rem 0.7rem 0.85rem;
   border-bottom: 1px solid var(--color-border);
-  align-items: baseline;
+  border-left: 3px solid transparent;
 }
 .sdetail-row:last-child { border-bottom: none; }
-@media (max-width: 540px) {
-  .sdetail-row { grid-template-columns: 1fr; gap: 0.1rem; }
+.sdetail-row.result {
+  border-left-color: var(--color-border);
+  padding-left: 1.3rem;       /* indent = 計算結果縮排 */
 }
-.sdetail-row.result { border-left: 3px solid var(--color-border); padding-left: 0.55rem; }
-.sdetail-row.key { border-left: 3px solid var(--color-accent); padding-left: 0.55rem; }
-.sdetail-term { display: flex; flex-direction: column; gap: 0.05rem; }
-.sdetail-zh { font-size: 0.88rem; font-weight: 700; color: var(--color-text); line-height: 1.3; }
+.sdetail-row.key {
+  border-left-color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 5%, transparent);
+}
+/* color-mix fallback for older engines */
+@supports not (color: color-mix(in srgb, red 5%, transparent)) {
+  .sdetail-row.key { background: var(--color-surface); }
+}
+.sdetail-term {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 0.3rem;
+}
+.sdetail-zh {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.3;
+}
 .sdetail-row.key .sdetail-zh { color: var(--color-accent); }
-.sdetail-en { font-size: 0.64rem; font-family: var(--font-mono); color: var(--color-text-muted); }
-.sdetail-desc { font-size: 0.85rem; color: var(--color-text-muted); line-height: 1.6; }
-.sdetail-desc b { color: var(--color-text); font-weight: 600; }
+.sdetail-en {
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  color: var(--color-text-muted);
+  background: var(--color-tag-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  padding: 0.05em 0.45em;
+  line-height: 1.5;
+}
+.sdetail-desc {
+  font-size: 0.86rem;
+  color: var(--color-text);
+  opacity: 0.75;
+  line-height: 1.7;
+}
+.sdetail-desc b { opacity: 1; font-weight: 600; }
 
 /* ===== Glossary lookup ===== */
 .gloss { margin: 1rem 0 0; }
