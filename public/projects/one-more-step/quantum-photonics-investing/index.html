@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>矽光子 × 量子電腦 × PQC — 趨勢與投資地圖 · One More Step</title>
+  <meta name="description" content="從 AppWorks AW#32 PQC 主題與一篇博士論文研究出發，整理矽光子、量子電腦五大硬體路線、光子 EDA / 光運算，以及對應的台股、美股投資標的總覽。" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-bg: #ffffff;
+      --color-surface: #f7f8fa;
+      --color-text: #111111;
+      --color-text-muted: #666666;
+      --color-border: #e8e8e8;
+      --color-accent: #5b4fff;
+      --color-accent-hover: #3d31e0;
+      --color-tag-bg: #f0f4f8;
+
+      --card-bg: #ffffff;
+      --card-border: #e8e8e8;
+      --card-shadow: 0 1px 4px rgba(0,0,0,.06);
+      --card-shadow-hover: 0 8px 24px rgba(0,0,0,.1);
+
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      --font-mono: 'SF Mono', 'Fira Code', Consolas, monospace;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+
+      --A1: #5b4fff;
+      --A2: #0d9488;
+      --A3: #d97706;
+      --A4: #db2777;
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; -webkit-text-size-adjust: 100%; }
+
+    body {
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-sans);
+      line-height: 1.75;
+      min-height: 100vh;
+    }
+
+    a { color: var(--color-accent); text-decoration: none; }
+    a:hover { color: var(--color-accent-hover); text-decoration: underline; }
+
+    .wrapper { max-width: 920px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 1.5rem); }
+
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--color-bg);
+      border-bottom: 1px solid var(--color-border);
+      padding: 0.75rem 0;
+    }
+    .site-nav .wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .back-link:hover { color: var(--color-accent); text-decoration: none; }
+
+    .page-nav-links { display: flex; align-items: center; gap: 0.25rem; flex-wrap: wrap; }
+    .page-nav-link {
+      color: var(--color-text-muted);
+      font-size: 0.78rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: var(--radius-sm);
+    }
+    .page-nav-link:hover { color: var(--color-text); background: var(--color-surface); text-decoration: none; }
+
+    .hero { padding: 4rem 0 2.5rem; text-align: center; }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(91,79,255,0.08);
+      border: 1px solid rgba(91,79,255,0.2);
+      color: var(--color-accent);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.8rem;
+      border-radius: 99px;
+      margin-bottom: 1.25rem;
+    }
+    .hero h1 {
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .hero h1 span { color: var(--color-accent); }
+    .hero p { font-size: 1rem; color: var(--color-text-muted); max-width: 640px; margin: 0 auto 2rem; line-height: 1.7; }
+    .hero-tags { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
+    .hero-tag {
+      background: var(--color-tag-bg);
+      border: 1px solid var(--color-border);
+      color: var(--color-text-muted);
+      font-size: 0.75rem;
+      padding: 0.25rem 0.7rem;
+      border-radius: 99px;
+    }
+
+    section { padding: 3rem 0; border-top: 1px solid var(--color-border); }
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 0.4rem;
+    }
+    h2 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.4rem; line-height: 1.3; }
+    h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.4rem; margin-top: 1.5rem; color: var(--color-text); }
+    .lead { color: var(--color-text-muted); margin-bottom: 1.75rem; font-size: 0.95rem; line-height: 1.7; }
+
+    .concept-grid { display: grid; gap: 0.9rem; }
+    @media (min-width: 760px) { .concept-grid { grid-template-columns: 1fr 1fr; } }
+    .concept-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.5rem;
+      box-shadow: var(--card-shadow);
+    }
+    .concept-card h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .dot { width: 0.6rem; height: 0.6rem; border-radius: 50%; flex-shrink: 0; }
+    .dot-1 { background: var(--A1); }
+    .dot-2 { background: var(--A2); }
+    .dot-3 { background: var(--A3); }
+    .dot-4 { background: var(--A4); }
+    .concept-card p { color: var(--color-text-muted); font-size: 0.88rem; line-height: 1.65; }
+    .concept-card ul { margin-top: 0.5rem; padding-left: 1.15rem; color: var(--color-text-muted); font-size: 0.86rem; line-height: 1.6; }
+    .concept-card ul li { margin-bottom: 0.25rem; }
+
+    .chip {
+      display: inline-block;
+      background: var(--color-tag-bg);
+      border: 1px solid var(--color-border);
+      color: var(--color-text-muted);
+      font-size: 0.72rem;
+      padding: 0.18rem 0.55rem;
+      border-radius: 4px;
+      margin: 0.1rem 0.2rem 0.1rem 0;
+    }
+    .chip.highlight { border-color: var(--color-accent); color: var(--color-accent); background: rgba(91,79,255,0.07); font-weight: 600; }
+
+    .table-wrap { overflow-x: auto; margin-top: 1rem; -webkit-overflow-scrolling: touch; }
+    table { width: 100%; min-width: 620px; border-collapse: collapse; font-size: 0.84rem; }
+    thead th {
+      background: var(--color-surface);
+      color: var(--color-text-muted);
+      text-align: left;
+      padding: 0.6rem 0.9rem;
+      border-bottom: 1px solid var(--color-border);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    tbody td { padding: 0.6rem 0.9rem; border-bottom: 1px solid var(--color-border); color: var(--color-text-muted); vertical-align: top; }
+    tbody td:first-child { color: var(--color-text); font-weight: 600; white-space: nowrap; }
+    tbody td:nth-child(2) { white-space: nowrap; color: var(--color-accent); font-weight: 600; font-family: var(--font-mono); font-size: 0.8rem; }
+    tbody tr:hover td { background: var(--color-surface); }
+
+    .callout {
+      background: rgba(91,79,255,0.05);
+      border: 1px solid rgba(91,79,255,0.18);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.25rem;
+      font-size: 0.88rem;
+      color: var(--color-text-muted);
+      line-height: 1.7;
+      margin: 1.25rem 0;
+    }
+    .callout strong { color: var(--color-accent); }
+    .callout.amber { background: rgba(217,119,6,0.05); border-color: rgba(217,119,6,0.2); }
+    .callout.amber strong { color: var(--A3); }
+    .callout.teal { background: rgba(13,148,136,0.05); border-color: rgba(13,148,136,0.2); }
+    .callout.teal strong { color: var(--A2); }
+    .callout.pink { background: rgba(219,39,119,0.05); border-color: rgba(219,39,119,0.2); }
+    .callout.pink strong { color: var(--A4); }
+
+    .toc { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 1rem; }
+    .toc a { font-size: 0.9rem; color: var(--color-text); padding: 0.4rem 0.7rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border); }
+    .toc a:hover { background: var(--color-surface); border-color: var(--color-accent); text-decoration: none; }
+    .toc a span { color: var(--color-text-muted); font-size: 0.8rem; }
+
+    footer { padding: 3rem 0 4rem; text-align: center; color: var(--color-text-muted); font-size: 0.82rem; border-top: 1px solid var(--color-border); }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="wrapper">
+      <a class="back-link" href="/projects/one-more-step/">← One More Step</a>
+      <div class="page-nav-links">
+        <a class="page-nav-link" href="#concepts">概念地圖</a>
+        <a class="page-nav-link" href="#siph">矽光子</a>
+        <a class="page-nav-link" href="#quantum">量子電腦</a>
+        <a class="page-nav-link" href="#pqc">PQC</a>
+        <a class="page-nav-link" href="#etf">ETF</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="wrapper">
+    <section class="hero" style="border-top:none;">
+      <span class="hero-badge">Deep Tech · 2026</span>
+      <h1>矽光子 × 量子電腦 × <span>PQC</span></h1>
+      <p>從 AppWorks AW#32 的 PQC 主題，和一位矽光子晶片研究者朋友的博士論文延伸出的觀念地圖：光、量子、密碼學如何在下一個十年交織成一個產業賽道，以及台股、美股的對應投資標的。</p>
+      <div class="hero-tags">
+        <span class="hero-tag">矽光子 Silicon Photonics</span>
+        <span class="hero-tag">量子電腦 Quantum Computing</span>
+        <span class="hero-tag">後量子密碼 PQC</span>
+        <span class="hero-tag">光子 EDA</span>
+      </div>
+    </section>
+
+    <section id="concepts">
+      <div class="section-label">Part 1</div>
+      <h2>四個領域，一條邏輯線</h2>
+      <p class="lead">這四件事看似各自獨立，其實被同一條因果鏈串起來：量子電腦終將強大到能破解現行加密 → 我們現在就要換用「後量子密碼」(PQC) → 量子電腦五大硬體路線裡有三條本質上是「操控光」→ 而操控光的晶片化能力，正是矽光子（連帶光子 EDA 設計工具）多年來在通訊產業練的功夫，現在被借去做量子與運算。</p>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <h4><span class="dot dot-1"></span>① PQC 後量子密碼</h4>
+          <p>因為量子電腦的 Shor 演算法能在多項式時間內破解 RSA / ECC / Diffie-Hellman，而 Grover 演算法只會把 AES 等對稱式加密的安全強度減半（用更長金鑰即可應對）。威脅模型稱為 <strong>HNDL（Harvest Now, Decrypt Later）</strong>：現在攔截加密資料，等量子電腦成熟後再解密，所以即使「量子電腦還沒出現」，換密碼演算法也急迫。</p>
+          <ul>
+            <li>NIST 標準：FIPS 203(ML-KEM/Kyber)、204(ML-DSA/Dilithium)、205(SLH-DSA/SPHINCS+)，206(FALCON) 待定，HQC 作為備援 KEM（2025/3 選定）</li>
+            <li>NSA CNSA 2.0：2025-2027 起「優先採用」，2030/2033 強制全面換裝</li>
+            <li>與 QKD（量子金鑰分發，需要專用硬體/光纖）是不同路線：PQC 是純軟體換算法，QKD 是硬體建網</li>
+          </ul>
+        </div>
+
+        <div class="concept-card">
+          <h4><span class="dot dot-2"></span>② 量子電腦五大硬體路線</h4>
+          <p>五種主流硬體方案中，三種的核心操控機制是「光」：</p>
+          <ul>
+            <li><strong>超導 Superconducting</strong>（不靠光）— IBM、Google、Rigetti</li>
+            <li><strong>離子陷阱 Trapped Ion</strong>（靠光：雷射操控離子）— IonQ、Quantinuum</li>
+            <li><strong>光子 Photonic</strong>（靠光：光子本身就是 qubit）— PsiQuantum、Xanadu、ORCA</li>
+            <li><strong>中性原子 Neutral Atom</strong>（靠光：光鑷捕捉原子）— QuEra、Pasqal、Atom Computing</li>
+            <li><strong>拓樸 Topological</strong>（不靠光）— Microsoft Majorana</li>
+          </ul>
+        </div>
+
+        <div class="concept-card">
+          <h4><span class="dot dot-3"></span>③ 矽光子 Silicon Photonics</h4>
+          <p>用半導體製程在矽晶片上做光的傳輸與調控，核心元件是波導（Waveguide）、微環諧振器（MRR）、馬赫－曾德爾干涉儀（MZI，可用熱光、PN 接面電光或 GeSi 電吸收調變器驅動）。矽是間接能隙材料不能自己發光，所以仍需混合整合 III-V 族雷射。</p>
+          <ul>
+            <li>主戰場一（現金流來源）：資料中心光互連、CPO（Co-Packaged Optics）</li>
+            <li>主戰場二（長期）：光運算，目前產業重心正從「運算」轉回「互連」</li>
+            <li>晶圓代工：imec iSiPP/iSiPP300、台積電 COUPE、GlobalFoundries GF Fotonix、Tower Semiconductor；<strong>聯電-imec 授權生效日為 2025/12/08（非友人原文的 2026 年 4 月），風險試產規劃在 2026-2027</strong></li>
+          </ul>
+        </div>
+
+        <div class="concept-card">
+          <h4><span class="dot dot-4"></span>④ 光子 EDA / 光運算（朋友的論文領域）</h4>
+          <p>朋友論文涉及的 NTU EDA 組題目（TriHOT、Harrow、DCPPC）落在這裡：用 EDA（電子設計自動化）工具去設計可程式化光子電路（PPC, Programmable Photonic Circuit），核心結構是 MZI mesh（六角形/矩形拓樸），imec 在製程上扮演關鍵角色，iPronics 是商業化的代表案例。</p>
+          <ul>
+            <li>類比光子 AI 加速器：Lightmatter、Lightelligence、Celestial AI（後者已於 2025/12 被 Marvell 以最高 55 億美元收購，且正轉向互連市場）</li>
+            <li>數位光子邏輯（朋友的細分利基）：常用開源工具 ABC 做邏輯合成</li>
+            <li>神經形態運算（Neuromorphic）</li>
+            <li>主要學術發表場域：DAC、ICCAD、ASP-DAC、DATE</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout">
+        <strong>一句話總結：</strong>矽光子練的「在晶片上精準操控光」的能力，正好是量子電腦三種主流路線（光子、離子陷阱、中性原子）共同需要的底層技術；而 PQC 則是「在量子電腦真正威脅到現有加密之前」必須先完成的軟體層遷移。三者時間軸不同步，但互為因果。
+      </div>
+    </section>
+
+    <section id="siph">
+      <div class="section-label">Part 2 · 投資標的</div>
+      <h2>矽光子 / 光互連 / CPO</h2>
+      <p class="lead">資料中心 AI 算力需求帶動光互連與 CPO 的近期營收成長，是矽光子目前最具體的變現場景。</p>
+
+      <h3>美股</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>公司</th><th>代號</th><th>角色 / 定位</th></tr></thead>
+          <tbody>
+            <tr><td>Broadcom</td><td>AVGO</td><td>CPO 與光引擎龍頭供應商之一，與輝達/超微等資料中心客戶深度合作</td></tr>
+            <tr><td>Nvidia</td><td>NVDA</td><td>推動 CPO 導入自家 GPU 互連架構（如 Quantum-X / Spectrum-X 交換器），帶動整條供應鏈需求</td></tr>
+            <tr><td>Marvell</td><td>MRVL</td><td>資料中心互連 ASIC/DSP，2025/12 收購 Celestial AI（光子互連 IP）強化布局</td></tr>
+            <tr><td>Cisco</td><td>CSCO</td><td>網通設備龍頭，矽光子收發模組大客戶與布局者</td></tr>
+            <tr><td>Ciena</td><td>CIEN</td><td>光通訊網路設備與相關元件</td></tr>
+            <tr><td>Coherent</td><td>COHR</td><td>雷射與光學元件，收購 Finisar 後成為光收發模組重要供應商</td></tr>
+            <tr><td>Lumentum</td><td>LITE</td><td>光學元件與模組，資料中心與電信兩用</td></tr>
+            <tr><td>Applied Optoelectronics</td><td>AAOI</td><td>垂直整合光收發模組/雷射供應商，800G 模組 2026Q1 放量</td></tr>
+            <tr><td>POET Technologies</td><td>POET</td><td>光子互連平台新創（已上市），主打光引擎整合方案</td></tr>
+            <tr><td>Lumentum 競品 / Lightwave Logic</td><td>LWLG</td><td>電光聚合物調變器材料技術，授權模式</td></tr>
+            <tr><td>Credo Technology</td><td>CRDO</td><td>高速互連 IC（含光相關 DSP/SerDes），AI 資料中心受惠股</td></tr>
+            <tr><td>Astera Labs</td><td>ALAB</td><td>PCIe/CXL Retimer 與智慧連接模組，資料中心互連生態系</td></tr>
+            <tr><td>MACOM</td><td>MTSI</td><td>類比與光通訊半導體，LPO（線性直驅光學）技術供應商</td></tr>
+            <tr><td>Intel</td><td>INTC</td><td>矽光子研發資歷最久，2023 年將可插拔光收發模組業務出售予 Jabil（2024 為內部 IPS 部門整併進 DCAI，非 2025 撤資）</td></tr>
+            <tr><td>GlobalFoundries</td><td>GFS</td><td>GF Fotonix 矽光子晶圓代工平台</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="lead" style="margin-top:0.75rem;">未公開上市但常被提及：Lightmatter、Ayar Labs（光互連 chiplet，獲超微/輝達等策略投資）。</p>
+
+      <h3>台股</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>公司</th><th>代號</th><th>角色 / 定位</th></tr></thead>
+          <tbody>
+            <tr><td>台積電</td><td>2330</td><td>COUPE 矽光子整合平台，先進封裝（CoWoS/SoIC）是 CPO 落地的關鍵代工方</td></tr>
+            <tr><td>聯電</td><td>2303</td><td>2025/12/08 與 imec 簽署 iSiPP300 矽光子製程授權，目標 2026-2027 風險試產</td></tr>
+            <tr><td>日月光</td><td>3711</td><td>先進封裝大廠，CPO 模組封裝測試潛在受惠者</td></tr>
+            <tr><td>鴻海</td><td>2317</td><td>透過子公司／策略佈局切入 AI 資料中心光通訊模組組裝</td></tr>
+            <tr><td>廣達</td><td>2382</td><td>AI 伺服器與資料中心系統整合，光互連模組導入的下游應用方</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout amber">
+        <strong>資料缺口：</strong>友人原文提到的台廠矽光子被動元件 / 模組供應鏈（上詮、聯亞、聯鈞、華星光等）目前查無足夠公開資料可驗證其矽光子相關業務比重，故未列入表格，留待後續確認。
+      </div>
+    </section>
+
+    <section id="quantum">
+      <div class="section-label">Part 2 · 投資標的</div>
+      <h2>量子電腦</h2>
+      <p class="lead">純硬體玩家多為小型股、波動大；大型科技公司則以雲端服務（QaaS）形式間接參與。台股目前沒有真正的量子電腦純概念股，多為材料/設備供應鏈的間接受惠者。</p>
+
+      <h3>美股</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>公司</th><th>代號</th><th>硬體路線 / 定位</th></tr></thead>
+          <tbody>
+            <tr><td>IonQ</td><td>IONQ</td><td>離子陷阱，純量子電腦上市公司代表</td></tr>
+            <tr><td>Rigetti Computing</td><td>RGTI</td><td>超導</td></tr>
+            <tr><td>D-Wave Quantum</td><td>QBTS</td><td>量子退火（非通用閘式量子電腦）</td></tr>
+            <tr><td>Quantum Computing Inc.</td><td>QUBT</td><td>光子（小型，投機性高）</td></tr>
+            <tr><td>Arqit Quantum</td><td>ARQQ</td><td>量子加密 / PQC 解決方案（跨入下一節主題）</td></tr>
+            <tr><td>IBM</td><td>IBM</td><td>超導，量子雲端服務龍頭之一</td></tr>
+            <tr><td>Alphabet</td><td>GOOGL</td><td>超導（Willow 晶片），內部研發為主</td></tr>
+            <tr><td>Microsoft</td><td>MSFT</td><td>拓樸路線（Majorana）+ Azure Quantum 雲端服務</td></tr>
+            <tr><td>Honeywell / Quantinuum</td><td>HON / QNT</td><td>離子陷阱，Quantinuum 已於 2026/6/4 獨立上市（代號 QNT）</td></tr>
+            <tr><td>Nvidia</td><td>NVDA</td><td>不直接做量子硬體，但 CUDA-Q 平台與量子-古典混合運算生態系是重要間接受惠者</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="lead" style="margin-top:0.75rem;">未公開上市：PsiQuantum、Xanadu（規劃 SPAC 上市）、QuEra、Pasqal、Atom Computing。</p>
+
+      <h3>台股</h3>
+      <p class="lead">截至目前，台股<strong>沒有純量子電腦概念股</strong>；主要是低溫設備、特殊材料、半導體製程供應鏈在量子硬體興起後可能間接受惠（與既有半導體供應鏈標的重疊度高，暫無獨立可辨識的台廠量子電腦標的可單獨列出）。</p>
+    </section>
+
+    <section id="pqc">
+      <div class="section-label">Part 2 · 投資標的</div>
+      <h2>PQC / 量子安全資安</h2>
+      <p class="lead">這個賽道的特性是：多數真正做 PQC 演算法與金鑰管理的公司仍是私有公司，目前可投資的多是「把 PQC 當作既有資安/網路產品的升級項目」的上市公司。</p>
+
+      <h3>美股</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>公司</th><th>代號</th><th>角色 / 定位</th></tr></thead>
+          <tbody>
+            <tr><td>Palo Alto Networks</td><td>PANW</td><td>網路資安平台，逐步導入 PQC 加密模組</td></tr>
+            <tr><td>CrowdStrike</td><td>CRWD</td><td>端點資安，量子威脅情資與防護路線圖</td></tr>
+            <tr><td>Cloudflare</td><td>NET</td><td>已大規模在邊緣網路部署後量子加密（PQC TLS）</td></tr>
+            <tr><td>Akamai</td><td>AKAM</td><td>CDN/邊緣安全，PQC 相關白皮書與服務</td></tr>
+            <tr><td>IBM</td><td>IBM</td><td>z系列主機與雲端服務內建 PQC 支援，亦是 NIST 標準主要貢獻者之一</td></tr>
+            <tr><td>Arqit Quantum</td><td>ARQQ</td><td>量子加密金鑰分發服務（QaaS 形式，非典型硬體 QKD）</td></tr>
+            <tr><td>Thales</td><td>歐股 HO.PA（無美股 ADR 純粹對應）</td><td>HSM／金鑰管理硬體大廠，PQC 遷移方案供應商</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="lead" style="margin-top:0.75rem;">未公開上市：SandboxAQ（Alphabet 衍生）、DigiCert、Entrust — 均為 PQC 憑證/金鑰管理的重要私有公司。</p>
+
+      <h3>台股</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>公司</th><th>代號</th><th>角色 / 定位</th></tr></thead>
+          <tbody>
+            <tr><td>中華資安國際</td><td>7765</td><td>資安服務整合商，逐步將後量子密碼納入服務項目</td></tr>
+            <tr><td>安碁資訊</td><td>6690</td><td>資安監控服務，潛在 PQC 升級需求受惠者</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout teal">
+        台廠在 PQC 演算法本身的角色非常有限（這是密碼學標準制定與軟體層的賽道），主要機會在「資安服務商導入 PQC 後的升級銷售」與「硬體安全模組（HSM）/ 安全晶片」供應鏈的間接受惠。
+      </div>
+    </section>
+
+    <section id="etf">
+      <div class="section-label">Part 2 · 投資標的</div>
+      <h2>主題型 ETF（分散持股）</h2>
+      <p class="lead">若不想單押個股波動，主題 ETF 是更分散的入場方式，但要注意持股中「真正的純概念股」佔比往往不高。</p>
+
+      <h3>美股 ETF</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ETF</th><th>代號</th><th>主題</th></tr></thead>
+          <tbody>
+            <tr><td>Defiance Quantum ETF</td><td>QTUM</td><td>量子運算 + 機器學習</td></tr>
+            <tr><td>Defiance Quantum & Photonics ETF</td><td>QPUX</td><td>量子 + 光子（涵蓋本篇兩大主題）</td></tr>
+            <tr><td>ARK Autonomous Tech & Robotics</td><td>ARKQ</td><td>含部分量子/AI 運算曝險，非純概念</td></tr>
+            <tr><td>Invesco Semiconductors</td><td>PSI</td><td>半導體供應鏈，間接含矽光子相關公司</td></tr>
+            <tr><td>VanEck Semiconductor</td><td>SMH</td><td>半導體龍頭股，間接曝險</td></tr>
+            <tr><td>iShares Semiconductor</td><td>SOXX</td><td>半導體龍頭股，間接曝險</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>台股 ETF</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ETF</th><th>代號</th><th>主題</th></tr></thead>
+          <tbody>
+            <tr><td>中信關鍵半導體</td><td>00891</td><td>半導體供應鏈，間接曝險</td></tr>
+            <tr><td>復華台灣科技優息</td><td>00904</td><td>科技股優息，間接曝險</td></tr>
+            <tr><td>台新 ESG 智慧車供應鏈</td><td>00947</td><td>非直接相關，部分供應鏈重疊</td></tr>
+            <tr><td>富邦未來車</td><td>00892</td><td>非直接相關，部分供應鏈重疊</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout amber">
+        台股目前沒有「矽光子／量子／PQC」專屬主題 ETF，上表為半導體或科技類 ETF 的間接曝險選項，純度低於美股的 QTUM / QPUX。
+      </div>
+    </section>
+
+    <section>
+      <div class="section-label">附註</div>
+      <h2>已知資料缺口與修正</h2>
+      <div class="callout pink">
+        <strong>修正 1：</strong>聯電與 imec 的 iSiPP300 矽光子授權生效日為 <strong>2025/12/08</strong>，並非原始 Facebook 貼文中的「2026 年 4 月」；風險試產規劃落在 2026-2027 年，尚非「量產」。
+      </div>
+      <div class="callout pink">
+        <strong>修正 2：</strong>Intel 出售可插拔光收發模組業務給 Jabil 發生於 <strong>2023 年</strong>，2024 年的調整是內部部門整併（IPS 併入 DCAI），並非另一次資產撤資。
+      </div>
+      <div class="callout amber">
+        <strong>待補：</strong>台股矽光子被動元件／模組供應鏈中較小型的公司（上詮、聯亞、聯鈞、華星光等）尚未能找到足夠公開資料驗證其矽光子業務比重，本篇暫不列入投資標的表格。
+      </div>
+      <p class="lead" style="margin-top:1.25rem;">本文為產業研究筆記整理，非投資建議，個股與 ETF 之配置請自行評估風險與盡職調查。</p>
+    </section>
+  </div>
+
+  <footer>
+    <div class="wrapper">
+      <p>One More Step · 葉淨維 Matt Ye — 把複雜的東西搞懂，然後寫下來。</p>
+    </div>
+  </footer>
+
+</body>
+</html>

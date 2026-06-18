@@ -12,6 +12,15 @@ export interface OmsDoc {
 
 export const oneMoreStep: OmsDoc[] = [
   {
+    slug: 'quantum-photonics-investing',
+    title: '矽光子 × 量子電腦 × PQC 投資地圖',
+    titleEn: 'Silicon Photonics, Quantum & PQC Investing Map',
+    description: '從 AppWorks AW#32 / AW#33 的 PQC 與矽光子趨勢出發，整理矽光子、量子電腦五大硬體路線、光子 EDA / 光運算的觀念地圖，附台股、美股對應投資標的總覽表。',
+    tags: ['矽光子', '量子電腦', 'PQC', '投資'],
+    date: '2026-06-25',
+    url: '/projects/one-more-step/quantum-photonics-investing/',
+  },
+  {
     slug: 'aw32',
     title: 'AW#32 創投現場：19 家新創與下一個創業風向',
     titleEn: 'AW#32 Demo Day: 19 Startups & the Next Big Bet',
