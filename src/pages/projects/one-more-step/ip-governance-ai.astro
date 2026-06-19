@@ -1,11 +1,32 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+const pageTitle = "智慧財產權對企業與治理的重要性 — One More Step — Matt Ye";
+const pageDescription = "探討人工智慧時代的智慧財產權治理架構，涵蓋著作權、專利、開源授權等核心議題。學習筆記整理自《全國律師》2026年5月號。";
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL('/OG.png', Astro.site).href;
+
+const articleLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": pageTitle,
+  "description": pageDescription,
+  "datePublished": "2026-05-01",
+  "inLanguage": "zh-TW",
+  "author": { "@type": "Person", "@id": "https://mattye.dev/#person", "name": "Ching-Wei (Matt) Ye" },
+  "publisher": { "@id": "https://mattye.dev/#person" },
+  "mainEntityOfPage": canonicalURL,
+  "image": ogImage
+};
 ---
 <BaseLayout
-  title="智慧財產權對企業與治理的重要性 — One More Step — Matt Ye"
-  description="探討人工智慧時代的智慧財產權治理架構，涵蓋著作權、專利、開源授權等核心議題。學習筆記整理自《全國律師》2026年5月號。"
+  title={pageTitle}
+  description={pageDescription}
   lang="zh-TW"
 >
+
+<script type="application/ld+json" slot="head" set:html={JSON.stringify(articleLd)} />
 
 <!-- Full-width: hero + sticky TOC -->
 <div slot="full-width" class="ip-fw">
