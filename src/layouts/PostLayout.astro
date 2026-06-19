@@ -17,8 +17,30 @@ const dateFormatted = pubDate.toLocaleDateString(
   lang === 'zh' ? 'zh-TW' : 'en-US',
   { year: 'numeric', month: 'long', day: 'numeric' }
 );
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL('/OG.png', Astro.site).href;
+
+const articleLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": title,
+  "description": description,
+  "datePublished": pubDate.toISOString(),
+  "inLanguage": htmlLang,
+  "author": {
+    "@type": "Person",
+    "@id": "https://mattye.dev/#person",
+    "name": "Ching-Wei (Matt) Ye"
+  },
+  "publisher": { "@id": "https://mattye.dev/#person" },
+  "mainEntityOfPage": canonicalURL,
+  "image": ogImage
+};
 ---
 <BaseLayout title={title} description={description} lang={htmlLang} ogType="article">
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(articleLd)} />
+
   <a href="/writing" class="back-link">← Writing</a>
 
   <header class="post-page-header">
