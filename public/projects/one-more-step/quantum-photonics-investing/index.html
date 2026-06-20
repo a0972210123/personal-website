@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>矽光子 × 量子電腦 × PQC — 趨勢與投資地圖 · One More Step</title>
-  <meta name="description" content="從 AppWorks AW#32 PQC 主題與一篇博士論文研究出發，整理矽光子、量子電腦五大硬體路線、光子 EDA / 光運算，以及對應的台股、美股投資標的總覽。" />
+  <meta name="description" content="從 AppWorks AW#32 / AW#33 的 PQC 與矽光子趨勢出發，整理矽光子、量子電腦五大硬體路線、光子 EDA / 光運算，以及對應的台股、美股投資標的總覽。" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -255,6 +255,61 @@
     .term-body p { margin-top: 0.4rem; }
     .term-body p:first-child { margin-top: 0; }
     .term-body strong { color: var(--color-text); }
+    .term-cat {
+      display: inline-block;
+      font-size: 0.68rem;
+      color: var(--color-text-muted);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      padding: 0.1rem 0.45rem;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+    }
+
+    .flow-diagram {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin: 1.5rem 0 2rem;
+    }
+    .flow-layer {
+      display: grid;
+      gap: 0.6rem;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+    .flow-node {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm);
+      padding: 0.7rem 0.9rem;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      box-shadow: var(--card-shadow);
+    }
+    .flow-node strong { display: block; font-size: 0.86rem; margin-bottom: 0.15rem; }
+    .flow-node span { color: var(--color-text-muted); font-size: 0.76rem; }
+    .flow-node.is-light { border-color: rgba(91,79,255,0.35); background: rgba(91,79,255,0.04); }
+    .flow-node.is-light strong { color: var(--color-accent); }
+    .flow-node.is-nonlight { opacity: 0.6; }
+    .flow-node.is-hub { border-color: var(--A4); background: rgba(219,39,119,0.05); text-align: center; }
+    .flow-node.is-hub strong { color: var(--A4); }
+    .flow-node.is-threat { border-color: var(--A3); background: rgba(217,119,6,0.05); }
+    .flow-node.is-threat strong { color: var(--A3); }
+    .flow-node.is-response { border-color: var(--A2); background: rgba(13,148,136,0.05); }
+    .flow-node.is-response strong { color: var(--A2); }
+    .flow-arrow {
+      text-align: center;
+      color: var(--color-text-muted);
+      font-size: 1.1rem;
+      line-height: 1;
+      margin: 0.35rem 0;
+    }
+    .flow-caption {
+      text-align: center;
+      font-size: 0.72rem;
+      color: var(--color-text-muted);
+      margin-top: 0.15rem;
+    }
 
     .toc { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 1rem; }
     .toc a { font-size: 0.9rem; color: var(--color-text); padding: 0.4rem 0.7rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border); }
@@ -284,7 +339,7 @@
     <section class="hero" style="border-top:none;">
       <span class="hero-badge">Deep Tech · 2026</span>
       <h1>矽光子 × 量子電腦 × <span>PQC</span></h1>
-      <p>從 AppWorks AW#32 的 PQC 主題，和一位矽光子晶片研究者朋友的博士論文延伸出的觀念地圖：光、量子、密碼學如何在下一個十年交織成一個產業賽道，以及台股、美股的對應投資標的。</p>
+      <p>從 AppWorks AW#32、AW#33 的 PQC 與矽光子議題，加上與業界矽光子晶片專家交流趨勢時延伸整理出的觀念地圖：光、量子、密碼學如何在下一個十年交織成一個產業賽道，以及台股、美股的對應投資標的。</p>
       <div class="hero-tags">
         <span class="hero-tag">矽光子 Silicon Photonics</span>
         <span class="hero-tag">量子電腦 Quantum Computing</span>
@@ -296,7 +351,36 @@
     <section id="concepts">
       <div class="section-label">Part 1</div>
       <h2>四個領域，一條邏輯線</h2>
-      <p class="lead">這篇文章的起點，是台大電機系 EDA 組博士生 <strong>梁峻瑋</strong> 的一句話：「矽光子如果要發展長遠，除了光傳輸，就是往量子電腦走；反過來說，量子電腦的五大可行方案，也有三個跟光有關。」這四件事看似各自獨立，其實被同一條因果鏈串起來：量子電腦終將強大到能破解現行加密 → 我們現在就要換用「後量子密碼」(PQC) → 量子電腦五大硬體路線裡有三條本質上是「操控光」→ 而操控光的晶片化能力，矽光子產業裡又只有「通用 PIC 代工」這條分支才真正銜接得上（細節見下方③），光子 EDA 設計工具則是讓這些光子電路「可被設計、可被驗證」的造工具的人。</p>
+      <p class="lead">業界一個常被提起的觀察是：矽光子若要發展長遠，除了資料中心的光傳輸應用，下一步是走向量子電腦；反過來說，量子電腦五大主流硬體路線中，也有三條本質上跟「操控光」有關。PQC、矽光子、量子電腦、光子 EDA 這四件事看似各自獨立，其實被同一條因果鏈串起來，且這條因果鏈有公開、可查證的依據（見文末 References）：量子電腦一旦具備足夠規模的容錯量子位元，就能用 <strong>Shor 演算法</strong>在多項式時間內分解大數，使 RSA、ECC 等現行公鑰加密失效；攻擊者不必等到那一天才行動，現在就能攔截、儲存加密資料，等量子電腦成熟後再回頭解密（HNDL，<a href="https://www.cisa.gov/news-events/alerts/2023/08/21/cisa-nsa-and-nist-publish-factsheet-quantum-readiness" target="_blank" rel="noopener">CISA/NSA/NIST 已將此列為現實威脅</a>），因此美國政府已要求各機關依時程遷移至「後量子密碼」(PQC)（<a href="https://www.whitehouse.gov/wp-content/uploads/2022/11/M-23-02-M-Memo-on-Migrating-to-Post-Quantum-Cryptography.pdf" target="_blank" rel="noopener">OMB M-23-02</a>）。而要造出能執行 Shor 演算法的量子電腦，五大硬體路線中有三條（離子陷阱、光子、中性原子）的核心操控機制都是「光」（<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10948723/" target="_blank" rel="noopener">五大 qubit 路線綜述</a>）；而能在晶片或光路上精準產生、導引、調變光，正是矽光子產業多年來在資料中心通訊領域磨練出的工程能力——但矽光子產業裡，只有「通用 PIC 代工」這條分支才真正銜接得上量子硬體的客製化需求（細節見下方③），光子 EDA 設計工具則是讓這些光子電路「可被設計、可被驗證」的工具鏈。</p>
+
+      <div class="flow-diagram">
+        <div class="flow-layer">
+          <div class="flow-node"><strong>矽光子：通用 PIC 代工</strong><span>開放式流片平台</span></div>
+          <div class="flow-node"><strong>光子 EDA 設計工具</strong><span>電路設計與驗證</span></div>
+          <div class="flow-node"><strong>雷射 / 光學操控</strong><span>精準產生、導引、調變光</span></div>
+        </div>
+        <div class="flow-arrow">↓ 是光基量子硬體的共同基礎 ↓</div>
+        <div class="flow-layer">
+          <div class="flow-node is-light"><strong>光子 Photonic</strong><span>靠光：光子即 qubit</span></div>
+          <div class="flow-node is-light"><strong>離子陷阱 Trapped Ion</strong><span>靠光：雷射驅動能階躍遷</span></div>
+          <div class="flow-node is-light"><strong>中性原子 Neutral Atom</strong><span>靠光：光鑷捕捉原子</span></div>
+          <div class="flow-node is-nonlight"><strong>超導 Superconducting</strong><span>不靠光：微波脈衝</span></div>
+          <div class="flow-node is-nonlight"><strong>拓樸 Topological</strong><span>不靠光：拓樸準粒子</span></div>
+        </div>
+        <div class="flow-arrow">↓ 五條路線匯流 ↓</div>
+        <div class="flow-layer" style="grid-template-columns: 1fr;">
+          <div class="flow-node is-hub"><strong>量子電腦</strong><span>具備執行 Shor 演算法所需的容錯量子位元規模</span></div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-layer" style="grid-template-columns: 1fr;">
+          <div class="flow-node is-threat"><strong>威脅：破解 RSA / ECC 公鑰加密</strong><span>HNDL：現在攔截、未來解密</span></div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-layer" style="grid-template-columns: 1fr;">
+          <div class="flow-node is-response"><strong>應對：PQC 後量子密碼</strong><span>NIST FIPS 203/204/205/206 標準遷移</span></div>
+        </div>
+        <p class="flow-caption">一張圖看懂彼此的關係：上層是使能技術，往下匯流到量子電腦，再向下延伸出加密威脅與 PQC 的應對。</p>
+      </div>
 
       <div class="concept-grid">
         <div class="concept-card">
@@ -331,19 +415,19 @@
             <li><strong>賽道 B · CPO / 光學互連（Co-Packaged Optics）</strong>：台積電 COUPE 是把光引擎（PIC）與電子 IC 透過 SoIC/CoWoS 先進封裝整合在一起的方案，本質是解決「資料怎麼快速進出自家高效能運算封裝」這個特定問題，緊密綁定 TSMC 自己的先進封裝與 AI 算力生態系，並不是一個開放、誰都能拿來流片任意光子電路的代工平台。</li>
           </ul>
           <div class="callout teal">
-            <strong>修正後的因果論點：</strong>矽光子常被當成單一賽道討論，但 CPO 互連（賽道 B）服務的是「資料中心光通訊」這個現金流場景；真正通向量子運算/量子感測晶片的，是賽道 A「通用 PIC 代工」，因為量子光子晶片需要的是「客製化光子電路的代工彈性」，而非「先進封裝內的光 I/O 方案」。（感謝梁峻瑋博士指出這個關鍵區分。）
+            <strong>概念澄清：</strong>矽光子常被當成單一賽道討論，但 CPO 互連（賽道 B）服務的是「資料中心光通訊」這個現金流場景；真正通向量子運算/量子感測晶片的，是賽道 A「通用 PIC 代工」，因為量子光子晶片需要的是「客製化光子電路的代工彈性」，而非「先進封裝內的光 I/O 方案」。例如 GlobalFoundries 與 PsiQuantum 合作建造全規模光子量子電腦，採用的正是開放式晶圓代工模式而非先進封裝光 I/O 方案（<a href="https://gf.com/dresden-press-release/psiquantum-and-globalfoundries-build-worlds-first-full-scale-quantum-computer/" target="_blank" rel="noopener">GlobalFoundries 官方新聞稿</a>）。
           </div>
         </div>
 
         <div class="concept-card">
           <h4><span class="dot dot-4"></span>④ 光子 EDA ≠ 光運算</h4>
-          <p>先釐清一個容易混淆的地方：<strong>光子 EDA（電子設計自動化）指的是「設計工具/演算法」本身</strong>——例如光子電路的自動布局繞線、邏輯合成、相位誤差與熱串擾校正；這跟「用光子晶片做運算」（optical computing，光運算硬體本身）是兩件不同的事。打個比方，EDA 是造工具的人，optical computing 是被造出來的晶片。梁峻瑋博士的論文題目正落在 EDA／設計自動化這一側：</p>
+          <p>先釐清一個容易混淆的地方：<strong>光子 EDA（電子設計自動化）指的是「設計工具/演算法」本身</strong>——例如光子電路的自動布局繞線、邏輯合成、相位誤差與熱串擾校正；這跟「用光子晶片做運算」（optical computing，光運算硬體本身）是兩件不同的事。打個比方，EDA 是造工具的人，optical computing 是被造出來的晶片。近期光子 EDA 領域的代表性研究（例如台大團隊發表的下列題目）正落在設計自動化這一側：</p>
           <ul>
             <li><strong>TriHOT</strong>（ACM TODAES 2026）：用三角形/六角形時序模型，解決晶片上光子互連的「WDM 波分多工感知繞線」問題——是繞線/時序最佳化問題。</li>
             <li><strong>Harrow / p-Harrow</strong>（DAC 2025）：用調和平均數與整數拆分法，做「光學邏輯電路合成」——是邏輯合成問題。</li>
             <li><strong>DCPPC</strong>（ASP-DAC 2026）：在可程式化光子電路（MZI mesh）裡實現數位邏輯運算，並用自動繞線演算法校正、最大化通過特定可調單元的訊號——同時碰到電路合成與校正。</li>
           </ul>
-          <p class="lead" style="margin-bottom:0; font-size:0.8rem;">（以上三項定位依公開論文標題與摘要整理，正式定義以梁博士本人確認為準。）</p>
+          <p class="lead" style="margin-bottom:0; font-size:0.8rem;">（以上三項定位依公開論文標題與摘要整理，正式定義以原始論文為準。）</p>
           <ul>
             <li>商業化代表：iPronics（可程式化光子電路）；類比光子 AI 加速器如 Lightmatter、Lightelligence、Celestial AI（後者已於 2025/12 被 Marvell 以最高 55 億美元收購，且正轉向互連市場）</li>
             <li>主要學術發表場域：DAC、ICCAD、ASP-DAC、DATE</li>
@@ -408,7 +492,7 @@
         </table>
       </div>
       <div class="callout amber">
-        <strong>資料缺口：</strong>友人原文提到的台廠矽光子被動元件 / 模組供應鏈（上詮、聯亞、聯鈞、華星光等）目前查無足夠公開資料可驗證其矽光子相關業務比重，故未列入表格，留待後續確認。
+        <strong>資料缺口：</strong>台廠矽光子被動元件 / 模組供應鏈（上詮、聯亞、聯鈞、華星光等）目前查無足夠公開資料可驗證其矽光子相關業務比重，故未列入表格，留待後續確認。
       </div>
     </section>
 
@@ -517,13 +601,7 @@
 
     <section>
       <div class="section-label">附註</div>
-      <h2>已知資料缺口與修正</h2>
-      <div class="callout pink">
-        <strong>修正 1：</strong>聯電與 imec 的 iSiPP300 矽光子授權生效日為 <strong>2025/12/08</strong>，並非原始 Facebook 貼文中的「2026 年 4 月」；風險試產規劃落在 2026-2027 年，尚非「量產」。
-      </div>
-      <div class="callout pink">
-        <strong>修正 2：</strong>Intel 出售可插拔光收發模組業務給 Jabil 發生於 <strong>2023 年</strong>，2024 年的調整是內部部門整併（IPS 併入 DCAI），並非另一次資產撤資。
-      </div>
+      <h2>資料範圍與聲明</h2>
       <div class="callout amber">
         <strong>待補：</strong>台股矽光子被動元件／模組供應鏈中較小型的公司（上詮、聯亞、聯鈞、華星光等）尚未能找到足夠公開資料驗證其矽光子業務比重，本篇暫不列入投資標的表格。
       </div>
@@ -533,7 +611,7 @@
     <section>
       <div class="section-label">致謝</div>
       <h2>致謝</h2>
-      <p class="lead">本文最初版本誤將 UMC-imec iSiPP300 與 TSMC COUPE 並列為同一種「矽光子晶圓代工平台」，感謝台大電機系 EDA 組博士生 <strong>梁峻瑋</strong> 指出這個關鍵區分，並提供 TriHOT、Harrow、DCPPC 三項論文題目的核實方向，才有 Part 1 改寫後的兩條賽道論點與術語字卡。文中 TriHOT / Harrow / DCPPC 的定位描述為依公開論文摘要整理之暫定版本，正式定義仍待峻瑋本人確認；歡迎之後持續修正。</p>
+      <p class="lead">感謝 梁峻瑋博士 提供專業建議與校訂方向。</p>
     </section>
 
     <section>
@@ -547,6 +625,18 @@
         <li>NIST CSRC, "FIPS 206 (FN-DSA / FALCON) Status" — <a href="https://csrc.nist.gov/presentations/2025/fips-206-fn-dsa-falcon" target="_blank" rel="noopener">csrc.nist.gov</a></li>
         <li>NIST 選定 HQC 為備援 KEM（2025/3） — <a href="https://quantumcomputingreport.com/nist-selects-hqc-as-backup-post-quantum-encryption-algorithm/" target="_blank" rel="noopener">quantumcomputingreport.com</a></li>
         <li>NSA, "CNSA 2.0 Algorithms" Cybersecurity Advisory（2025/5） — <a href="https://media.defense.gov/2025/May/30/2003728741/-1/-1/0/CSA_CNSA_2.0_ALGORITHMS.PDF" target="_blank" rel="noopener">media.defense.gov</a></li>
+        <li>NIST, "Post-Quantum Cryptography FAQs"（Shor 演算法破解 RSA/ECC、Grover 演算法僅二次加速） — <a href="https://csrc.nist.gov/projects/post-quantum-cryptography/faqs" target="_blank" rel="noopener">csrc.nist.gov</a></li>
+        <li>CISA / NSA / NIST, "Quantum-Readiness: Migration to Post-Quantum Cryptography" 聯合 factsheet（HNDL 為官方認定之現實威脅） — <a href="https://www.cisa.gov/news-events/alerts/2023/08/21/cisa-nsa-and-nist-publish-factsheet-quantum-readiness" target="_blank" rel="noopener">cisa.gov</a></li>
+        <li>OMB, "M-23-02: Migrating to Post-Quantum Cryptography"（美國政府機關遷移時程） — <a href="https://www.whitehouse.gov/wp-content/uploads/2022/11/M-23-02-M-Memo-on-Migrating-to-Post-Quantum-Cryptography.pdf" target="_blank" rel="noopener">whitehouse.gov</a></li>
+        <li>NSA, "Quantum Computing and Post-Quantum Cryptography FAQs"（PQC 與 QKD 路線差異，NSA 不背書 QKD） — <a href="https://media.defense.gov/2021/Aug/04/2002821837/-1/-1/1/Quantum_FAQs_20210804.PDF" target="_blank" rel="noopener">media.defense.gov</a></li>
+      </ul>
+
+      <h3>量子硬體與光子量子</h3>
+      <ul>
+        <li>"An elementary review on basic principles and developments of qubits for quantum computing," Nano Convergence（Springer，列舉五大 qubit 硬體路線） — <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10948723/" target="_blank" rel="noopener">pmc.ncbi.nlm.nih.gov</a></li>
+        <li>National Academies, "Manipulating Quantum Systems"（離子陷阱以雷射操控與讀出量子態） — <a href="https://www.nationalacademies.org/read/25196/chapter/12" target="_blank" rel="noopener">nationalacademies.org</a></li>
+        <li>"A tweezer array with 6,100 highly coherent atomic qubits," Nature（中性原子以光鑷操控） — <a href="https://www.nature.com/articles/s41586-025-09641-4" target="_blank" rel="noopener">nature.com</a></li>
+        <li>GlobalFoundries, "PsiQuantum and GlobalFoundries to Build the World's First Full-scale Quantum Computer"（矽光子／PIC 製造是光子量子電腦量產的關鍵） — <a href="https://gf.com/dresden-press-release/psiquantum-and-globalfoundries-build-worlds-first-full-scale-quantum-computer/" target="_blank" rel="noopener">gf.com</a></li>
       </ul>
 
       <h3>矽光子製程平台</h3>
@@ -585,17 +675,50 @@
 
   <script>
     const TERMS = [
-      { term: "CPO", en: "Co-Packaged Optics", def: "把光收發引擎直接整合進交換器/處理器封裝內，而不是用外接的可插拔模組，藉此縮短電訊號傳輸距離、降低功耗。", analogy: "把家裡的數據機從客廳搬進路由器機殼裡，訊號不用再跑一段長長的網路線。", example: "輝達的 Quantum-X / Spectrum-X 交換器、Broadcom 的 CPO 交換器產品線都是資料中心導入 CPO 的代表案例。" },
-      { term: "COUPE", en: "Compact Universal Photonic Engine（TSMC 官方名稱）", def: "台積電的光子引擎封裝整合方案，把光子積體電路（PIC）與電子 IC 透過 SoIC/CoWoS 先進封裝堆疊在一起，解決高效能運算封裝的光 I/O 問題。", analogy: "像把光纖網路的『轉接頭』直接焊死在主機板上，而不是留一個外接孔。", example: "台積電在技術研討會上展示 COUPE 用於 HPC（高效能運算）的光子引擎異質整合方案。" },
-      { term: "PIC", en: "Photonic Integrated Circuit", def: "把雷射、調變器、波導、光偵測器等多個光學元件整合在同一塊晶片上的積體電路，是光子產業的『晶片』概念。", analogy: "就像電子 IC 把電晶體整合在矽晶片上，PIC 是把『操控光』的元件整合在一塊晶片上。", example: "資料中心用的 400G/800G 同調光收發模組，核心就是一顆 PIC。" },
-      { term: "TriHOT", en: "Triangular and Hexagonal norm-based Timing-driven Optical routing with WDM-awareness（依論文標題整理，暫定）", def: "梁峻瑋博士團隊提出的演算法，用三角形與六角形的時序模型，解決晶片上光子互連的『波分多工感知繞線』問題，讓繞線結果更貼近實際訊號延遲。", analogy: "像在設計捷運路網時，不只算『距離』，還要精準算出『不同班次（波長）共用同一條軌道時的實際通過時間』。", example: "發表於 ACM TODAES（2026），屬於光子電路設計自動化（EDA）裡的繞線最佳化研究，而非製造光運算硬體本身。" },
-      { term: "Harrow", en: "光學邏輯電路合成演算法（依論文標題整理，暫定）", def: "用調和平均數與整數拆分法，把邏輯運算需求自動轉換成最佳化的光學邏輯電路結構，是光子電路的『邏輯合成』工具。", analogy: "類似把一段程式碼自動編譯、最佳化成最精簡的電路圖，只是這裡的『電路』是光路。", example: "發表於 DAC（2025），是光子 EDA 工具鏈中『設計工具』的一環，不是運算晶片本身。" },
-      { term: "DCPPC", en: "Digital Computation in Programmable Photonic Circuits（依論文標題整理，暫定）", def: "在可程式化光子電路（MZI mesh）上實現數位邏輯運算的方法，並用自動繞線演算法校正、最大化通過特定可調單元的訊號品質。", analogy: "把一塊『萬用光學麵包板』透過軟體設定，組出不同的邏輯電路，而不是每次都重新流片做一顆新晶片。", example: "發表於 ASP-DAC（2026），同時碰觸『電路合成』與『訊號校正』兩個 EDA 問題。" },
-      { term: "MRR", en: "Micro-Ring Resonator（微環諧振器）", def: "一個環形波導結構，只允許特定波長的光在環內共振、被選擇性截留或濾除，常用於調變或波長選擇。", analogy: "像收音機的調頻電路，只『鎖定』某一個頻率的訊號，其他頻率直接通過不受影響。", example: "矽光子收發模組常用 MRR 做高密度波分多工（DWDM）的濾波與調變。" },
-      { term: "MZI", en: "Mach-Zehnder Interferometer（馬赫－曾德爾干涉儀）", def: "把一束光分成兩條路徑，其中一條路徑用熱光、電光或吸收效應微調相位，再讓兩束光重新匯合，相位差透過干涉轉換成強度變化，藉此編碼訊號。", analogy: "兩條賽道的長度被悄悄調整後，看誰先抵達終點線，抵達的時間差就是被編碼的訊號。", example: "幾乎所有同調光收發模組與可程式化光子電路（MZI mesh）的核心調變元件都是 MZI。" },
-      { term: "HNDL", en: "Harvest Now, Decrypt Later", def: "攻擊者現在就攔截、儲存加密資料，等未來量子電腦成熟後再回頭解密的威脅模型，被 NSA / NIST 列為現實威脅。", analogy: "小偷現在先把你家保險箱整個搬走，反正以後遲早會弄到能開鎖的工具。", example: "國家機密、病歷、金融長期紀錄這類『保密期限本來就很長』的資料，是 HNDL 攻擊的主要目標，也是現在就要導入 PQC 的原因。" },
-      { term: "ML-KEM", en: "Module-Lattice-Based Key-Encapsulation Mechanism（FIPS 203，前身為 Kyber）", def: "NIST 在 2024/8 正式定案的後量子金鑰交換演算法，取代 RSA / ECDH 用來在雙方之間安全地建立共用金鑰。", analogy: "像把過去『靠質因數分解的密碼鎖』換成『靠格數學難題的密碼鎖』，後者目前還沒有已知的量子捷徑可破解。", example: "Google 已在 Chrome 與部分服務中部署 ML-KEM 做後量子金鑰交換。" },
-      { term: "CNSA 2.0", en: "Commercial National Security Algorithm Suite 2.0", def: "NSA 公布的下一代密碼演算法清單，涵蓋對稱加密（AES-256）、後量子金鑰交換（ML-KEM）與簽章（ML-DSA、SLH-DSA），並訂出國安系統的換裝時程。", analogy: "像政府機關公告的『新版保險箱規格清單』，並規定各機關幾年內一定要換裝完畢。", example: "美國國安系統依 CNSA 2.0 時程，2025-2027 起依系統類別陸續優先採用，2030/2033 強制全面換裝。" },
+      { term: "CPO", en: "Co-Packaged Optics", cat: "矽光子製程/平台", def: "把光收發引擎直接整合進交換器/處理器封裝內，而不是用外接的可插拔模組，藉此縮短電訊號傳輸距離、降低功耗。", analogy: "把家裡的數據機從客廳搬進路由器機殼裡，訊號不用再跑一段長長的網路線。", example: "輝達的 Quantum-X / Spectrum-X 交換器、Broadcom 的 CPO 交換器產品線都是資料中心導入 CPO 的代表案例。" },
+      { term: "COUPE", en: "Compact Universal Photonic Engine（TSMC 官方名稱）", cat: "矽光子製程/平台", def: "台積電的光子引擎封裝整合方案，把光子積體電路（PIC）與電子 IC 透過 SoIC/CoWoS 先進封裝堆疊在一起，解決高效能運算封裝的光 I/O 問題。", analogy: "像把光纖網路的『轉接頭』直接焊死在主機板上，而不是留一個外接孔。", example: "台積電在技術研討會上展示 COUPE 用於 HPC（高效能運算）的光子引擎異質整合方案。" },
+      { term: "PIC", en: "Photonic Integrated Circuit", cat: "光子元件/架構", def: "把雷射、調變器、波導、光偵測器等多個光學元件整合在同一塊晶片上的積體電路，是光子產業的『晶片』概念。", analogy: "就像電子 IC 把電晶體整合在矽晶片上，PIC 是把『操控光』的元件整合在一塊晶片上。", example: "資料中心用的 400G/800G 同調光收發模組，核心就是一顆 PIC。" },
+      { term: "TriHOT", en: "Triangular and Hexagonal norm-based Timing-driven Optical routing with WDM-awareness（依論文標題整理，暫定）", cat: "光子EDA", def: "台大團隊提出的演算法，用三角形與六角形的時序模型，解決晶片上光子互連的『波分多工感知繞線』問題，讓繞線結果更貼近實際訊號延遲。", analogy: "像在設計捷運路網時，不只算『距離』，還要精準算出『不同班次（波長）共用同一條軌道時的實際通過時間』。", example: "發表於 ACM TODAES（2026），屬於光子電路設計自動化（EDA）裡的繞線最佳化研究，而非製造光運算硬體本身。" },
+      { term: "Harrow", en: "光學邏輯電路合成演算法（依論文標題整理，暫定）", cat: "光子EDA", def: "用調和平均數與整數拆分法，把邏輯運算需求自動轉換成最佳化的光學邏輯電路結構，是光子電路的『邏輯合成』工具。", analogy: "類似把一段程式碼自動編譯、最佳化成最精簡的電路圖，只是這裡的『電路』是光路。", example: "發表於 DAC（2025），是光子 EDA 工具鏈中『設計工具』的一環，不是運算晶片本身。" },
+      { term: "DCPPC", en: "Digital Computation in Programmable Photonic Circuits（依論文標題整理，暫定）", cat: "光子EDA", def: "在可程式化光子電路（MZI mesh）上實現數位邏輯運算的方法，並用自動繞線演算法校正、最大化通過特定可調單元的訊號品質。", analogy: "把一塊『萬用光學麵包板』透過軟體設定，組出不同的邏輯電路，而不是每次都重新流片做一顆新晶片。", example: "發表於 ASP-DAC（2026），同時碰觸『電路合成』與『訊號校正』兩個 EDA 問題。" },
+      { term: "MRR", en: "Micro-Ring Resonator（微環諧振器）", cat: "光子元件/架構", def: "一個環形波導結構，只允許特定波長的光在環內共振、被選擇性截留或濾除，常用於調變或波長選擇。", analogy: "像收音機的調頻電路，只『鎖定』某一個頻率的訊號，其他頻率直接通過不受影響。", example: "矽光子收發模組常用 MRR 做高密度波分多工（DWDM）的濾波與調變。" },
+      { term: "MZI", en: "Mach-Zehnder Interferometer（馬赫－曾德爾干涉儀）", cat: "光子元件/架構", def: "把一束光分成兩條路徑，其中一條路徑用熱光、電光或吸收效應微調相位，再讓兩束光重新匯合，相位差透過干涉轉換成強度變化，藉此編碼訊號。", analogy: "兩條賽道的長度被悄悄調整後，看誰先抵達終點線，抵達的時間差就是被編碼的訊號。", example: "幾乎所有同調光收發模組與可程式化光子電路（MZI mesh）的核心調變元件都是 MZI。" },
+      { term: "HNDL", en: "Harvest Now, Decrypt Later", cat: "密碼學", def: "攻擊者現在就攔截、儲存加密資料，等未來量子電腦成熟後再回頭解密的威脅模型，被 NSA / NIST 列為現實威脅。", analogy: "小偷現在先把你家保險箱整個搬走，反正以後遲早會弄到能開鎖的工具。", example: "國家機密、病歷、金融長期紀錄這類『保密期限本來就很長』的資料，是 HNDL 攻擊的主要目標，也是現在就要導入 PQC 的原因。" },
+      { term: "ML-KEM", en: "Module-Lattice-Based Key-Encapsulation Mechanism（FIPS 203，前身為 Kyber）", cat: "密碼學", def: "NIST 在 2024/8 正式定案的後量子金鑰交換演算法，取代 RSA / ECDH 用來在雙方之間安全地建立共用金鑰。", analogy: "像把過去『靠質因數分解的密碼鎖』換成『靠格數學難題的密碼鎖』，後者目前還沒有已知的量子捷徑可破解。", example: "Google 已在 Chrome 與部分服務中部署 ML-KEM 做後量子金鑰交換。" },
+      { term: "CNSA 2.0", en: "Commercial National Security Algorithm Suite 2.0", cat: "密碼學", def: "NSA 公布的下一代密碼演算法清單，涵蓋對稱加密（AES-256）、後量子金鑰交換（ML-KEM）與簽章（ML-DSA、SLH-DSA），並訂出國安系統的換裝時程。", analogy: "像政府機關公告的『新版保險箱規格清單』，並規定各機關幾年內一定要換裝完畢。", example: "美國國安系統依 CNSA 2.0 時程，2025-2027 起依系統類別陸續優先採用，2030/2033 強制全面換裝。" },
+      { term: "UMC", en: "United Microelectronics Corporation（聯華電子）", cat: "矽光子製程/平台", def: "台灣半導體晶圓代工廠，2025/12/08 與 imec 簽署 iSiPP300 矽光子製程授權，跨入通用 PIC 代工領域。", analogy: "原本專注做電子晶片代工的工廠，新增了一條『做光晶片』的產線。", example: "聯電（2303）規劃 2026-2027 年進行 iSiPP300 平台的風險試產。" },
+      { term: "imec", en: "Interuniversity Microelectronics Centre", cat: "矽光子製程/平台", def: "比利時的國際半導體研發機構，長期投入矽光子製程研發，iSiPP300 是其矽光子平台技術，授權給 UMC 量產化。", analogy: "像是半導體界的『研發實驗室』，把實驗室成果授權給工廠真正大量生產。", example: "imec 官方新聞稿宣布將 iSiPP300 技術授權予 UMC，以擴展矽光子能力。" },
+      { term: "iSiPP300", en: "imec Silicon Photonics Platform (300mm)", cat: "矽光子製程/平台", def: "imec 開發的 300mm 矽光子製程平台，授權給 UMC 做為通用型 PIC 代工的技術基礎。", analogy: "像一套經過驗證的『建築設計圖』，授權給營造廠依此圖大量蓋房子。", example: "UMC 取得 iSiPP300 授權後，預計 2026-2027 年進入風險試產階段。" },
+      { term: "GF Fotonix", en: "GlobalFoundries Fotonix", cat: "矽光子製程/平台", def: "GlobalFoundries 的開放式矽光子代工平台，官方列出資料中心互連、光學網路、光運算、FTTH、CPO 等多元應用場景。", analogy: "像一間開放給各種客戶下單的光晶片代工廠，不限定單一應用。", example: "PsiQuantum 與 GlobalFoundries 合作建造全規模光子量子電腦，即運用此類矽光子製造能力。" },
+      { term: "Tower PH18", en: "Tower Semiconductor PH18", cat: "矽光子製程/平台", def: "Tower Semiconductor 的矽光子製程平台，提供多專案晶圓（MPW）服務供客戶流片客製光子電路。", analogy: "另一間提供『共乘流片』服務的光晶片代工廠，多家客戶共用一片晶圓降低成本。", example: "Tower Semiconductor 於官網公告 PH18 平台供研究機構與新創流片使用。" },
+      { term: "MPW", en: "Multi-Project Wafer（多專案晶圓）", cat: "矽光子製程/平台", def: "多個客戶的設計共用同一片晶圓進行製造，藉此分攤高昂的流片成本，常用於少量、客製化的晶片開發階段。", analogy: "像多人合租一輛貨車的運費，而不是每人各自包一輛車，大幅降低個別成本。", example: "通用型 PIC 代工平台（如 iSiPP300、GF Fotonix、PH18）多以 MPW 模式服務研究機構與新創公司。" },
+      { term: "CoWoS", en: "Chip-on-Wafer-on-Substrate", cat: "矽光子製程/平台", def: "台積電的先進封裝技術，把多顆晶片（如運算晶片與記憶體）堆疊整合在同一基板上，是 AI 晶片常用的封裝方式。", analogy: "把好幾個獨立的零件，先組裝成一個模組，再裝到主機板上，而不是分開焊接。", example: "COUPE 光子引擎透過 CoWoS／SoIC 先進封裝與電子 IC 整合在一起。" },
+      { term: "SoIC", en: "System on Integrated Chips", cat: "矽光子製程/平台", def: "台積電的 3D 晶片堆疊封裝技術，把多顆裸晶垂直堆疊並用矽穿孔等技術互連，密度比 CoWoS 更高。", analogy: "把房子從平面擴建改成蓋成大樓，垂直堆疊節省土地（晶片面積）。", example: "COUPE 方案結合 SoIC 與 CoWoS 封裝技術，將光引擎與運算晶片緊密整合。" },
+      { term: "III-V 族半導體", en: "III-V Compound Semiconductor", cat: "矽光子製程/平台", def: "由週期表第 III 族（如鎵、銦）與第 V 族（如砷、磷）元素組成的半導體材料，因屬於直接能隙材料，能有效發光，常用於雷射與發光元件。", analogy: "矽是『不太會發光的建材』，III-V 族材料則是『天生會發光的建材』，兩者混合使用各取所長。", example: "矽光子晶片因矽本身無法有效發光，需混合整合 III-V 族雷射光源。" },
+      { term: "Waveguide", en: "光波導", cat: "光子元件/架構", def: "把光侷限在一條路徑裡導引的結構，類似電路板上的銅線，差別是導引的是光而非電流。", analogy: "像光纖或水管，把光（或水）限制在固定路徑中傳輸，不會四散逸失。", example: "矽光子晶片上所有光學元件（MRR、MZI 等）都是透過波導彼此連接。" },
+      { term: "可程式化光子電路", en: "Programmable Photonic Circuit (PPC) / MZI mesh", cat: "光子元件/架構", def: "由大量 MZI 單元網格化組成的光子電路，可透過軟體設定動態改變光路與運算功能，而不需重新流片。", analogy: "像一塊『萬用麵包板』，透過程式設定就能組出不同電路，不必每次重新焊接。", example: "DCPPC 論文即是在這類可程式化光子電路（MZI mesh）上實現數位邏輯運算。" },
+      { term: "WDM / DWDM", en: "(Dense) Wavelength Division Multiplexing", cat: "光子元件/架構", def: "把多個不同波長的光訊號同時送進同一條光纖或波導傳輸，藉此大幅提升單一通道的傳輸容量。", analogy: "像同一條高速公路上，用不同顏色的車道同時跑多種車流，互不干擾。", example: "TriHOT 論文處理的『波分多工感知繞線』，正是為了讓晶片內的光子互連支援 WDM。" },
+      { term: "Optical Computing", en: "光運算", cat: "光子元件/架構", def: "直接用光子（而非電子）進行運算的硬體技術，與光子 EDA（設計工具）是不同層次的概念。", analogy: "光子 EDA 是『造工具的人』，光運算硬體則是『被造出來的晶片』本身。", example: "Lightmatter、Lightelligence、Celestial AI 等公司開發類比光子 AI 加速器，屬於光運算範疇。" },
+      { term: "LPO", en: "Linear Pluggable Optics（線性直驅光學）", cat: "光子元件/架構", def: "一種簡化的光收發模組設計，省略部分數位訊號處理（DSP）電路，直接以類比訊號驅動，藉此降低功耗與延遲。", analogy: "省去中間的『翻譯機』，讓訊號直接傳遞，速度更快但對線路品質要求更高。", example: "MACOM 是 LPO 技術的供應商之一，鎖定資料中心高速互連市場。" },
+      { term: "Qubit", en: "量子位元", cat: "量子", def: "量子電腦的基本運算單位，與傳統位元（0 或 1）不同，量子位元可處於疊加態，同時代表 0 與 1 的機率組合。", analogy: "傳統位元像是只能朝上或朝下的硬幣；量子位元則像是正在旋轉中、同時帶有正反兩面機率的硬幣。", example: "五大主流硬體路線（超導、離子陷阱、光子、中性原子、拓樸）都是製備與操控 qubit 的不同方式。" },
+      { term: "Shor 演算法", en: "Shor's Algorithm", cat: "量子", def: "量子演算法，能在多項式時間內找出大數的質因數，把「分解大數」轉換成「找週期」這個量子電腦能高效解的問題，是威脅 RSA/ECC 加密的核心原因。", analogy: "傳統電腦解密像在無窮長的走廊裡一間一間開門找答案；Shor 演算法則像是同時打開所有門，直接看出規律所在的那一間。", example: "一旦量子電腦具備足夠規模執行 Shor 演算法，現行 RSA、ECC 公鑰加密將失效，這正是 PQC 遷移的根本動機。" },
+      { term: "Grover 演算法", en: "Grover's Algorithm", cat: "量子", def: "量子演算法，對無結構資料庫搜尋提供「二次方」加速，對 AES 等對稱式加密的影響遠小於 Shor 演算法，僅需加長金鑰即可因應。", analogy: "像是把『大海撈針』的時間從一年縮短到一個月，但不是瞬間找到，仍需要等待。", example: "因 Grover 演算法影響有限，對稱加密（如 AES-256）不需要像 RSA/ECC 那樣全面替換演算法，只需使用更長金鑰。" },
+      { term: "QKD", en: "Quantum Key Distribution（量子金鑰分發）", cat: "量子", def: "利用量子力學特性（如測量會改變量子態）在通訊雙方間建立金鑰的硬體技術，需要專用光纖或衛星鏈路，與純軟體層的 PQC 是不同路線。", analogy: "PQC 是換一把更難被破解的『鎖』（純軟體換算法）；QKD 則是蓋一條全新的『運鈔通道』（需要建置專用硬體基礎設施）。", example: "NSA 官方 FAQ 明確指出不建議將 QKD 作為國家安全系統的加密解決方案，PQC 才是官方建議路線。" },
+      { term: "拓樸量子 / Majorana", en: "Topological Qubit / Majorana Fermion", cat: "量子", def: "利用特殊準粒子（Majorana 費米子）的拓樸態來編碼量子資訊的硬體路線，理論上對環境雜訊有較強的天然抗性，不依賴光學操控。", analogy: "像是把訊息編碼在繩結的『打結方式』而非繩子本身的位置，就算繩子被輕微拉扯，繩結的拓樸特性也不會改變。", example: "微軟主推拓樸路線，2025 年發表 Majorana 晶片研究成果。" },
+      { term: "CUDA-Q", en: "NVIDIA CUDA-Q", cat: "量子", def: "輝達推出的量子-古典混合運算開發平台，讓開發者能在同一套框架中整合傳統 GPU 運算與量子硬體/模擬器。", analogy: "像是一座『雙語翻譯橋樑』，讓量子電腦與傳統超級電腦能用同一套語言協同工作。", example: "輝達雖不直接製造量子硬體，但透過 CUDA-Q 生態系成為量子運算產業鏈的重要間接受惠者。" },
+      { term: "RSA", en: "Rivest-Shamir-Adleman", cat: "密碼學", def: "最廣泛使用的公鑰加密演算法之一，安全性建立在「大數分解很難」這個數學假設上，是量子電腦 Shor 演算法的主要威脅對象。", analogy: "像一把鎖，鑰匙的形狀取決於兩個很大質數的乘積，傳統電腦要從乘積反推回兩個質數極為困難。", example: "目前網路 HTTPS、VPN 等大量基礎設施仍依賴 RSA 或 ECC 做金鑰交換與身分驗證。" },
+      { term: "ECC", en: "Elliptic Curve Cryptography（橢圓曲線密碼學）", cat: "密碼學", def: "另一種公鑰加密技術，安全性建立在橢圓曲線上的「離散對數問題」，同樣會被 Shor 演算法破解，但金鑰長度比 RSA 短、效率更高。", analogy: "和 RSA 一樣是一把數學鎖，只是鎖的設計原理換成另一種更精巧、更省鑰匙材料的幾何結構。", example: "許多現代 TLS 連線、加密貨幣錢包採用 ECC（如 ECDSA、ECDH）做簽章與金鑰交換。" },
+      { term: "FIPS", en: "Federal Information Processing Standards", cat: "密碼學", def: "美國 NIST 訂定的聯邦資訊處理標準，PQC 相關標準如 FIPS 203（ML-KEM）、204（ML-DSA）、205（SLH-DSA）、206（FN-DSA）皆屬此體系。", analogy: "像政府訂定的『國家標準規格』，所有聯邦機關採購與使用的密碼技術都必須符合這套規格。", example: "NIST 已於 2024/8 正式發布 FIPS 203、204、205 三項後量子密碼標準。" },
+      { term: "ML-DSA", en: "Module-Lattice-Based Digital Signature Algorithm（FIPS 204，前身為 Dilithium）", cat: "密碼學", def: "NIST 定案的後量子數位簽章標準，用於驗證訊息或軟體的來源真實性與完整性，取代 RSA/ECDSA 簽章。", analogy: "像是換一種更難被偽造的『簽名筆跡辨識系統』，確保文件確實出自本人。", example: "FIPS 204 與 ML-KEM（FIPS 203）並列為 NIST 2024/8 同批發布的核心 PQC 標準。" },
+      { term: "SLH-DSA", en: "Stateless Hash-Based Digital Signature Algorithm（FIPS 205，前身為 SPHINCS+）", cat: "密碼學", def: "另一種 NIST 定案的後量子簽章標準，基於雜湊函數而非格密碼學，作為 ML-DSA 之外的備援簽章方案，安全性假設更為保守。", analogy: "像是除了主鎖之外，再裝一道原理完全不同的備用鎖，即使主鎖的設計被攻破，備用鎖仍然安全。", example: "NIST 同時定案 ML-DSA 與 SLH-DSA 兩種簽章標準，避免單一數學假設被攻破時無備援方案。" },
+      { term: "FN-DSA / FALCON", en: "FFT-over-NTRU-Lattice-Based Digital Signature Algorithm（FIPS 206）", cat: "密碼學", def: "NIST 仍在審定中的第三種後量子簽章標準，前身為 FALCON，特色是簽章長度較短，適合頻寬受限的應用場景。", analogy: "和 ML-DSA、SLH-DSA 一樣是數位簽名方案，但簽出來的『簽名』比較短小，適合塞進空間有限的封包裡。", example: "FIPS 206（FN-DSA/FALCON）截至撰文時仍在 NIST 審定流程中，尚未如 FIPS 203-205 正式定案。" },
+      { term: "HQC", en: "Hamming Quasi-Cyclic", cat: "密碼學", def: "NIST 於 2025/3 選定的備援後量子金鑰封裝機制（KEM），數學基礎與 ML-KEM 不同（基於糾錯碼而非格密碼學），用於分散單一數學假設的風險。", analogy: "如果 ML-KEM 仰賴的數學假設未來被找到漏洞，HQC 就是用完全不同原理打造的『備用鑰匙』。", example: "NIST 選定 HQC 作為備援 KEM，與 ML-KEM 採用不同數學基礎以降低系統性風險。" },
+      { term: "HSM", en: "Hardware Security Module（硬體安全模組）", cat: "密碼學", def: "專用的實體安全裝置，用來產生、儲存與管理加密金鑰，並執行加解密運算，避免金鑰外洩到一般伺服器環境。", analogy: "像銀行金庫裡的保險箱，金鑰永遠鎖在裡面運作，不會被搬到外面風險較高的環境使用。", example: "Thales 等廠商提供 HSM／金鑰管理硬體，是企業導入 PQC 遷移時的重要基礎設施供應商。" },
+      { term: "SerDes", en: "Serializer/Deserializer", cat: "互連IC", def: "把多條低速並列訊號轉換成單一高速序列訊號傳輸（或反向轉換）的電路，是高速資料互連的核心元件。", analogy: "像把好幾條車道的車流，先合併成一條高速公路快速通過，到了目的地再重新分流。", example: "Credo Technology 等公司的高速互連 IC 產品線包含光相關的 SerDes 技術。" },
+      { term: "Retimer", en: "訊號重定時器", cat: "互連IC", def: "在高速傳輸線路中重新整形、重新計時訊號的晶片，用以補償長距離傳輸造成的訊號衰減與抖動，確保資料完整性。", analogy: "像接力賽跑中段的選手，把逐漸模糊、變形的訊號重新「跑」清楚再交給下一棒。", example: "Astera Labs 的 PCIe/CXL Retimer 產品是資料中心高速互連生態系的重要一環。" },
+      { term: "PCIe / CXL", en: "Peripheral Component Interconnect Express / Compute Express Link", cat: "互連IC", def: "伺服器與資料中心常用的高速匯流排標準，PCIe 是通用元件互連介面，CXL 在其基礎上進一步支援記憶體共享與一致性互連。", analogy: "PCIe 像是一般的高速道路系統，CXL 則像是新增了「共用停車場」功能，讓不同設備能共享資源而非各自獨占。", example: "Astera Labs 的智慧連接模組即圍繞 PCIe/CXL 標準，服務 AI 資料中心互連需求。" },
+      { term: "Chiplet", en: "小晶片", cat: "互連IC", def: "把原本做成單一大晶片的功能，拆分成多顆較小的晶粒分別製造，再透過先進封裝技術互連整合，藉此提升良率與設計彈性。", analogy: "像把一台大型機器拆成幾個模組化零件分別製造、再組裝，比起整台機器一次成型更有彈性、出錯成本更低。", example: "Ayar Labs 開發的光互連 chiplet 即是把光學 I/O 做成獨立小晶片，供其他晶片廠商整合使用。" },
+      { term: "QaaS", en: "Quantum Computing as a Service", cat: "量子", def: "透過雲端提供量子運算資源的服務模式，使用者不需自建量子硬體，即可透過 API 存取量子電腦或模擬器進行運算。", analogy: "像雲端運算的 IaaS，只是這次租用的不是傳統伺服器，而是量子電腦的運算時間。", example: "IBM、Microsoft Azure Quantum 等大型科技公司主要以 QaaS 形式間接參與量子運算市場。" },
     ];
 
     function renderTerms(filter) {
@@ -603,7 +726,8 @@
       const q = (filter || '').toLowerCase();
       grid.innerHTML = '';
       TERMS.forEach(t => {
-        if (q && !t.term.toLowerCase().includes(q) && !t.en.toLowerCase().includes(q) && !t.def.toLowerCase().includes(q)) return;
+        const cat = t.cat || '';
+        if (q && !t.term.toLowerCase().includes(q) && !t.en.toLowerCase().includes(q) && !t.def.toLowerCase().includes(q) && !cat.toLowerCase().includes(q)) return;
         const card = document.createElement('div');
         card.className = 'term-card';
         const head = document.createElement('button');
@@ -623,6 +747,12 @@
 
         const body = document.createElement('div');
         body.className = 'term-body';
+        if (cat) {
+          const catChip = document.createElement('span');
+          catChip.className = 'term-cat';
+          catChip.textContent = cat;
+          body.append(catChip);
+        }
         const def = document.createElement('p');
         def.innerHTML = '<strong>定義：</strong>';
         def.append(document.createTextNode(t.def));
