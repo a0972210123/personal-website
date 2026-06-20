@@ -190,7 +190,10 @@
     .startup-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 14px; }
     .startup-card { background: var(--surface-container); border-radius: var(--radius); padding: 18px; border: 1px solid var(--outline-variant); display: flex; flex-direction: column; gap: 8px; }
     .startup-card__top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
-    .startup-card__name { font-size: 1rem; font-weight: 700; color: var(--on-surface); }
+    .startup-card__name { font-size: 1rem; font-weight: 700; color: var(--on-surface); text-decoration: none; }
+    a.startup-card__name:hover { color: var(--primary); text-decoration: underline; }
+    .startup-card__founders a { color: var(--primary); text-decoration: none; }
+    .startup-card__founders a:hover { text-decoration: underline; }
     .cat-badge { font-size: .68rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: var(--secondary-container); color: var(--on-secondary-container); white-space: nowrap; }
     .startup-card__line { font-size: .84rem; color: var(--on-surface-variant); line-height: 1.55; }
     .startup-card__founders { font-size: .78rem; color: var(--on-surface-variant); display: flex; align-items: flex-start; gap: 5px; }
@@ -230,11 +233,12 @@
     .pitch-obs p { color: var(--on-surface-variant); margin: 0 0 12px; }
     .pitch-obs ul { margin: 0 0 12px; padding-left: 20px; color: var(--on-surface-variant); }
     .pitch-obs ul li { margin: 5px 0; }
-    .pitch-routes { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 12px; margin: 14px 0; }
-    .pitch-route { background: var(--surface-container); border: 1px solid var(--outline-variant); border-radius: var(--radius); padding: 14px 16px; }
-    .pitch-route h4 { font-size: .9rem; margin: 0 0 8px; color: var(--primary); }
-    .pitch-route ol { margin: 0; padding-left: 18px; font-size: .82rem; color: var(--on-surface-variant); line-height: 1.7; }
-    .pitch-route ol li { margin: 3px 0; }
+    .pitch-routes { display: flex; flex-direction: column; gap: 12px; margin: 14px 0; }
+    .pitch-route { background: var(--surface-container); border: 1px solid var(--outline-variant); border-radius: var(--radius); padding: 14px 18px; }
+    .pitch-route h4 { font-size: .9rem; margin: 0 0 10px; color: var(--primary); }
+    .pitch-route ol { list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 0; margin: 0; padding: 0; font-size: .8rem; color: var(--on-surface-variant); line-height: 1.8; }
+    .pitch-route ol li { display: inline-flex; align-items: center; }
+    .pitch-route ol li:not(:last-child)::after { content: "→"; margin: 0 8px; color: var(--primary); font-weight: 700; }
     .pitch-callout { background: var(--surface-container-high); border-left: 3px solid var(--primary); border-radius: 8px; padding: 14px 16px; margin: 16px 0 0; color: var(--on-surface-variant); font-size: .9rem; line-height: 1.8; }
 
     /* Opinion block */
@@ -769,6 +773,29 @@
     });
   }
 
+  // Company website (u), presenter name (p), LinkedIn (l) — from AppWorks AW#32 roster.
+  var LINKS = {
+    "Notifly":{u:"https://clix.so/",p:"Minyong Lee",l:"https://www.linkedin.com/in/minyong-lee/"},
+    "OmniEase AI":{u:"https://www.omniease.ai",p:"Sebastian Wijaya",l:"https://www.linkedin.com/in/sebawija"},
+    "Pathors":{u:"https://pathors.com/",p:"Brandon Lu",l:"https://www.linkedin.com/in/brandonlu0924"},
+    "Decisions Lab":{u:"https://www.decisionslab.io",p:"Louis Cheung",l:"https://www.linkedin.com/in/louis-dlb11/"},
+    "Arrivl":{u:"https://arrivl.ai/",p:"Ryan Chen",l:"https://www.linkedin.com/in/ryanchen056/"},
+    "Novo AI":{u:"https://heynovo.ai",p:"Julien Condamines",l:"https://www.linkedin.com/in/juliencondamines/"},
+    "CloudStation":{u:"https://cloud-station.io",p:"Oumnya Benhassou",l:"https://www.linkedin.com/in/oumnyabenhassou/"},
+    "NOTAG KOREA":{u:"https://www.notaggroup.com/",p:"Aiden Ung Choi",l:"https://www.linkedin.com/in/aiden-ung-choi-6672b94a/"},
+    "CLIKA":{u:"https://www.clika.io/",p:"Nayul Kim",l:"https://www.linkedin.com/in/nayulkim"},
+    "LIPS":{u:"https://www.lips-hci.com",p:"Luke Liu",l:"https://www.linkedin.com/in/luke-liu-b301063b/"},
+    "Phasetrum":{u:"https://phasetrum.com",p:"Wayne Tsai",l:"https://www.linkedin.com/in/wayne-tsai-5536a067"},
+    "Ruomei":{u:"https://ruomei.com.tw/",p:"Owen Lee",l:"https://tw.linkedin.com/in/owen-lee-74808534"},
+    "Innowave Tech":{u:"https://www.innowave.com.sg",p:"Jinsong Xu",l:"https://www.linkedin.com/in/jinsong-xu-6ab5901b2/"},
+    "SixSense":{u:"https://www.sixsense.ai",p:"Akanksha Jagwani",l:"https://www.linkedin.com/in/akanksha-jagwani-a7489041"},
+    "Hyarks":{u:"https://www.hyarks.com/",p:"Juan Herrero Valero",l:"https://www.linkedin.com/in/jhvalero/"},
+    "Rosary Labs":{u:"https://www.rosarylabs.ai",p:"May Law",l:"https://www.linkedin.com/in/may-law/"},
+    "GreenBidz":{u:"https://greenbidz.com",p:"Jerry Yiu",l:"https://www.linkedin.com/in/yiu-che-wei-143795209/"},
+    "Krush":{u:"https://www.krushdating.co",p:"Stephen Moon",l:"https://www.linkedin.com/in/stephenkyungshinmoon/"},
+    "Shieldbase":{u:"https://shieldbase.ai",p:"Diego Rojas",l:"https://www.linkedin.com/in/diegolrojas"}
+  };
+
   function renderStartups() {
     var list = STARTUPS.filter(function(s) {
       return state.filter === "all" || s.cat === state.filter;
@@ -781,10 +808,17 @@
 
     var html = list.map(function(s) {
       var metricHtml = s.metric ? '<span class="startup-card__metric">' + esc(s.metric) + '</span>' : "";
+      var L = LINKS[s.name] || {};
+      var nameHtml = L.u
+        ? '<a class="startup-card__name" href="' + esc(L.u) + '" target="_blank" rel="noopener">' + esc(s.name) + ' ↗</a>'
+        : '<span class="startup-card__name">' + esc(s.name) + '</span>';
+      var whoHtml = L.l
+        ? '<a href="' + esc(L.l) + '" target="_blank" rel="noopener">' + esc(L.p) + '</a> · '
+        : (L.p ? esc(L.p) + ' · ' : "");
       return '<div class="startup-card">' +
-        '<div class="startup-card__top"><span class="startup-card__name">' + esc(s.name) + '</span><span class="cat-badge">' + esc(CATS[s.cat][state.lang]) + '</span></div>' +
+        '<div class="startup-card__top">' + nameHtml + '<span class="cat-badge">' + esc(CATS[s.cat][state.lang]) + '</span></div>' +
         '<div class="startup-card__line">' + esc(s.line[state.lang]) + '</div>' +
-        '<div class="startup-card__founders"><span class="material-symbols-rounded">person</span><span>' + esc(t("founderLabel")) + esc(s.founders[state.lang]) + '</span></div>' +
+        '<div class="startup-card__founders"><span class="material-symbols-rounded">person</span><span>' + esc(t("founderLabel")) + whoHtml + esc(s.founders[state.lang]) + '</span></div>' +
         metricHtml +
         '<div class="startup-card__moat">' + esc(s.moat[state.lang]) + '</div>' +
       '</div>';
