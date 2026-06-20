@@ -1,110 +1,141 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import PostCard from '../../components/PostCard.astro';
 import { getCollection } from 'astro:content';
+import { oneMoreStep } from '../../data/oneMoreStep';
 
-const posts = (await getCollection('blog', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+// Blog posts → unified items
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).map(p => ({
+  title: p.data.title,
+  titleEn: '',
+  desc: p.data.description,
+  href: `/writing/${p.id}`,
+  date: p.data.pubDate,
+  category: p.data.series === 'family-investing' ? '投資專欄' : '隨筆',
+  tags: p.data.tags ?? [],
+  badge: p.data.lang === 'zh' ? '中' : 'EN',
+  kind: 'post',
+}));
 
-const seriesLabels: Record<string, string> = {
-  'family-investing': '投資專欄',
-};
+// One More Step features → unified items
+const features = oneMoreStep.map(d => ({
+  title: d.title,
+  titleEn: d.titleEn,
+  desc: d.description,
+  href: d.url ?? `/projects/one-more-step/${d.slug}`,
+  date: new Date(d.date),
+  category: 'One More Step',
+  tags: d.tags ?? [],
+  badge: 'One More Step',
+  kind: 'feature',
+}));
 
-const seriesList = [...new Set(
-  posts.map(p => p.data.series).filter((s): s is string => Boolean(s))
-)];
+const items = [...posts, ...features].sort((a, b) => b.date.getTime() - a.date.getTime());
+
+const CAT_ORDER = ['投資專欄', 'One More Step', '隨筆'];
+const categories = CAT_ORDER.filter(c => items.some(i => i.category === c));
+const tags = [...new Set(items.flatMap(i => i.tags))].sort((a, b) => a.localeCompare(b, 'zh-Hant'));
+
+const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 ---
 <BaseLayout
   title="Writing"
-  description="葉淨維 Matt Ye 的所有文章。中英雙語，涵蓋創業、閱讀、技術與生活。"
+  description="葉淨維 Matt Ye 的所有文章與專題：投資專欄、One More Step 學習筆記與隨筆。可依系列與主題標籤篩選。"
 >
   <div class="writing-header">
     <h1>Writing</h1>
+    <p class="writing-sub">文章、投資專欄與 One More Step 專題，依系列或主題標籤篩選。</p>
   </div>
 
-  {seriesList.length > 0 && (
-    <div class="filter-bar" id="filter-bar">
-      <button class="filter-btn" data-filter="">全部</button>
-      {seriesList.map(s => (
-        <button class="filter-btn" data-filter={s}>
-          {seriesLabels[s] ?? s}
-        </button>
-      ))}
+  <div class="filter-group">
+    <div class="filter-row" id="cat-row" aria-label="系列篩選">
+      <span class="filter-label">系列</span>
+      <button class="filter-btn active" data-cat="">全部</button>
+      {categories.map(c => <button class="filter-btn" data-cat={c}>{c}</button>)}
     </div>
-  )}
+    <div class="filter-row" id="tag-row" aria-label="主題標籤篩選">
+      <span class="filter-label">主題</span>
+      <button class="filter-btn active" data-tag="">全部</button>
+      {tags.map(t => <button class="filter-btn" data-tag={t}>{t}</button>)}
+    </div>
+    <p class="result-count" id="result-count"></p>
+  </div>
 
-  {posts.length === 0 ? (
-    <p style="color: var(--color-text-muted)">文章即將上線。</p>
-  ) : (
-    <ul class="post-list" id="post-list">
-      {posts.map(post => (
-        <PostCard
-          id={post.id}
-          title={post.data.title}
-          description={post.data.description}
-          pubDate={post.data.pubDate}
-          lang={post.data.lang}
-          series={post.data.series}
-        />
-      ))}
-    </ul>
-  )}
+  <ul class="post-list" id="post-list">
+    {items.map(it => (
+      <li class="post-card" data-category={it.category} data-tags={` ${it.tags.join(' ')} `}>
+        <div class="post-card-header">
+          <a href={it.href} class="post-card-title">{it.title}</a>
+          <span class="post-card-date"><time datetime={it.date.toISOString()}>{fmt(it.date)}</time></span>
+          <span class={`lang-badge${it.kind === 'feature' ? ' feature-badge' : ''}`}>{it.badge}</span>
+        </div>
+        {it.titleEn && <p class="post-card-en">{it.titleEn}</p>}
+        <p class="post-card-desc">{it.desc}</p>
+        {it.tags.length > 0 && (
+          <div class="card-tags">
+            {it.tags.map(t => <span class="card-tag">{t}</span>)}
+          </div>
+        )}
+      </li>
+    ))}
+  </ul>
 </BaseLayout>
 
 <style>
-  .filter-bar {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
-  }
-
+  .writing-sub { color: var(--color-text-muted); font-size: 0.92rem; margin-top: 0.35rem; }
+  .filter-group { margin: 1.5rem 0 2rem; display: flex; flex-direction: column; gap: 0.6rem; }
+  .filter-row { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+  .filter-label { font-size: 0.72rem; font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-right: 0.15rem; min-width: 2.6rem; }
   .filter-btn {
-    font-size: 0.82rem;
-    font-weight: 500;
-    padding: 0.3rem 0.8rem;
-    border-radius: 99px;
-    border: 1px solid var(--color-border);
-    background: transparent;
-    color: var(--color-text-muted);
-    cursor: pointer;
-    transition: all 0.15s;
+    font-size: 0.8rem; font-weight: 500; padding: 0.28rem 0.75rem; border-radius: 99px;
+    border: 1px solid var(--color-border); background: transparent; color: var(--color-text-muted);
+    cursor: pointer; transition: all 0.15s;
   }
+  .filter-btn:hover { border-color: var(--color-accent); color: var(--color-accent); }
+  .filter-btn.active { background: var(--color-accent); border-color: var(--color-accent); color: #fff; }
+  .result-count { font-size: 0.78rem; color: var(--color-text-muted); margin: 0.2rem 0 0; }
 
-  .filter-btn:hover {
-    border-color: var(--color-accent);
-    color: var(--color-accent);
-  }
-
-  .filter-btn.active {
-    background: var(--color-accent);
-    border-color: var(--color-accent);
-    color: #fff;
-  }
+  .post-card-en { font-size: 0.8rem; color: var(--color-text-muted); margin: 0.1rem 0 0; }
+  .feature-badge { background: var(--color-accent-bg, rgba(124,94,248,.14)); color: var(--color-accent); }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.6rem; }
+  .card-tag { font-size: 0.7rem; color: var(--color-text-muted); background: var(--color-surface, rgba(127,127,127,.08)); border: 1px solid var(--color-border); padding: 0.1rem 0.5rem; border-radius: 99px; }
 </style>
 
 <script>
   const params = new URLSearchParams(window.location.search);
-  const initialSeries = params.get('series') ?? '';
+  const state = { cat: params.get('series') ?? '', tag: params.get('tag') ?? '' };
 
-  function applyFilter(series: string) {
-    document.querySelectorAll<HTMLElement>('#post-list .post-card').forEach(item => {
-      item.style.display = (series === '' || item.dataset.series === series) ? '' : 'none';
+  function apply() {
+    let count = 0;
+    document.querySelectorAll<HTMLElement>('#post-list .post-card').forEach(card => {
+      const catOk = state.cat === '' || card.dataset.category === state.cat;
+      const tagOk = state.tag === '' || (card.dataset.tags || '').includes(` ${state.tag} `);
+      const show = catOk && tagOk;
+      card.style.display = show ? '' : 'none';
+      if (show) count++;
     });
 
-    document.querySelectorAll<HTMLButtonElement>('.filter-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.filter === series);
-    });
+    document.querySelectorAll<HTMLButtonElement>('#cat-row .filter-btn').forEach(b =>
+      b.classList.toggle('active', (b.dataset.cat ?? '') === state.cat));
+    document.querySelectorAll<HTMLButtonElement>('#tag-row .filter-btn').forEach(b =>
+      b.classList.toggle('active', (b.dataset.tag ?? '') === state.tag));
+
+    const rc = document.getElementById('result-count');
+    if (rc) rc.textContent = `顯示 ${count} 篇`;
 
     const url = new URL(window.location.href);
-    series ? url.searchParams.set('series', series) : url.searchParams.delete('series');
+    state.cat ? url.searchParams.set('series', state.cat) : url.searchParams.delete('series');
+    state.tag ? url.searchParams.set('tag', state.tag) : url.searchParams.delete('tag');
     history.replaceState(null, '', url.toString());
   }
 
-  applyFilter(initialSeries);
-
-  document.getElementById('filter-bar')?.addEventListener('click', e => {
-    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('.filter-btn');
-    if (btn) applyFilter(btn.dataset.filter ?? '');
+  document.getElementById('cat-row')?.addEventListener('click', e => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('.filter-btn');
+    if (b) { state.cat = b.dataset.cat ?? ''; apply(); }
   });
+  document.getElementById('tag-row')?.addEventListener('click', e => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('.filter-btn');
+    if (b) { state.tag = b.dataset.tag ?? ''; apply(); }
+  });
+
+  apply();
 </script>
