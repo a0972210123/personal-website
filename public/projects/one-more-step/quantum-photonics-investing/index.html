@@ -158,6 +158,9 @@
     .concept-card ul { margin-top: 0.5rem; padding-left: 1.15rem; color: var(--color-text-muted); font-size: 0.86rem; line-height: 1.6; }
     .concept-card ul li { margin-bottom: 0.25rem; }
 
+    section ul:not(.concept-card ul) { margin-top: 0.6rem; padding-left: 1.25rem; color: var(--color-text-muted); font-size: 0.86rem; line-height: 1.7; }
+    section ul:not(.concept-card ul) li { margin-bottom: 0.4rem; }
+
     .chip {
       display: inline-block;
       background: var(--color-tag-bg);
@@ -204,6 +207,55 @@
     .callout.pink { background: rgba(219,39,119,0.05); border-color: rgba(219,39,119,0.2); }
     .callout.pink strong { color: var(--A4); }
 
+    .term-search {
+      width: 100%;
+      font: inherit;
+      font-size: 0.88rem;
+      padding: 0.6rem 0.9rem;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      margin-bottom: 1rem;
+      background: var(--color-bg);
+      color: var(--color-text);
+    }
+    .term-search:focus { outline: none; border-color: var(--color-accent); }
+
+    .term-grid { display: grid; gap: 0.75rem; }
+    @media (min-width: 700px) { .term-grid { grid-template-columns: 1fr 1fr; } }
+
+    .term-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+    }
+    .term-head {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      width: 100%;
+      padding: 0.85rem 1.1rem;
+      cursor: pointer;
+      user-select: none;
+      background: none;
+      border: none;
+      font: inherit;
+      text-align: left;
+      color: inherit;
+    }
+    .term-head:hover { background: var(--color-surface); }
+    .term-name { font-weight: 700; font-size: 0.95rem; color: var(--color-text); }
+    .term-en { font-size: 0.78rem; color: var(--color-text-muted); flex: 1; }
+    .term-caret { color: var(--color-text-muted); font-size: 0.8rem; transition: transform 0.15s; }
+    .term-card.open .term-caret { transform: rotate(90deg); }
+
+    .term-body { display: none; padding: 0 1.1rem 1rem; font-size: 0.85rem; color: var(--color-text-muted); line-height: 1.65; }
+    .term-card.open .term-body { display: block; }
+    .term-body p { margin-top: 0.4rem; }
+    .term-body p:first-child { margin-top: 0; }
+    .term-body strong { color: var(--color-text); }
+
     .toc { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 1rem; }
     .toc a { font-size: 0.9rem; color: var(--color-text); padding: 0.4rem 0.7rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border); }
     .toc a:hover { background: var(--color-surface); border-color: var(--color-accent); text-decoration: none; }
@@ -219,6 +271,7 @@
       <a class="back-link" href="/projects/one-more-step/">← One More Step</a>
       <div class="page-nav-links">
         <a class="page-nav-link" href="#concepts">概念地圖</a>
+        <a class="page-nav-link" href="#glossary">術語字卡</a>
         <a class="page-nav-link" href="#siph">矽光子</a>
         <a class="page-nav-link" href="#quantum">量子電腦</a>
         <a class="page-nav-link" href="#pqc">PQC</a>
@@ -243,83 +296,99 @@
     <section id="concepts">
       <div class="section-label">Part 1</div>
       <h2>四個領域，一條邏輯線</h2>
-      <p class="lead">這四件事看似各自獨立，其實被同一條因果鏈串起來：量子電腦終將強大到能破解現行加密 → 我們現在就要換用「後量子密碼」(PQC) → 量子電腦五大硬體路線裡有三條本質上是「操控光」→ 而操控光的晶片化能力，正是矽光子（連帶光子 EDA 設計工具）多年來在通訊產業練的功夫，現在被借去做量子與運算。</p>
+      <p class="lead">這篇文章的起點，是台大電機系 EDA 組博士生 <strong>梁峻瑋</strong> 的一句話：「矽光子如果要發展長遠，除了光傳輸，就是往量子電腦走；反過來說，量子電腦的五大可行方案，也有三個跟光有關。」這四件事看似各自獨立，其實被同一條因果鏈串起來：量子電腦終將強大到能破解現行加密 → 我們現在就要換用「後量子密碼」(PQC) → 量子電腦五大硬體路線裡有三條本質上是「操控光」→ 而操控光的晶片化能力，矽光子產業裡又只有「通用 PIC 代工」這條分支才真正銜接得上（細節見下方③），光子 EDA 設計工具則是讓這些光子電路「可被設計、可被驗證」的造工具的人。</p>
 
       <div class="concept-grid">
         <div class="concept-card">
           <h4><span class="dot dot-1"></span>① PQC 後量子密碼</h4>
-          <p>因為量子電腦的 Shor 演算法能在多項式時間內破解 RSA / ECC / Diffie-Hellman，而 Grover 演算法只會把 AES 等對稱式加密的安全強度減半（用更長金鑰即可應對）。威脅模型稱為 <strong>HNDL（Harvest Now, Decrypt Later）</strong>：現在攔截加密資料，等量子電腦成熟後再解密，所以即使「量子電腦還沒出現」，換密碼演算法也急迫。</p>
+          <p>RSA 等公鑰加密的安全性，建立在「大數分解很難」這個假設上：傳統電腦只能一個一個組合慢慢試。量子電腦的 <strong>Shor 演算法</strong>則繞過暴力嘗試，利用量子疊加態同時探索一個週期函數的所有可能值，把「分解大數」轉換成「找週期」這個量子電腦能高效解的問題，使破解時間從天文數字降到可行範圍；而 Grover 演算法對 AES 等對稱式加密的影響小很多，只把安全強度打對折（用更長金鑰即可應對）。即使能破解 RSA 的量子電腦還沒出現，威脅已經存在：<strong>HNDL（Harvest Now, Decrypt Later）</strong>是指攻擊者現在就攔截、儲存加密資料，等未來量子電腦成熟後再回頭解密——對國家機密、病歷、金融紀錄這類「保密期限本來就要拉很長」的資料來說，換密碼演算法是現在就要做的事，不是等量子電腦出現才開始。</p>
           <ul>
-            <li>NIST 標準：FIPS 203(ML-KEM/Kyber)、204(ML-DSA/Dilithium)、205(SLH-DSA/SPHINCS+)，206(FALCON) 待定，HQC 作為備援 KEM（2025/3 選定）</li>
-            <li>NSA CNSA 2.0：2025-2027 起「優先採用」，2030/2033 強制全面換裝</li>
+            <li>NIST 標準：FIPS 203(ML-KEM/Kyber)、204(ML-DSA/Dilithium)、205(SLH-DSA/SPHINCS+) 已定案，206(FN-DSA/FALCON) 仍在審定中，HQC 作為備援 KEM（2025/3 選定）</li>
+            <li>NSA CNSA 2.0：2025-2027 起依系統類別陸續「優先採用」，2030/2033 強制全面換裝</li>
             <li>與 QKD（量子金鑰分發，需要專用硬體/光纖）是不同路線：PQC 是純軟體換算法，QKD 是硬體建網</li>
           </ul>
         </div>
 
         <div class="concept-card">
           <h4><span class="dot dot-2"></span>② 量子電腦五大硬體路線</h4>
-          <p>五種主流硬體方案中，三種的核心操控機制是「光」：</p>
+          <p>量子電腦需要「製備、操控、讀出」量子位元（qubit），五種主流硬體方案中，三種的核心操控機制都是「光」：</p>
           <ul>
-            <li><strong>超導 Superconducting</strong>（不靠光）— IBM、Google、Rigetti</li>
-            <li><strong>離子陷阱 Trapped Ion</strong>（靠光：雷射操控離子）— IonQ、Quantinuum</li>
-            <li><strong>光子 Photonic</strong>（靠光：光子本身就是 qubit）— PsiQuantum、Xanadu、ORCA</li>
-            <li><strong>中性原子 Neutral Atom</strong>（靠光：光鑷捕捉原子）— QuEra、Pasqal、Atom Computing</li>
-            <li><strong>拓樸 Topological</strong>（不靠光）— Microsoft Majorana</li>
+            <li><strong>超導 Superconducting</strong>（不靠光，靠微波脈衝操控）— IBM、Google、Rigetti</li>
+            <li><strong>離子陷阱 Trapped Ion</strong>（靠光：用精準頻率的雷射脈衝驅動離子的電子能階躍遷，藉此操控與讀出量子態）— IonQ、Quantinuum</li>
+            <li><strong>光子 Photonic</strong>（靠光：光子本身就是 qubit，用分光器、相位調變器在晶片上引導光子做運算）— PsiQuantum、Xanadu、ORCA</li>
+            <li><strong>中性原子 Neutral Atom</strong>（靠光：用聚焦雷射形成的「光鑷」像鑷子一樣抓取、排列中性原子）— QuEra、Pasqal、Atom Computing</li>
+            <li><strong>拓樸 Topological</strong>（不靠光，靠特殊準粒子的拓樸態）— Microsoft Majorana</li>
           </ul>
+          <p>這三條靠光的路線共同需要的能力，是「在晶片或光路上精準產生、導引、調變光」——這正是矽光子產業在資料中心通訊領域已經磨練多年的工程能力。</p>
         </div>
 
         <div class="concept-card">
-          <h4><span class="dot dot-3"></span>③ 矽光子 Silicon Photonics</h4>
-          <p>用半導體製程在矽晶片上做光的傳輸與調控，核心元件是波導（Waveguide）、微環諧振器（MRR）、馬赫－曾德爾干涉儀（MZI，可用熱光、PN 接面電光或 GeSi 電吸收調變器驅動）。矽是間接能隙材料不能自己發光，所以仍需混合整合 III-V 族雷射。</p>
+          <h4><span class="dot dot-3"></span>③ 矽光子 Silicon Photonics — 其實是兩條不同賽道</h4>
+          <p>核心元件：<strong>波導 Waveguide</strong>（像電路板上的銅線一樣，把光侷限在一條路徑裡導引，差別是導的是光不是電流）、<strong>微環諧振器 MRR</strong>（一個環形波導，只允許特定波長的光在環內共振、被選擇性截留或濾除，像收音機的調頻電路）、<strong>馬赫－曾德爾干涉儀 MZI</strong>（把光分成兩條路徑，其中一條用熱光、PN 接面電光或 GeSi 電吸收方式微調相位，再讓兩束光重新匯合，靠路徑差造成的干涉把相位變化轉成可偵測的強度訊號，類似兩條賽道長度被悄悄調整後，看誰先抵達）。矽是間接能隙材料不能自己發光，因此仍需混合整合 III-V 族雷射。</p>
+          <p><strong>必須先說清楚一個常被混為一談的誤區：「矽光子晶圓代工」其實分裂成兩條不同的路。</strong></p>
           <ul>
-            <li>主戰場一（現金流來源）：資料中心光互連、CPO（Co-Packaged Optics）</li>
-            <li>主戰場二（長期）：光運算，目前產業重心正從「運算」轉回「互連」</li>
-            <li>晶圓代工：imec iSiPP/iSiPP300、台積電 COUPE、GlobalFoundries GF Fotonix、Tower Semiconductor；<strong>聯電-imec 授權生效日為 2025/12/08（非友人原文的 2026 年 4 月），風險試產規劃在 2026-2027</strong></li>
+            <li><strong>賽道 A · 通用型 PIC 代工（General-purpose PIC Foundry）</strong>：UMC + imec iSiPP300（2025/12/08 簽署授權，2026-2027 風險試產）、GlobalFoundries GF Fotonix、Tower Semiconductor PH18，都是開放式多專案晶圓（MPW）平台，客戶能拿來流片做收發器、感測、LiDAR、生醫光子等不同應用的客製 PIC——這條分支才是真正能延伸到「量子光子晶片」這類客製化、小量、多樣應用的代工模式，因為量子晶片需要的是製程彈性，而不是被綁定在單一系統架構裡。</li>
+            <li><strong>賽道 B · CPO / 光學互連（Co-Packaged Optics）</strong>：台積電 COUPE 是把光引擎（PIC）與電子 IC 透過 SoIC/CoWoS 先進封裝整合在一起的方案，本質是解決「資料怎麼快速進出自家高效能運算封裝」這個特定問題，緊密綁定 TSMC 自己的先進封裝與 AI 算力生態系，並不是一個開放、誰都能拿來流片任意光子電路的代工平台。</li>
           </ul>
+          <div class="callout teal">
+            <strong>修正後的因果論點：</strong>矽光子常被當成單一賽道討論，但 CPO 互連（賽道 B）服務的是「資料中心光通訊」這個現金流場景；真正通向量子運算/量子感測晶片的，是賽道 A「通用 PIC 代工」，因為量子光子晶片需要的是「客製化光子電路的代工彈性」，而非「先進封裝內的光 I/O 方案」。（感謝梁峻瑋博士指出這個關鍵區分。）
+          </div>
         </div>
 
         <div class="concept-card">
-          <h4><span class="dot dot-4"></span>④ 光子 EDA / 光運算（朋友的論文領域）</h4>
-          <p>朋友論文涉及的 NTU EDA 組題目（TriHOT、Harrow、DCPPC）落在這裡：用 EDA（電子設計自動化）工具去設計可程式化光子電路（PPC, Programmable Photonic Circuit），核心結構是 MZI mesh（六角形/矩形拓樸），imec 在製程上扮演關鍵角色，iPronics 是商業化的代表案例。</p>
+          <h4><span class="dot dot-4"></span>④ 光子 EDA ≠ 光運算</h4>
+          <p>先釐清一個容易混淆的地方：<strong>光子 EDA（電子設計自動化）指的是「設計工具/演算法」本身</strong>——例如光子電路的自動布局繞線、邏輯合成、相位誤差與熱串擾校正；這跟「用光子晶片做運算」（optical computing，光運算硬體本身）是兩件不同的事。打個比方，EDA 是造工具的人，optical computing 是被造出來的晶片。梁峻瑋博士的論文題目正落在 EDA／設計自動化這一側：</p>
           <ul>
-            <li>類比光子 AI 加速器：Lightmatter、Lightelligence、Celestial AI（後者已於 2025/12 被 Marvell 以最高 55 億美元收購，且正轉向互連市場）</li>
-            <li>數位光子邏輯（朋友的細分利基）：常用開源工具 ABC 做邏輯合成</li>
-            <li>神經形態運算（Neuromorphic）</li>
+            <li><strong>TriHOT</strong>（ACM TODAES 2026）：用三角形/六角形時序模型，解決晶片上光子互連的「WDM 波分多工感知繞線」問題——是繞線/時序最佳化問題。</li>
+            <li><strong>Harrow / p-Harrow</strong>（DAC 2025）：用調和平均數與整數拆分法，做「光學邏輯電路合成」——是邏輯合成問題。</li>
+            <li><strong>DCPPC</strong>（ASP-DAC 2026）：在可程式化光子電路（MZI mesh）裡實現數位邏輯運算，並用自動繞線演算法校正、最大化通過特定可調單元的訊號——同時碰到電路合成與校正。</li>
+          </ul>
+          <p class="lead" style="margin-bottom:0; font-size:0.8rem;">（以上三項定位依公開論文標題與摘要整理，正式定義以梁博士本人確認為準。）</p>
+          <ul>
+            <li>商業化代表：iPronics（可程式化光子電路）；類比光子 AI 加速器如 Lightmatter、Lightelligence、Celestial AI（後者已於 2025/12 被 Marvell 以最高 55 億美元收購，且正轉向互連市場）</li>
             <li>主要學術發表場域：DAC、ICCAD、ASP-DAC、DATE</li>
           </ul>
         </div>
       </div>
 
       <div class="callout">
-        <strong>一句話總結：</strong>矽光子練的「在晶片上精準操控光」的能力，正好是量子電腦三種主流路線（光子、離子陷阱、中性原子）共同需要的底層技術；而 PQC 則是「在量子電腦真正威脅到現有加密之前」必須先完成的軟體層遷移。三者時間軸不同步，但互為因果。
+        <strong>一句話總結：</strong>矽光子裡真正練出「在晶片上精準操控光」這個底層能力、並且通用到能延伸至量子硬體的，是「通用 PIC 代工」這條賽道，而非綁定先進封裝的 CPO 互連賽道；這個能力正好是量子電腦三種主流路線（光子、離子陷阱、中性原子）共同需要的東西。PQC 則是「在量子電腦真正威脅到現有加密之前」必須先完成的軟體層遷移。光子 EDA 是讓這一切「可被設計、可被驗證」的工具鏈。四者時間軸不同步，但互為因果。
       </div>
+    </section>
+
+    <section id="glossary">
+      <div class="section-label">Part 1.5 · 術語</div>
+      <h2>術語學習字卡</h2>
+      <p class="lead">點擊卡片展開完整定義、類比與範例。後續投資標的章節會直接使用這些術語。</p>
+      <input type="text" id="termSearch" class="term-search" placeholder="搜尋術語…" oninput="filterTerms(this.value)" />
+      <div class="term-grid" id="termGrid"></div>
     </section>
 
     <section id="siph">
       <div class="section-label">Part 2 · 投資標的</div>
       <h2>矽光子 / 光互連 / CPO</h2>
-      <p class="lead">資料中心 AI 算力需求帶動光互連與 CPO 的近期營收成長，是矽光子目前最具體的變現場景。</p>
+      <p class="lead">資料中心 AI 算力需求帶動光互連與 CPO 的近期營收成長，是矽光子目前最具體的變現場景；但如 Part 1 所說，這不是唯一賽道。下表新增「賽道」欄位區分 <strong>CPO 互連</strong>（綁定先進封裝、服務資料中心現金流）與 <strong>通用 PIC 代工</strong>（開放式流片平台，較有機會延伸到量子光子晶片）。</p>
 
       <h3>美股</h3>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>公司</th><th>代號</th><th>角色 / 定位</th></tr></thead>
+          <thead><tr><th>公司</th><th>代號</th><th>賽道</th><th>角色 / 定位</th></tr></thead>
           <tbody>
-            <tr><td>Broadcom</td><td>AVGO</td><td>CPO 與光引擎龍頭供應商之一，與輝達/超微等資料中心客戶深度合作</td></tr>
-            <tr><td>Nvidia</td><td>NVDA</td><td>推動 CPO 導入自家 GPU 互連架構（如 Quantum-X / Spectrum-X 交換器），帶動整條供應鏈需求</td></tr>
-            <tr><td>Marvell</td><td>MRVL</td><td>資料中心互連 ASIC/DSP，2025/12 收購 Celestial AI（光子互連 IP）強化布局</td></tr>
-            <tr><td>Cisco</td><td>CSCO</td><td>網通設備龍頭，矽光子收發模組大客戶與布局者</td></tr>
-            <tr><td>Ciena</td><td>CIEN</td><td>光通訊網路設備與相關元件</td></tr>
-            <tr><td>Coherent</td><td>COHR</td><td>雷射與光學元件，收購 Finisar 後成為光收發模組重要供應商</td></tr>
-            <tr><td>Lumentum</td><td>LITE</td><td>光學元件與模組，資料中心與電信兩用</td></tr>
-            <tr><td>Applied Optoelectronics</td><td>AAOI</td><td>垂直整合光收發模組/雷射供應商，800G 模組 2026Q1 放量</td></tr>
-            <tr><td>POET Technologies</td><td>POET</td><td>光子互連平台新創（已上市），主打光引擎整合方案</td></tr>
-            <tr><td>Lumentum 競品 / Lightwave Logic</td><td>LWLG</td><td>電光聚合物調變器材料技術，授權模式</td></tr>
-            <tr><td>Credo Technology</td><td>CRDO</td><td>高速互連 IC（含光相關 DSP/SerDes），AI 資料中心受惠股</td></tr>
-            <tr><td>Astera Labs</td><td>ALAB</td><td>PCIe/CXL Retimer 與智慧連接模組，資料中心互連生態系</td></tr>
-            <tr><td>MACOM</td><td>MTSI</td><td>類比與光通訊半導體，LPO（線性直驅光學）技術供應商</td></tr>
-            <tr><td>Intel</td><td>INTC</td><td>矽光子研發資歷最久，2023 年將可插拔光收發模組業務出售予 Jabil（2024 為內部 IPS 部門整併進 DCAI，非 2025 撤資）</td></tr>
-            <tr><td>GlobalFoundries</td><td>GFS</td><td>GF Fotonix 矽光子晶圓代工平台</td></tr>
+            <tr><td>Broadcom</td><td>AVGO</td><td>CPO 互連</td><td>CPO 與光引擎龍頭供應商之一，與輝達/超微等資料中心客戶深度合作</td></tr>
+            <tr><td>Nvidia</td><td>NVDA</td><td>CPO 互連</td><td>推動 CPO 導入自家 GPU 互連架構（如 Quantum-X / Spectrum-X 交換器），帶動整條供應鏈需求</td></tr>
+            <tr><td>Marvell</td><td>MRVL</td><td>CPO 互連</td><td>資料中心互連 ASIC/DSP，2025/12 收購 Celestial AI（光子互連 IP）強化布局</td></tr>
+            <tr><td>Cisco</td><td>CSCO</td><td>CPO 互連</td><td>網通設備龍頭，矽光子收發模組大客戶與布局者</td></tr>
+            <tr><td>Ciena</td><td>CIEN</td><td>CPO 互連</td><td>光通訊網路設備與相關元件</td></tr>
+            <tr><td>Coherent</td><td>COHR</td><td>CPO 互連</td><td>雷射與光學元件，收購 Finisar 後成為光收發模組重要供應商</td></tr>
+            <tr><td>Lumentum</td><td>LITE</td><td>CPO 互連</td><td>光學元件與模組，資料中心與電信兩用</td></tr>
+            <tr><td>Applied Optoelectronics</td><td>AAOI</td><td>CPO 互連</td><td>垂直整合光收發模組/雷射供應商，800G 模組 2026Q1 放量</td></tr>
+            <tr><td>POET Technologies</td><td>POET</td><td>CPO 互連</td><td>光子互連平台新創（已上市），主打光引擎整合方案</td></tr>
+            <tr><td>Lumentum 競品 / Lightwave Logic</td><td>LWLG</td><td>CPO 互連</td><td>電光聚合物調變器材料技術，授權模式</td></tr>
+            <tr><td>Credo Technology</td><td>CRDO</td><td>CPO 互連</td><td>高速互連 IC（含光相關 DSP/SerDes），AI 資料中心受惠股</td></tr>
+            <tr><td>Astera Labs</td><td>ALAB</td><td>CPO 互連</td><td>PCIe/CXL Retimer 與智慧連接模組，資料中心互連生態系</td></tr>
+            <tr><td>MACOM</td><td>MTSI</td><td>CPO 互連</td><td>類比與光通訊半導體，LPO（線性直驅光學）技術供應商</td></tr>
+            <tr><td>Intel</td><td>INTC</td><td>CPO 互連</td><td>矽光子研發資歷最久，2023 年將可插拔光收發模組業務出售予 Jabil（2024 為內部 IPS 部門整併進 DCAI，非 2025 撤資）</td></tr>
+            <tr><td>GlobalFoundries</td><td>GFS</td><td>通用 PIC 代工</td><td>GF Fotonix 為開放式矽光子代工平台，官方明確列出資料中心互連、光學網路、光運算、FTTH、CPO 等多元應用場景，是少數可單獨流片的通用 PIC 平台</td></tr>
           </tbody>
         </table>
       </div>
@@ -328,13 +397,13 @@
       <h3>台股</h3>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>公司</th><th>代號</th><th>角色 / 定位</th></tr></thead>
+          <thead><tr><th>公司</th><th>代號</th><th>賽道</th><th>角色 / 定位</th></tr></thead>
           <tbody>
-            <tr><td>台積電</td><td>2330</td><td>COUPE 矽光子整合平台，先進封裝（CoWoS/SoIC）是 CPO 落地的關鍵代工方</td></tr>
-            <tr><td>聯電</td><td>2303</td><td>2025/12/08 與 imec 簽署 iSiPP300 矽光子製程授權，目標 2026-2027 風險試產</td></tr>
-            <tr><td>日月光</td><td>3711</td><td>先進封裝大廠，CPO 模組封裝測試潛在受惠者</td></tr>
-            <tr><td>鴻海</td><td>2317</td><td>透過子公司／策略佈局切入 AI 資料中心光通訊模組組裝</td></tr>
-            <tr><td>廣達</td><td>2382</td><td>AI 伺服器與資料中心系統整合，光互連模組導入的下游應用方</td></tr>
+            <tr><td>台積電</td><td>2330</td><td>CPO 互連</td><td>COUPE 是把光引擎與電子 IC 透過 SoIC/CoWoS 封裝整合的光 I/O 方案，綁定自家先進封裝與 AI 算力生態系，非開放式 PIC 代工平台</td></tr>
+            <tr><td>聯電</td><td>2303</td><td>通用 PIC 代工</td><td>2025/12/08 與 imec 簽署 iSiPP300 矽光子製程授權，屬開放式 MPW 平台，目標 2026-2027 風險試產</td></tr>
+            <tr><td>日月光</td><td>3711</td><td>CPO 互連／封裝</td><td>先進封裝大廠，CPO 模組封裝測試潛在受惠者（下游封測，兩條賽道皆可能受惠）</td></tr>
+            <tr><td>鴻海</td><td>2317</td><td>CPO 互連</td><td>透過子公司／策略佈局切入 AI 資料中心光通訊模組組裝</td></tr>
+            <tr><td>廣達</td><td>2382</td><td>CPO 互連</td><td>AI 伺服器與資料中心系統整合，光互連模組導入的下游應用方</td></tr>
           </tbody>
         </table>
       </div>
@@ -460,6 +529,52 @@
       </div>
       <p class="lead" style="margin-top:1.25rem;">本文為產業研究筆記整理，非投資建議，個股與 ETF 之配置請自行評估風險與盡職調查。</p>
     </section>
+
+    <section>
+      <div class="section-label">致謝</div>
+      <h2>致謝</h2>
+      <p class="lead">本文最初版本誤將 UMC-imec iSiPP300 與 TSMC COUPE 並列為同一種「矽光子晶圓代工平台」，感謝台大電機系 EDA 組博士生 <strong>梁峻瑋</strong> 指出這個關鍵區分，並提供 TriHOT、Harrow、DCPPC 三項論文題目的核實方向，才有 Part 1 改寫後的兩條賽道論點與術語字卡。文中 TriHOT / Harrow / DCPPC 的定位描述為依公開論文摘要整理之暫定版本，正式定義仍待峻瑋本人確認；歡迎之後持續修正。</p>
+    </section>
+
+    <section>
+      <div class="section-label">參考資料</div>
+      <h2>References</h2>
+      <p class="lead">以下連結為撰文時查證所用之主要來源，建議讀者自行開啟確認最新內容。</p>
+
+      <h3>PQC / 密碼學標準</h3>
+      <ul>
+        <li>NIST, "Announcing Issuance of Federal Information Processing Standards (FIPS) FIPS 203, FIPS 204, and FIPS 205" — <a href="https://www.federalregister.gov/documents/2024/08/14/2024-17956/announcing-issuance-of-federal-information-processing-standards-fips-fips-203-module-lattice-based" target="_blank" rel="noopener">federalregister.gov</a></li>
+        <li>NIST CSRC, "FIPS 206 (FN-DSA / FALCON) Status" — <a href="https://csrc.nist.gov/presentations/2025/fips-206-fn-dsa-falcon" target="_blank" rel="noopener">csrc.nist.gov</a></li>
+        <li>NIST 選定 HQC 為備援 KEM（2025/3） — <a href="https://quantumcomputingreport.com/nist-selects-hqc-as-backup-post-quantum-encryption-algorithm/" target="_blank" rel="noopener">quantumcomputingreport.com</a></li>
+        <li>NSA, "CNSA 2.0 Algorithms" Cybersecurity Advisory（2025/5） — <a href="https://media.defense.gov/2025/May/30/2003728741/-1/-1/0/CSA_CNSA_2.0_ALGORITHMS.PDF" target="_blank" rel="noopener">media.defense.gov</a></li>
+      </ul>
+
+      <h3>矽光子製程平台</h3>
+      <ul>
+        <li>imec, "UMC Licenses imec's iSiPP300 Technology to Extend Silicon Photonics Capabilities for Next-Generation Connectivity"（2025/12/08） — <a href="https://www.imec-int.com/en/press/umc-licenses-imecs-isipp300-technology-extend-silicon-photonics-capabilities-next-generation" target="_blank" rel="noopener">imec-int.com</a></li>
+        <li>UMC 官方新聞稿（2025/12/08） — <a href="https://www.umc.com/en/News/press_release/Content/technology_related/20251208" target="_blank" rel="noopener">umc.com</a></li>
+        <li>TSMC, "Heterogeneous Integration of a Compact Universal Photonic Engine (COUPE) for Silicon Photonics Applications in HPC" — <a href="https://research.tsmc.com/page/on-chip-interconnect/14.html" target="_blank" rel="noopener">research.tsmc.com</a></li>
+        <li>GlobalFoundries, "GlobalFoundries Announces Next-Generation Silicon Photonics Solutions" — <a href="https://gf.com/gf-press-release/globalfoundries-announces-next-generation-silicon-photonics-solutions-and/" target="_blank" rel="noopener">gf.com</a></li>
+        <li>Tower Semiconductor, PH18 製程平台公告 — <a href="https://towersemi.com/2023/03/02/03022023/" target="_blank" rel="noopener">towersemi.com</a></li>
+      </ul>
+
+      <h3>產業併購 / 上市</h3>
+      <ul>
+        <li>CNBC, "Marvell to acquire Celestial AI for as much as $5.5 billion"（2025/12/2） — <a href="https://www.cnbc.com/2025/12/02/mrvl-earnings-q3-2026-acquires-celestial-ai.html" target="_blank" rel="noopener">cnbc.com</a></li>
+        <li>CNBC, "Quantinuum (QNT) stock first trade"（2026/6/4） — <a href="https://www.cnbc.com/2026/06/04/quantinuum-qnt-stock-first-trade-ipo.html" target="_blank" rel="noopener">cnbc.com</a></li>
+        <li>Photonics.com, "Jabil Acquires Intel's Silicon Photonics Optical Business"（2023） — <a href="https://www.photonics.com/Articles/Jabil-Acquires-Intels-Silicon-Photonics-Optical/a69434" target="_blank" rel="noopener">photonics.com</a></li>
+        <li>TrendForce, "Intel Moves Integrated Photonics Solutions to Data Center AI Division"（2024） — <a href="https://www.trendforce.com/news/2024/09/19/news-intel-moves-integrated-photonics-solutions-to-data-center-ai-division-as-part-of-restructuring-plan/" target="_blank" rel="noopener">trendforce.com</a></li>
+      </ul>
+
+      <h3>光子 EDA / 學術來源</h3>
+      <ul>
+        <li>"TriHOT: Triangular and Hexagonal Norm Based Timing-Driven Optical Routing with Wavelength Division Multiplexing," ACM TODAES（2026） — <a href="https://dl.acm.org/doi/10.1145/3725888" target="_blank" rel="noopener">dl.acm.org</a></li>
+        <li>"Harrow: Synthesis of Optical Logic Circuits via Harmonic Mean and Integer Partition," DAC（2025）— 收錄於 ACM Digital Library</li>
+        <li>"DCPPC: Digital Computation in Programmable Photonic Circuits," ASP-DAC（2026, pp. 413–419）— 收錄於 ACM Digital Library</li>
+        <li>"Bridging EDA and Silicon Photonics Design: Enabling Robust-by-Design Photonic Integrated Circuits," ASP-DAC（2025） — <a href="https://dl.acm.org/doi/10.1145/3658617.3703151" target="_blank" rel="noopener">dl.acm.org</a></li>
+      </ul>
+      <p class="lead" style="margin-top:0.75rem; font-size:0.78rem;">註：部分學術連結因發行方阻擋自動化存取，未能逐字覆核摘要原文，內容以可公開檢索之標題、作者、會議資訊與搜尋摘要為準，建議讀者自行開啟連結確認。</p>
+    </section>
   </div>
 
   <footer>
@@ -468,5 +583,63 @@
     </div>
   </footer>
 
+  <script>
+    const TERMS = [
+      { term: "CPO", en: "Co-Packaged Optics", def: "把光收發引擎直接整合進交換器/處理器封裝內，而不是用外接的可插拔模組，藉此縮短電訊號傳輸距離、降低功耗。", analogy: "把家裡的數據機從客廳搬進路由器機殼裡，訊號不用再跑一段長長的網路線。", example: "輝達的 Quantum-X / Spectrum-X 交換器、Broadcom 的 CPO 交換器產品線都是資料中心導入 CPO 的代表案例。" },
+      { term: "COUPE", en: "Compact Universal Photonic Engine（TSMC 官方名稱）", def: "台積電的光子引擎封裝整合方案，把光子積體電路（PIC）與電子 IC 透過 SoIC/CoWoS 先進封裝堆疊在一起，解決高效能運算封裝的光 I/O 問題。", analogy: "像把光纖網路的『轉接頭』直接焊死在主機板上，而不是留一個外接孔。", example: "台積電在技術研討會上展示 COUPE 用於 HPC（高效能運算）的光子引擎異質整合方案。" },
+      { term: "PIC", en: "Photonic Integrated Circuit", def: "把雷射、調變器、波導、光偵測器等多個光學元件整合在同一塊晶片上的積體電路，是光子產業的『晶片』概念。", analogy: "就像電子 IC 把電晶體整合在矽晶片上，PIC 是把『操控光』的元件整合在一塊晶片上。", example: "資料中心用的 400G/800G 同調光收發模組，核心就是一顆 PIC。" },
+      { term: "TriHOT", en: "Triangular and Hexagonal norm-based Timing-driven Optical routing with WDM-awareness（依論文標題整理，暫定）", def: "梁峻瑋博士團隊提出的演算法，用三角形與六角形的時序模型，解決晶片上光子互連的『波分多工感知繞線』問題，讓繞線結果更貼近實際訊號延遲。", analogy: "像在設計捷運路網時，不只算『距離』，還要精準算出『不同班次（波長）共用同一條軌道時的實際通過時間』。", example: "發表於 ACM TODAES（2026），屬於光子電路設計自動化（EDA）裡的繞線最佳化研究，而非製造光運算硬體本身。" },
+      { term: "Harrow", en: "光學邏輯電路合成演算法（依論文標題整理，暫定）", def: "用調和平均數與整數拆分法，把邏輯運算需求自動轉換成最佳化的光學邏輯電路結構，是光子電路的『邏輯合成』工具。", analogy: "類似把一段程式碼自動編譯、最佳化成最精簡的電路圖，只是這裡的『電路』是光路。", example: "發表於 DAC（2025），是光子 EDA 工具鏈中『設計工具』的一環，不是運算晶片本身。" },
+      { term: "DCPPC", en: "Digital Computation in Programmable Photonic Circuits（依論文標題整理，暫定）", def: "在可程式化光子電路（MZI mesh）上實現數位邏輯運算的方法，並用自動繞線演算法校正、最大化通過特定可調單元的訊號品質。", analogy: "把一塊『萬用光學麵包板』透過軟體設定，組出不同的邏輯電路，而不是每次都重新流片做一顆新晶片。", example: "發表於 ASP-DAC（2026），同時碰觸『電路合成』與『訊號校正』兩個 EDA 問題。" },
+      { term: "MRR", en: "Micro-Ring Resonator（微環諧振器）", def: "一個環形波導結構，只允許特定波長的光在環內共振、被選擇性截留或濾除，常用於調變或波長選擇。", analogy: "像收音機的調頻電路，只『鎖定』某一個頻率的訊號，其他頻率直接通過不受影響。", example: "矽光子收發模組常用 MRR 做高密度波分多工（DWDM）的濾波與調變。" },
+      { term: "MZI", en: "Mach-Zehnder Interferometer（馬赫－曾德爾干涉儀）", def: "把一束光分成兩條路徑，其中一條路徑用熱光、電光或吸收效應微調相位，再讓兩束光重新匯合，相位差透過干涉轉換成強度變化，藉此編碼訊號。", analogy: "兩條賽道的長度被悄悄調整後，看誰先抵達終點線，抵達的時間差就是被編碼的訊號。", example: "幾乎所有同調光收發模組與可程式化光子電路（MZI mesh）的核心調變元件都是 MZI。" },
+      { term: "HNDL", en: "Harvest Now, Decrypt Later", def: "攻擊者現在就攔截、儲存加密資料，等未來量子電腦成熟後再回頭解密的威脅模型，被 NSA / NIST 列為現實威脅。", analogy: "小偷現在先把你家保險箱整個搬走，反正以後遲早會弄到能開鎖的工具。", example: "國家機密、病歷、金融長期紀錄這類『保密期限本來就很長』的資料，是 HNDL 攻擊的主要目標，也是現在就要導入 PQC 的原因。" },
+      { term: "ML-KEM", en: "Module-Lattice-Based Key-Encapsulation Mechanism（FIPS 203，前身為 Kyber）", def: "NIST 在 2024/8 正式定案的後量子金鑰交換演算法，取代 RSA / ECDH 用來在雙方之間安全地建立共用金鑰。", analogy: "像把過去『靠質因數分解的密碼鎖』換成『靠格數學難題的密碼鎖』，後者目前還沒有已知的量子捷徑可破解。", example: "Google 已在 Chrome 與部分服務中部署 ML-KEM 做後量子金鑰交換。" },
+      { term: "CNSA 2.0", en: "Commercial National Security Algorithm Suite 2.0", def: "NSA 公布的下一代密碼演算法清單，涵蓋對稱加密（AES-256）、後量子金鑰交換（ML-KEM）與簽章（ML-DSA、SLH-DSA），並訂出國安系統的換裝時程。", analogy: "像政府機關公告的『新版保險箱規格清單』，並規定各機關幾年內一定要換裝完畢。", example: "美國國安系統依 CNSA 2.0 時程，2025-2027 起依系統類別陸續優先採用，2030/2033 強制全面換裝。" },
+    ];
+
+    function renderTerms(filter) {
+      const grid = document.getElementById('termGrid');
+      const q = (filter || '').toLowerCase();
+      grid.innerHTML = '';
+      TERMS.forEach(t => {
+        if (q && !t.term.toLowerCase().includes(q) && !t.en.toLowerCase().includes(q) && !t.def.toLowerCase().includes(q)) return;
+        const card = document.createElement('div');
+        card.className = 'term-card';
+        const head = document.createElement('button');
+        head.className = 'term-head';
+        head.type = 'button';
+        head.addEventListener('click', () => card.classList.toggle('open'));
+        const name = document.createElement('span');
+        name.className = 'term-name';
+        name.textContent = t.term;
+        const en = document.createElement('span');
+        en.className = 'term-en';
+        en.textContent = t.en;
+        const caret = document.createElement('span');
+        caret.className = 'term-caret';
+        caret.textContent = '›';
+        head.append(name, en, caret);
+
+        const body = document.createElement('div');
+        body.className = 'term-body';
+        const def = document.createElement('p');
+        def.innerHTML = '<strong>定義：</strong>';
+        def.append(document.createTextNode(t.def));
+        const analogy = document.createElement('p');
+        analogy.innerHTML = '<strong>類比：</strong>';
+        analogy.append(document.createTextNode(t.analogy));
+        const example = document.createElement('p');
+        example.innerHTML = '<strong>範例：</strong>';
+        example.append(document.createTextNode(t.example));
+        body.append(def, analogy, example);
+
+        card.append(head, body);
+        grid.appendChild(card);
+      });
+    }
+    function filterTerms(v) { renderTerms(v); }
+    document.addEventListener('DOMContentLoaded', () => renderTerms(''));
+  </script>
 </body>
 </html>
