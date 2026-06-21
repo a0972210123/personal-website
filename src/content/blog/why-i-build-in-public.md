@@ -1,21 +1,21 @@
 ---
-title: Why I Build in Public
-description: My reasons for documenting the startup journey openly, and what I hope to learn from it.
+title: Why I Built This Site
+description: The origin of this site — a place to record my "unconventional" path, and the portfolio life I want to keep writing about.
 pubDate: 2026-05-31
 lang: en
-tags: [startup, building-in-public]
+tags: [about, essay]
 ---
 
-Building in public is uncomfortable at first. You're sharing half-finished ideas, uncertain decisions, and occasional failures with anyone who cares to look.
+## Why I built this site
 
-But that discomfort is the point.
+It started as a wish for a space to record my somewhat unconventional, "not-quite-my-day-job" experiences — something I could drop behind the QR code on my business card, so I could introduce myself faster when meeting new people. After a lot of teaching from friends and plenty of Vibe Coding, the structure of this personal site gradually came together.
 
-## The accountability loop
+Special thanks to **張庭維, 李維, and 黃聖瀚** for guiding me as I learned Vibe Coding — your examples and momentum are what got me to actually start.
 
-When I write about what I'm working on, I have to actually understand it well enough to explain it. That forces clarity I wouldn't get otherwise.
+This site will keep documenting the competitions, talks, training, and consulting work I've accumulated since 2020, and I'll keep sharing the new things I learn along the way.
 
-## What "building in public" means for me
+## What I want to write next
 
-It doesn't mean sharing everything. It means sharing the parts that might be useful to someone else going through the same thing a year from now.
+I want to record the many facets of building a Portfolio Life: research notes, lessons from building startups, technical notes, investing knowledge, reading notes, pitching tips — and the occasional personal reflection.
 
-More posts coming.
+It will be wide-ranging on purpose. I hope this collected miscellany can help my family, my partner, my friends, my co-founders, my students — or whoever happens to land here one day via SEO / AEO / GEO.
