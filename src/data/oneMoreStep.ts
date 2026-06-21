@@ -62,7 +62,7 @@ export const oneMoreStep: OmsDoc[] = [
     titleEn: 'IP Governance & AI',
     description: '探討人工智慧時代的智慧財產權治理架構，涵蓋著作權、專利、開源授權等核心議題。',
     tags: ['IP 治理', 'AI', '法律'],
-    date: '2026-05-20',
+    date: '2026-06-06',
   },
   {
     slug: 'daniels-talk',
