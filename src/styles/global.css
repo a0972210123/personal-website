@@ -176,6 +176,30 @@ nav a[aria-current="page"] {
 [data-theme="dark"] .theme-toggle .icon-sun  { display: block; }
 [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
 
+/* Language toggle button (mirrors theme toggle) */
+.lang-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-tag-bg);
+  cursor: pointer;
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  flex-shrink: 0;
+}
+.lang-toggle:hover { color: var(--color-text); border-color: var(--color-accent); }
+
+/* Language show/hide — default (no JS) shows zh; data-lang flips it */
+.lang-en { display: none; }
+[data-lang="en"] .lang-zh { display: none; }
+[data-lang="en"] .lang-en { display: inline; }
+
 @media (max-width: 640px) {
   .nav-right { gap: 10px; }
   nav { gap: 10px; }

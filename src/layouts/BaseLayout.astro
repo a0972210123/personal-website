@@ -64,6 +64,15 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [personLd, websiteL
       })();
     </script>
 
+    <!-- Language preference (runs before render; default zh) -->
+    <script is:inline>
+      (function () {
+        const lang = localStorage.getItem('lang') === 'en' ? 'en' : 'zh';
+        document.documentElement.setAttribute('data-lang', lang);
+        document.documentElement.lang = lang === 'en' ? 'en' : 'zh-TW';
+      })();
+    </script>
+
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
 
