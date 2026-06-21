@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import T from '../../components/T.astro';
 import { getCollection } from 'astro:content';
 
 const projects = [
@@ -8,18 +9,22 @@ const projects = [
     title: '捕夢網產生器',
     titleEn: 'Dreamcatcher Generator',
     description: '根據使用者設定，即時繪製專屬的捕夢網圖案。探索幾何之美與個人化創作。',
+    descriptionEn: 'Renders a personalized dreamcatcher pattern in real time based on user input — exploring geometric beauty and generative design.',
     status: 'live', // 'live' | 'in-progress' | 'archived'
     url: 'https://a0972210123.github.io/dreamcatcher/',
     tags: ['互動工具', 'Generative Art'],
+    tagsEn: ['Interactive Tool', 'Generative Art'],
   },
   {
     slug: 'one-more-step',
     title: 'One More Step',
     titleEn: 'Learning Notes',
     description: '把複雜的東西搞懂，然後寫下來。學習筆記集，涵蓋 IP 治理、電商創業等主題。',
+    descriptionEn: 'Understanding complex topics, then writing them down — a collection of learning notes spanning IP governance, e-commerce entrepreneurship, and more.',
     status: 'live',
     url: '/projects/one-more-step',
     tags: ['學習筆記'],
+    tagsEn: ['Learning Notes'],
     internal: true,
   },
 ];
@@ -35,8 +40,8 @@ const investingPosts = (await getCollection('blog', ({ data }) =>
   description="葉淨維 Matt Ye 的 Side Projects — 互動工具、實驗性作品，以及 One More Step 學習筆記。"
 >
   <section class="projects-hero">
-    <h1>Side <span class="accent-text">Projects</span></h1>
-    <p class="projects-subtitle">正在做的東西。實驗性質，持續演進。</p>
+    <h1><T zh="個人" en="Side" /> <span class="accent-text"><T zh="專案" en="Projects" /></span></h1>
+    <p class="projects-subtitle"><T zh="正在做的東西。實驗性質，持續演進。" en="Things I'm currently building — experimental, and always evolving." /></p>
   </section>
 
   <div class="projects-grid">
@@ -44,21 +49,25 @@ const investingPosts = (await getCollection('blog', ({ data }) =>
       <div class={`project-card ${p.status === 'in-progress' ? 'card-wip' : ''}`}>
         <div class="project-card-header">
           <div>
-            <h2 class="project-title">{p.title}</h2>
+            <h2 class="project-title"><T zh={p.title} en={p.titleEn} /></h2>
             <p class="project-title-en">{p.titleEn}</p>
           </div>
           <span class={`project-badge badge-${p.status}`}>
-            {p.status === 'live' ? 'Live' : p.status === 'in-progress' ? 'In Progress' : 'Archived'}
+            {p.status === 'live'
+              ? <T zh="上線中" en="Live" />
+              : p.status === 'in-progress'
+                ? <T zh="進行中" en="In Progress" />
+                : <T zh="已封存" en="Archived" />}
           </span>
         </div>
-        <p class="project-desc">{p.description}</p>
+        <p class="project-desc"><T zh={p.description} en={p.descriptionEn} /></p>
         <div class="project-footer">
           <div class="project-tags">
-            {p.tags.map(tag => <span class="project-tag">{tag}</span>)}
+            {p.tags.map((tag, i) => <span class="project-tag"><T zh={tag} en={p.tagsEn[i]} /></span>)}
           </div>
           {p.url
-            ? <a href={p.url} {...(p.internal ? {} : { target: '_blank', rel: 'noopener noreferrer' })} class="project-link">前往 →</a>
-            : <span class="project-link-disabled">即將上線</span>
+            ? <a href={p.url} {...(p.internal ? {} : { target: '_blank', rel: 'noopener noreferrer' })} class="project-link"><T zh="前往 →" en="Visit →" /></a>
+            : <span class="project-link-disabled"><T zh="即將上線" en="Coming Soon" /></span>
           }
         </div>
       </div>
@@ -68,10 +77,10 @@ const investingPosts = (await getCollection('blog', ({ data }) =>
     <div class="project-card">
       <div class="project-card-header">
         <div>
-          <h2 class="project-title">寫給家人：投資心態</h2>
+          <h2 class="project-title"><T zh="寫給家人：投資心態" en="Letters to Family: An Investing Mindset" /></h2>
           <p class="project-title-en">Family · Investing Mindset</p>
         </div>
-        <span class="project-badge badge-series">連載中</span>
+        <span class="project-badge badge-series"><T zh="連載中" en="Ongoing Series" /></span>
       </div>
 
       {investingPosts.length > 0 ? (
@@ -87,15 +96,15 @@ const investingPosts = (await getCollection('blog', ({ data }) =>
           })}
         </ul>
       ) : (
-        <p class="project-desc">從基礎金融知識到價值投資心法，寫給我的家人。文章即將上線。</p>
+        <p class="project-desc"><T zh="從基礎金融知識到價值投資心法，寫給我的家人。文章即將上線。" en="From financial fundamentals to value-investing principles — written for my family. Posts coming soon." /></p>
       )}
 
       <div class="project-footer">
         <div class="project-tags">
-          <span class="project-tag">價值投資</span>
-          <span class="project-tag">總體經濟</span>
+          <span class="project-tag"><T zh="價值投資" en="Value Investing" /></span>
+          <span class="project-tag"><T zh="總體經濟" en="Macroeconomics" /></span>
         </div>
-        <a href="/writing?series=family-investing" class="project-link">查看全部 →</a>
+        <a href="/writing?series=family-investing" class="project-link"><T zh="查看全部 →" en="View all →" /></a>
       </div>
     </div>
   </div>

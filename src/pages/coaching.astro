@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import T from '../components/T.astro';
 
 const SHEET_ID = '1vYSAfnbqFzLNBNcPY5dd8XRxvVozt1IDd-kIqKO5swA';
 const AWARDS_URL       = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=mentees_award_records`;
@@ -13,37 +14,37 @@ const TESTIMONIALS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gvi
 
     <!-- Hero -->
     <section class="coaching-hero">
-      <h1>Mentorship &amp; <span class="accent-text">Coaching</span></h1>
+      <h1><T zh="師徒指導與" en="Mentorship &" /> <span class="accent-text"><T zh="競賽培訓" en="Coaching" /></span></h1>
       <p class="coaching-subtitle">
-        協助學生團隊在國內外競賽中奪獎。<br>
-        從提案結構到臨場表達，陪你走到舞台中央。
+        <T zh="協助學生團隊在國內外競賽中奪獎。" en="Helping student teams win awards in domestic and international competitions." /><br>
+        <T zh="從提案結構到臨場表達，陪你走到舞台中央。" en="From proposal structure to on-stage delivery, guiding you to center stage." />
       </p>
     </section>
 
     <!-- Stats -->
     <div class="bento-grid coaching-stats-grid">
       <div class="bento-card">
-        <div class="bento-card-label">Teams Awarded</div>
+        <div class="bento-card-label"><T zh="Teams Awarded" en="Teams Awarded" /></div>
         <div class="bento-card-num" id="c-teams">—</div>
-        <div class="bento-card-sub">MAIC 獲獎組數</div>
+        <div class="bento-card-sub"><T zh="MAIC 獲獎組數" en="MAIC award-winning teams" /></div>
       </div>
       <div class="bento-card">
-        <div class="bento-card-label">Prize Money</div>
+        <div class="bento-card-label"><T zh="Prize Money" en="Prize Money" /></div>
         <div class="bento-card-num" id="c-prize">—</div>
-        <div class="bento-card-sub">學員獲獎總獎金（NTD）</div>
+        <div class="bento-card-sub"><T zh="學員獲獎總獎金（NTD）" en="Total prize money won (NTD)" /></div>
       </div>
       <div class="bento-card">
-        <div class="bento-card-label">Intl. Champions</div>
+        <div class="bento-card-label"><T zh="Intl. Champions" en="Intl. Champions" /></div>
         <div class="bento-card-num" id="c-fw">—</div>
-        <div class="bento-card-sub">Falling Walls 得獎人次</div>
+        <div class="bento-card-sub"><T zh="Falling Walls 得獎人次" en="Falling Walls award placements" /></div>
       </div>
     </div>
 
     <!-- MAIC Section -->
     <section class="coaching-section">
-      <p class="section-heading">行動應用創新賽 <span class="section-heading-en">MAIC</span></p>
+      <p class="section-heading"><T zh="行動應用創新賽" en="Mobile App Innovation Competition" /> <span class="section-heading-en">MAIC</span></p>
       <p class="coaching-section-desc">
-        Straight A × Apple 授權教育夥伴競賽培訓計畫。以提案結構、投影片設計、簡報表達三位一體為核心，協助學生團隊角逐亞太賽事獎項。
+        <T zh="Straight A × Apple 授權教育夥伴競賽培訓計畫。以提案結構、投影片設計、簡報表達三位一體為核心，協助學生團隊角逐亞太賽事獎項。" en="A competition coaching program by Straight A, an Apple Authorized Education Partner. Built around proposal structure, slide design, and delivery as a unified whole, helping student teams compete for Asia-Pacific honors." />
       </p>
       <div id="maic-container" class="maic-container">
         <div class="data-loading">載入中…</div>
@@ -52,9 +53,9 @@ const TESTIMONIALS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gvi
 
     <!-- Falling Walls Section -->
     <section class="coaching-section">
-      <p class="section-heading">圍牆倒下實驗室 <span class="section-heading-en">Falling Walls Lab</span></p>
+      <p class="section-heading"><T zh="圍牆倒下實驗室" en="Falling Walls Lab" /> <span class="section-heading-en">Falling Walls Lab</span></p>
       <p class="coaching-section-desc">
-        協助學生以 3 分鐘英文學術簡報詮釋研究突破。台北賽事冠軍可晉級德國柏林國際決賽，與全球頂尖研究者同台競技。
+        <T zh="協助學生以 3 分鐘英文學術簡報詮釋研究突破。台北賽事冠軍可晉級德國柏林國際決賽，與全球頂尖研究者同台競技。" en="Helping students present research breakthroughs in a 3-minute English academic pitch. Taipei winners advance to the international final in Berlin, Germany, competing alongside top researchers worldwide." />
       </p>
       <div id="fw-container" class="fw-container">
         <div class="data-loading">載入中…</div>
@@ -63,7 +64,7 @@ const TESTIMONIALS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gvi
 
     <!-- Testimonials Carousel -->
     <section class="coaching-section">
-      <p class="section-heading">學生怎麼說</p>
+      <p class="section-heading"><T zh="學生怎麼說" en="What Students Say" /></p>
       <div class="testi-carousel" id="testi-carousel">
         <div class="testi-track" id="testi-track">
           <div class="data-loading">載入中…</div>
@@ -78,8 +79,8 @@ const TESTIMONIALS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gvi
 
     <!-- CTA -->
     <section class="coaching-cta-section">
-      <p class="coaching-cta-text">想為你的團隊安排競賽培訓？</p>
-      <a href="mailto:f08429008@ntu.edu.tw" class="hero-cta">合作洽詢 →</a>
+      <p class="coaching-cta-text"><T zh="想為你的團隊安排競賽培訓？" en="Want to arrange competition coaching for your team?" /></p>
+      <a href="mailto:f08429008@ntu.edu.tw" class="hero-cta"><T zh="合作洽詢 →" en="Get in touch →" /></a>
     </section>
 
   </div>

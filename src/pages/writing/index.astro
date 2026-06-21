@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import T from '../../components/T.astro';
 import { getCollection } from 'astro:content';
 import { oneMoreStep } from '../../data/oneMoreStep';
 
@@ -40,13 +41,13 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
 >
   <div class="writing-header">
     <h1>Writing</h1>
-    <p class="writing-sub">文章、投資專欄與 One More Step 專題，依系列篩選。</p>
+    <p class="writing-sub"><T zh="文章、投資專欄與 One More Step 專題，依系列篩選。" en="Articles, the investing column, and One More Step features — filter by series." /></p>
   </div>
 
   <div class="filter-group">
     <div class="filter-row" id="cat-row" aria-label="系列篩選">
-      <button class="filter-btn active" data-cat="">全部</button>
-      {categories.map(c => <button class="filter-btn" data-cat={c}>{c}</button>)}
+      <button class="filter-btn active" data-cat=""><T zh="全部" en="All" /></button>
+      {categories.map(c => <button class="filter-btn" data-cat={c}><T zh={c} en={c === '投資專欄' ? 'Investing' : c === 'One More Step' ? 'One More Step' : 'Essays'} /></button>)}
     </div>
     <p class="result-count" id="result-count"></p>
   </div>

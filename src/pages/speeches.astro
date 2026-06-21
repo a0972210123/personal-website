@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import T from '../components/T.astro';
 
 const SHEET_ID = '1vYSAfnbqFzLNBNcPY5dd8XRxvVozt1IDd-kIqKO5swA';
 const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=0`;
@@ -14,9 +15,9 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
 
     <!-- Hero -->
     <section class="speeches-hero">
-      <h1>Speeches &amp; <span class="accent-text">Workshops</span></h1>
+      <h1><T zh="演講" en="Speeches" /> &amp; <span class="accent-text"><T zh="工作坊" en="Workshops" /></span></h1>
       <p class="subtitle">
-        2020 年起的演講、工作坊與競賽紀錄。
+        <T zh="2020 年起的演講、工作坊與競賽紀錄。" en="A record of speeches, workshops, and competitions since 2020." />
       </p>
     </section>
 
@@ -25,17 +26,17 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
       <div class="bento-card">
         <div class="bento-card-label">Total Events</div>
         <div class="bento-card-num" id="val-total">—</div>
-        <div class="bento-card-sub">場次累計</div>
+        <div class="bento-card-sub"><T zh="場次累計" en="Total Events" /></div>
       </div>
       <div class="bento-card">
         <div class="bento-card-label">Total Hours</div>
         <div class="bento-card-num" id="val-hours">—</div>
-        <div class="bento-card-sub">講台時數</div>
+        <div class="bento-card-sub"><T zh="講台時數" en="Total Hours" /></div>
       </div>
       <div class="bento-card">
         <div class="bento-card-label">Audience</div>
         <div class="bento-card-num" id="val-audience">—</div>
-        <div class="bento-card-sub">觸及人次</div>
+        <div class="bento-card-sub"><T zh="觸及人次" en="Audience Reached" /></div>
       </div>
       <div class="bento-card">
         <div class="bento-card-label">Organizations</div>
@@ -45,7 +46,7 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
       <div class="bento-card">
         <div class="bento-card-label">Languages</div>
         <div class="bento-card-num" id="val-langs">2</div>
-        <div class="bento-card-sub">中文 · 英文</div>
+        <div class="bento-card-sub"><T zh="中文 · 英文" en="Chinese · English" /></div>
       </div>
       <div class="bento-card">
         <div class="bento-card-label">Since</div>
@@ -56,25 +57,25 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
 
     <!-- Charts: 4 Donuts -->
     <section class="charts-section">
-      <p class="section-heading">Distribution breakdown</p>
+      <p class="section-heading"><T zh="類型分佈" en="Distribution breakdown" /></p>
       <div class="charts-grid">
         <div class="chart-card">
-          <div class="chart-card-head"><span class="chart-card-title">類型</span><span class="chart-badge" id="badge-type">—</span></div>
+          <div class="chart-card-head"><span class="chart-card-title"><T zh="類型" en="Type" /></span><span class="chart-badge" id="badge-type">—</span></div>
           <div class="chart-biggest" id="biggest-type">—</div>
           <div class="chart-wrap"><canvas id="chart-type"></canvas></div>
         </div>
         <div class="chart-card">
-          <div class="chart-card-head"><span class="chart-card-title">形式</span><span class="chart-badge" id="badge-mode">—</span></div>
+          <div class="chart-card-head"><span class="chart-card-title"><T zh="形式" en="Format" /></span><span class="chart-badge" id="badge-mode">—</span></div>
           <div class="chart-biggest" id="biggest-mode">—</div>
           <div class="chart-wrap"><canvas id="chart-mode"></canvas></div>
         </div>
         <div class="chart-card">
-          <div class="chart-card-head"><span class="chart-card-title">語言</span><span class="chart-badge" id="badge-lang">—</span></div>
+          <div class="chart-card-head"><span class="chart-card-title"><T zh="語言" en="Language" /></span><span class="chart-badge" id="badge-lang">—</span></div>
           <div class="chart-biggest" id="biggest-lang">—</div>
           <div class="chart-wrap"><canvas id="chart-lang"></canvas></div>
         </div>
         <div class="chart-card">
-          <div class="chart-card-head"><span class="chart-card-title">聽眾程度</span><span class="chart-badge" id="badge-edu">—</span></div>
+          <div class="chart-card-head"><span class="chart-card-title"><T zh="聽眾程度" en="Audience Level" /></span><span class="chart-badge" id="badge-edu">—</span></div>
           <div class="chart-biggest" id="biggest-edu">—</div>
           <div class="chart-wrap"><canvas id="chart-edu"></canvas></div>
         </div>
@@ -84,7 +85,7 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
       <div class="year-chart-card">
         <div class="year-chart-head">
           <div>
-            <div class="chart-card-title">每年場次</div>
+            <div class="chart-card-title"><T zh="每年場次" en="Events per Year" /></div>
             <div class="year-peak" id="peak-year">—</div>
           </div>
           <div class="chart-legend" id="year-legend"></div>
@@ -95,16 +96,16 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
 
     <!-- Org Leaderboard -->
     <section class="orgs-section">
-      <p class="section-heading">Top collaborating organizations</p>
+      <p class="section-heading"><T zh="主要合作單位" en="Top collaborating organizations" /></p>
       <div class="orgs-filter-row">
-        <button class="chip active" data-cat="all">全部</button>
-        <button class="chip" data-cat="學校">🎓 學校</button>
+        <button class="chip active" data-cat="all"><T zh="全部" en="All" /></button>
+        <button class="chip" data-cat="學校">🎓 <T zh="學校" en="Schools" /></button>
         <button class="chip" data-cat="NGO">🌍 NGO</button>
         <button class="chip" data-cat="NPO">🤝 NPO</button>
-        <button class="chip" data-cat="政府單位">🏛 政府單位</button>
-        <button class="chip" data-cat="企業">🏢 企業</button>
-        <button class="chip" data-cat="學生社團">🎓 學生社團</button>
-        <button class="chip" data-cat="自媒體">📱 自媒體</button>
+        <button class="chip" data-cat="政府單位">🏛 <T zh="政府單位" en="Government" /></button>
+        <button class="chip" data-cat="企業">🏢 <T zh="企業" en="Companies" /></button>
+        <button class="chip" data-cat="學生社團">🎓 <T zh="學生社團" en="Student Clubs" /></button>
+        <button class="chip" data-cat="自媒體">📱 <T zh="自媒體" en="Media/Creators" /></button>
       </div>
       <div class="orgs-scroll-wrap">
         <div class="orgs-grid" id="orgs-grid"></div>
@@ -120,19 +121,19 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
         <input type="text" id="search-input" placeholder="搜尋主題、主辦單位…" autocomplete="off" />
       </div>
       <div class="filter-row">
-        <span class="filter-label">類型</span>
+        <span class="filter-label"><T zh="類型" en="Type" /></span>
         <div class="chip-group" id="type-chips"></div>
       </div>
       <div class="filter-row">
-        <span class="filter-label">形式</span>
+        <span class="filter-label"><T zh="形式" en="Format" /></span>
         <div class="chip-group" id="mode-chips"></div>
       </div>
       <div class="filter-row">
-        <span class="filter-label">語言</span>
+        <span class="filter-label"><T zh="語言" en="Language" /></span>
         <div class="chip-group" id="lang-chips"></div>
       </div>
       <div class="filter-row">
-        <span class="filter-label">年份</span>
+        <span class="filter-label"><T zh="年份" en="Year" /></span>
         <div class="chip-group" id="year-chips"></div>
       </div>
     </div>
@@ -141,23 +142,23 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
     <div class="filtered-stats" id="filtered-stats" style="display:none">
       <div class="fstat-item">
         <span class="fstat-num" id="fval-events">—</span>
-        <span class="fstat-label">場次</span>
+        <span class="fstat-label"><T zh="場次" en="Events" /></span>
       </div>
       <div class="fstat-divider"></div>
       <div class="fstat-item">
         <span class="fstat-num" id="fval-hours">—</span>
-        <span class="fstat-label">小時</span>
+        <span class="fstat-label"><T zh="小時" en="Hours" /></span>
       </div>
       <div class="fstat-divider"></div>
       <div class="fstat-item">
         <span class="fstat-num" id="fval-audience">—</span>
-        <span class="fstat-label">人次</span>
+        <span class="fstat-label"><T zh="人次" en="Audience" /></span>
       </div>
     </div>
 
     <!-- Results meta + sort -->
     <div class="results-meta">
-      <span>Showing <b id="results-count">—</b> events</span>
+      <span><T zh="顯示" en="Showing" /> <b id="results-count">—</b> <T zh="場活動" en="events" /></span>
       <div class="results-meta-right">
         <select id="sort-select" class="sort-select">
           <option value="date-desc">日期（最新）</option>
@@ -165,19 +166,19 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
           <option value="audience-desc">人次（最多）</option>
           <option value="hours-desc">時數（最多）</option>
         </select>
-        <button class="clear-btn" id="clear-btn" style="display:none">Clear filters</button>
+        <button class="clear-btn" id="clear-btn" style="display:none"><T zh="清除篩選" en="Clear filters" /></button>
       </div>
     </div>
 
     <!-- Cards -->
     <div class="speech-cards-grid" id="cards-grid">
-      <div class="data-loading">Loading speeches data…</div>
+      <div class="data-loading"><T zh="演講資料載入中…" en="Loading speeches data…" /></div>
     </div>
 
     <!-- Show more -->
     <div class="show-more-row">
       <button class="show-more-btn" id="show-more-btn" style="display:none">
-        Show more
+        <T zh="顯示更多" en="Show more" />
       </button>
     </div>
 
@@ -648,6 +649,16 @@ function renderCards() {
     moreBtn.style.display = 'none';
   }
 }
+
+/* ── Bilingual search placeholder ── */
+function updateSearchPlaceholder() {
+  const inp = document.getElementById('search-input');
+  if (!inp) return;
+  const lang = document.documentElement.getAttribute('data-lang');
+  inp.placeholder = lang === 'en' ? 'Search topics, organizers…' : '搜尋主題、主辦單位…';
+}
+updateSearchPlaceholder();
+window.addEventListener('langchange', updateSearchPlaceholder);
 
 /* ── Event Listeners ── */
 document.getElementById('search-input')?.addEventListener('input', e => {
