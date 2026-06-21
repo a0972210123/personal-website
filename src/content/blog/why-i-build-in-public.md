@@ -10,7 +10,7 @@ tags: [about, essay]
 
 It started as a wish for a space to record my somewhat unconventional, "not-quite-my-day-job" experiences — something I could drop behind the QR code on my business card, so I could introduce myself faster when meeting new people. After a lot of teaching from friends and plenty of Vibe Coding, the structure of this personal site gradually came together.
 
-Special thanks to **[Peter Chang (張庭維)](https://www.peteraim.com/), [Levi Lee (李維)](https://tensorowl.dev/), and [Andrew Huang (黃聖瀚)](https://www.andrewshhuang.com/)** for guiding me as I learned Vibe Coding — your examples and momentum are what got me to actually start.
+Special thanks to **張庭維, 李維, and 黃聖瀚** for guiding me as I learned Vibe Coding — your examples and momentum are what got me to actually start.
 
 This site will keep documenting the competitions, talks, training, and consulting work I've accumulated since 2020, and I'll keep sharing the new things I learn along the way.
 
