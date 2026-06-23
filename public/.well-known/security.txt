@@ -1,0 +1,4 @@
+Contact: mailto:a0972210123@gmail.com
+Expires: 2027-06-24T00:00:00Z
+Preferred-Languages: zh-TW, en
+Canonical: https://mattye.dev/.well-known/security.txt
