@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import T from '../components/T.astro';
+import { EVENT_TYPE, MODE, LANG, EDU } from '../i18n/dict';
 
 const SHEET_ID = '1vYSAfnbqFzLNBNcPY5dd8XRxvVozt1IDd-kIqKO5swA';
 const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=0`;
@@ -14,9 +16,9 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
 
     <!-- Hero -->
     <section class="speeches-hero">
-      <h1>Speeches &amp; <span class="accent-text">Workshops</span></h1>
+      <h1><T zh="演講" en="Speeches" /> &amp; <span class="accent-text"><T zh="工作坊" en="Workshops" /></span></h1>
       <p class="subtitle">
-        2020 年起的演講、工作坊與競賽紀錄。
+        <T zh="2020 年起的演講、工作坊與競賽紀錄。" en="A record of speeches, workshops, and competitions since 2020." />
       </p>
     </section>
 
@@ -25,27 +27,27 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
       <div class="bento-card">
         <div class="bento-card-label">Total Events</div>
         <div class="bento-card-num" id="val-total">—</div>
-        <div class="bento-card-sub">場次累計</div>
+        <div class="bento-card-sub"><T zh="場次累計" en="Total Events" /></div>
       </div>
       <div class="bento-card">
         <div class="bento-card-label">Total Hours</div>
         <div class="bento-card-num" id="val-hours">—</div>
-        <div class="bento-card-sub">講台時數</div>
+        <div class="bento-card-sub"><T zh="講台時數" en="Total Hours" /></div>
       </div>
       <div class="bento-card">
         <div class="bento-card-label">Audience</div>
         <div class="bento-card-num" id="val-audience">—</div>
-        <div class="bento-card-sub">觸及人次</div>
+        <div class="bento-card-sub"><T zh="觸及人次" en="Audience Reached" /></div>
       </div>
       <div class="bento-card">
         <div class="bento-card-label">Organizations</div>
         <div class="bento-card-num" id="val-orgs">—</div>
-        <div class="bento-card-sub">合作單位</div>
+        <div class="bento-card-sub"><T zh="合作單位" en="Partner organizations" /></div>
       </div>
       <div class="bento-card">
         <div class="bento-card-label">Languages</div>
         <div class="bento-card-num" id="val-langs">2</div>
-        <div class="bento-card-sub">中文 · 英文</div>
+        <div class="bento-card-sub"><T zh="中文 · 英文" en="Chinese · English" /></div>
       </div>
       <div class="bento-card">
         <div class="bento-card-label">Since</div>
@@ -56,25 +58,25 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
 
     <!-- Charts: 4 Donuts -->
     <section class="charts-section">
-      <p class="section-heading">Distribution breakdown</p>
+      <p class="section-heading"><T zh="類型分佈" en="Distribution breakdown" /></p>
       <div class="charts-grid">
         <div class="chart-card">
-          <div class="chart-card-head"><span class="chart-card-title">類型</span><span class="chart-badge" id="badge-type">—</span></div>
+          <div class="chart-card-head"><span class="chart-card-title"><T zh="類型" en="Type" /></span><span class="chart-badge" id="badge-type">—</span></div>
           <div class="chart-biggest" id="biggest-type">—</div>
           <div class="chart-wrap"><canvas id="chart-type"></canvas></div>
         </div>
         <div class="chart-card">
-          <div class="chart-card-head"><span class="chart-card-title">形式</span><span class="chart-badge" id="badge-mode">—</span></div>
+          <div class="chart-card-head"><span class="chart-card-title"><T zh="形式" en="Format" /></span><span class="chart-badge" id="badge-mode">—</span></div>
           <div class="chart-biggest" id="biggest-mode">—</div>
           <div class="chart-wrap"><canvas id="chart-mode"></canvas></div>
         </div>
         <div class="chart-card">
-          <div class="chart-card-head"><span class="chart-card-title">語言</span><span class="chart-badge" id="badge-lang">—</span></div>
+          <div class="chart-card-head"><span class="chart-card-title"><T zh="語言" en="Language" /></span><span class="chart-badge" id="badge-lang">—</span></div>
           <div class="chart-biggest" id="biggest-lang">—</div>
           <div class="chart-wrap"><canvas id="chart-lang"></canvas></div>
         </div>
         <div class="chart-card">
-          <div class="chart-card-head"><span class="chart-card-title">聽眾程度</span><span class="chart-badge" id="badge-edu">—</span></div>
+          <div class="chart-card-head"><span class="chart-card-title"><T zh="聽眾程度" en="Audience Level" /></span><span class="chart-badge" id="badge-edu">—</span></div>
           <div class="chart-biggest" id="biggest-edu">—</div>
           <div class="chart-wrap"><canvas id="chart-edu"></canvas></div>
         </div>
@@ -84,7 +86,7 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
       <div class="year-chart-card">
         <div class="year-chart-head">
           <div>
-            <div class="chart-card-title">每年場次</div>
+            <div class="chart-card-title"><T zh="每年場次" en="Events per Year" /></div>
             <div class="year-peak" id="peak-year">—</div>
           </div>
           <div class="chart-legend" id="year-legend"></div>
@@ -95,16 +97,16 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
 
     <!-- Org Leaderboard -->
     <section class="orgs-section">
-      <p class="section-heading">Top collaborating organizations</p>
+      <p class="section-heading"><T zh="主要合作單位" en="Top collaborating organizations" /></p>
       <div class="orgs-filter-row">
-        <button class="chip active" data-cat="all">全部</button>
-        <button class="chip" data-cat="學校">🎓 學校</button>
+        <button class="chip active" data-cat="all"><T zh="全部" en="All" /></button>
+        <button class="chip" data-cat="學校">🎓 <T zh="學校" en="Schools" /></button>
         <button class="chip" data-cat="NGO">🌍 NGO</button>
         <button class="chip" data-cat="NPO">🤝 NPO</button>
-        <button class="chip" data-cat="政府單位">🏛 政府單位</button>
-        <button class="chip" data-cat="企業">🏢 企業</button>
-        <button class="chip" data-cat="學生社團">🎓 學生社團</button>
-        <button class="chip" data-cat="自媒體">📱 自媒體</button>
+        <button class="chip" data-cat="政府單位">🏛 <T zh="政府單位" en="Government" /></button>
+        <button class="chip" data-cat="企業">🏢 <T zh="企業" en="Companies" /></button>
+        <button class="chip" data-cat="學生社團">🎓 <T zh="學生社團" en="Student Clubs" /></button>
+        <button class="chip" data-cat="自媒體">📱 <T zh="自媒體" en="Media/Creators" /></button>
       </div>
       <div class="orgs-scroll-wrap">
         <div class="orgs-grid" id="orgs-grid"></div>
@@ -120,19 +122,19 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
         <input type="text" id="search-input" placeholder="搜尋主題、主辦單位…" autocomplete="off" />
       </div>
       <div class="filter-row">
-        <span class="filter-label">類型</span>
+        <span class="filter-label"><T zh="類型" en="Type" /></span>
         <div class="chip-group" id="type-chips"></div>
       </div>
       <div class="filter-row">
-        <span class="filter-label">形式</span>
+        <span class="filter-label"><T zh="形式" en="Format" /></span>
         <div class="chip-group" id="mode-chips"></div>
       </div>
       <div class="filter-row">
-        <span class="filter-label">語言</span>
+        <span class="filter-label"><T zh="語言" en="Language" /></span>
         <div class="chip-group" id="lang-chips"></div>
       </div>
       <div class="filter-row">
-        <span class="filter-label">年份</span>
+        <span class="filter-label"><T zh="年份" en="Year" /></span>
         <div class="chip-group" id="year-chips"></div>
       </div>
     </div>
@@ -141,23 +143,23 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
     <div class="filtered-stats" id="filtered-stats" style="display:none">
       <div class="fstat-item">
         <span class="fstat-num" id="fval-events">—</span>
-        <span class="fstat-label">場次</span>
+        <span class="fstat-label"><T zh="場次" en="Events" /></span>
       </div>
       <div class="fstat-divider"></div>
       <div class="fstat-item">
         <span class="fstat-num" id="fval-hours">—</span>
-        <span class="fstat-label">小時</span>
+        <span class="fstat-label"><T zh="小時" en="Hours" /></span>
       </div>
       <div class="fstat-divider"></div>
       <div class="fstat-item">
         <span class="fstat-num" id="fval-audience">—</span>
-        <span class="fstat-label">人次</span>
+        <span class="fstat-label"><T zh="人次" en="Audience" /></span>
       </div>
     </div>
 
     <!-- Results meta + sort -->
     <div class="results-meta">
-      <span>Showing <b id="results-count">—</b> events</span>
+      <span><T zh="顯示" en="Showing" /> <b id="results-count">—</b> <T zh="場活動" en="events" /></span>
       <div class="results-meta-right">
         <select id="sort-select" class="sort-select">
           <option value="date-desc">日期（最新）</option>
@@ -165,26 +167,26 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
           <option value="audience-desc">人次（最多）</option>
           <option value="hours-desc">時數（最多）</option>
         </select>
-        <button class="clear-btn" id="clear-btn" style="display:none">Clear filters</button>
+        <button class="clear-btn" id="clear-btn" style="display:none"><T zh="清除篩選" en="Clear filters" /></button>
       </div>
     </div>
 
     <!-- Cards -->
     <div class="speech-cards-grid" id="cards-grid">
-      <div class="data-loading">Loading speeches data…</div>
+      <div class="data-loading"><T zh="演講資料載入中…" en="Loading speeches data…" /></div>
     </div>
 
     <!-- Show more -->
     <div class="show-more-row">
       <button class="show-more-btn" id="show-more-btn" style="display:none">
-        Show more
+        <T zh="顯示更多" en="Show more" />
       </button>
     </div>
 
   </div>
 </BaseLayout>
 
-<script define:vars={{ CSV_URL }}>
+<script define:vars={{ CSV_URL, EVENT_TYPE, MODE, LANG, EDU }}>
 /* ── CSV Parser (robust: handles quoted multi-line cells) ── */
 function parseCSV(text) {
   const rows = [];
@@ -224,6 +226,13 @@ function fmtNum(n) {
   if (n >= 1000) return `${(n/1000).toFixed(1)}K`;
   return String(n);
 }
+
+/* ── i18n helpers ── */
+const lang = () => document.documentElement.getAttribute('data-lang') === 'en' ? 'en' : 'zh';
+const tr   = (map, v) => (lang() === 'en' && map && map[v]) ? map[v] : v;
+const L    = (zh, en) => lang() === 'en' ? en : zh;
+let chartInstances = [];
+function destroyCharts() { chartInstances.forEach(c => { try { c.destroy(); } catch (e) {} }); chartInstances = []; }
 
 /* ── Count-up animation ── */
 function countUp(el, finalVal, dur) {
@@ -332,7 +341,12 @@ function renderStats() {
   countUp(document.getElementById('val-audience'), audience,           1600);
   countUp(document.getElementById('val-orgs'),     orgs,               1200);
   countUp(document.getElementById('val-langs'),    2,                   600);
-  document.getElementById('val-span').textContent = `${total} events over 6 yrs`;
+  updateSpan();
+}
+
+function updateSpan() {
+  const el = document.getElementById('val-span');
+  if (el) el.textContent = L(`6 年 ${allData.length} 場`, `${allData.length} events over 6 yrs`);
 }
 
 function renderFilteredStats(filtered) {
@@ -353,19 +367,20 @@ function countBy(arr, key) {
   return m;
 }
 
-function makeDonut(canvasId, counts, biggestId, badgeId) {
+function makeDonut(canvasId, counts, biggestId, badgeId, labelMap) {
   const ctx = document.getElementById(canvasId);
   if (!ctx) return;
-  const labels = Object.keys(counts);
-  const values = labels.map(l => counts[l]);
+  const keys = Object.keys(counts);
+  const labels = keys.map(k => tr(labelMap, k));
+  const values = keys.map(k => counts[k]);
   const total = values.reduce((a, b) => a + b, 0);
   const sorted = labels.map((l, i) => ({ l, v: values[i] })).sort((a, b) => b.v - a.v);
   const biggestEl = document.getElementById(biggestId);
   const badgeEl = document.getElementById(badgeId);
   if (biggestEl) biggestEl.textContent = sorted[0].l + ' · ' + Math.round(sorted[0].v / total * 100) + '%';
-  if (badgeEl) badgeEl.textContent = labels.length + ' 類';
+  if (badgeEl) badgeEl.textContent = labels.length + L(' 類', labels.length === 1 ? ' type' : ' types');
 
-  new Chart(ctx, {
+  chartInstances.push(new Chart(ctx, {
     type: 'doughnut',
     data: {
       labels,
@@ -378,31 +393,32 @@ function makeDonut(canvasId, counts, biggestId, badgeId) {
       plugins: {
         legend: { position: 'bottom', labels: { boxWidth: 8, boxHeight: 8, padding: 8, font: { size: 11 }, usePointStyle: true, pointStyle: 'circle' } },
         tooltip: {
-          callbacks: { label: (c) => ' ' + c.label + ' · ' + c.parsed + ' 場 (' + (c.parsed / total * 100).toFixed(1) + '%)' }
+          callbacks: { label: (c) => ' ' + c.label + ' · ' + c.parsed + L(' 場 (', ' (') + (c.parsed / total * 100).toFixed(1) + '%)' }
         }
       }
     }
-  });
+  }));
 }
 
 function renderCharts() {
+  destroyCharts();
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
   Chart.defaults.color = isDark ? '#8b93bf' : '#666666';
   Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
   Chart.defaults.font.size = 11;
   Chart.defaults.borderColor = isDark ? 'rgba(255,255,255,.05)' : 'rgba(0,0,0,.06)';
 
-  makeDonut('chart-type', countBy(allData, 'type'), 'biggest-type', 'badge-type');
-  makeDonut('chart-mode', countBy(allData, 'mode'), 'biggest-mode', 'badge-mode');
-  makeDonut('chart-lang', countBy(allData, 'lang'), 'biggest-lang', 'badge-lang');
-  makeDonut('chart-edu',  countBy(allData, 'edu'),  'biggest-edu',  'badge-edu');
+  makeDonut('chart-type', countBy(allData, 'type'), 'biggest-type', 'badge-type', EVENT_TYPE);
+  makeDonut('chart-mode', countBy(allData, 'mode'), 'biggest-mode', 'badge-mode', MODE);
+  makeDonut('chart-lang', countBy(allData, 'lang'), 'biggest-lang', 'badge-lang', LANG);
+  makeDonut('chart-edu',  countBy(allData, 'edu'),  'biggest-edu',  'badge-edu',  EDU);
 
   /* Stacked bar by year */
   const years = [...new Set(allData.map(d => d.year).filter(Boolean))].sort();
   const types = [...new Set(allData.map(d => d.type))];
   const peak = years.map(y => ({ y, n: allData.filter(d => d.year === y).length })).sort((a, b) => b.n - a.n)[0];
   const peakEl = document.getElementById('peak-year');
-  if (peakEl && peak) peakEl.textContent = `Peak: ${peak.y} · ${peak.n} 場`;
+  if (peakEl && peak) peakEl.textContent = `Peak: ${peak.y} · ${peak.n}${L(' 場', '')}`;
 
   const legendEl = document.getElementById('year-legend');
   if (legendEl) {
@@ -410,19 +426,19 @@ function renderCharts() {
     types.forEach((t, i) => {
       const item = document.createElement('span');
       item.className = 'legend-item';
-      item.innerHTML = `<span class="legend-swatch" style="background:${PALETTE[i % PALETTE.length]}"></span>${t}`;
+      item.innerHTML = `<span class="legend-swatch" style="background:${PALETTE[i % PALETTE.length]}"></span>${tr(EVENT_TYPE, t)}`;
       legendEl.appendChild(item);
     });
   }
 
   const yearCtx = document.getElementById('chart-year');
   if (yearCtx) {
-    new Chart(yearCtx, {
+    chartInstances.push(new Chart(yearCtx, {
       type: 'bar',
       data: {
         labels: years,
         datasets: types.map((t, i) => ({
-          label: t,
+          label: tr(EVENT_TYPE, t),
           data: years.map(y => allData.filter(d => d.year === y && d.type === t).length),
           backgroundColor: PALETTE[i % PALETTE.length],
           borderRadius: 4, borderSkipped: false, maxBarThickness: 52,
@@ -434,7 +450,7 @@ function renderCharts() {
         plugins: {
           legend: { display: false },
           tooltip: {
-            callbacks: { footer: (items) => '合計 ' + items.reduce((a, b) => a + b.parsed.y, 0) + ' 場' }
+            callbacks: { footer: (items) => L('合計 ', 'Total ') + items.reduce((a, b) => a + b.parsed.y, 0) + L(' 場', '') }
           }
         },
         scales: {
@@ -442,7 +458,7 @@ function renderCharts() {
           y: { stacked: true, grid: { color: isDark ? 'rgba(255,255,255,.04)' : 'rgba(0,0,0,.06)' }, ticks: { precision: 0, padding: 6 } }
         }
       }
-    });
+    }));
   }
 }
 
@@ -490,7 +506,7 @@ function renderOrgLeaderboard(catFilter) {
   if (wrap) wrap.scrollTop = 0;
 
   if (ranked.length === 0) {
-    grid.innerHTML = '<div class="data-error" style="font-size:1.1rem">此分類尚無資料</div>';
+    grid.innerHTML = `<div class="data-error" style="font-size:1.1rem">${L('此分類尚無資料', 'No data in this category')}</div>`;
     return;
   }
 
@@ -532,14 +548,14 @@ function initOrgFilters() {
 }
 
 /* ── Filter Chips ── */
-function makeChips(containerId, values, stateSet, onChange) {
+function makeChips(containerId, values, stateSet, onChange, labelMap) {
   const container = document.getElementById(containerId);
   if (!container) return;
   container.innerHTML = '';
   [...values].sort().forEach(val => {
     const btn = document.createElement('button');
     btn.className = 'chip' + (stateSet.has(val) ? ' active' : '');
-    btn.textContent = val;
+    btn.textContent = tr(labelMap, val);
     btn.addEventListener('click', () => {
       stateSet.has(val) ? stateSet.delete(val) : stateSet.add(val);
       btn.classList.toggle('active');
@@ -556,10 +572,10 @@ function renderChips() {
   const langs = new Set(allData.map(d => d.lang).filter(Boolean));
   const years = new Set(allData.map(d => d.year).filter(Boolean));
 
-  makeChips('type-chips', types, state.types, renderCards);
-  makeChips('mode-chips', modes, state.modes, renderCards);
-  makeChips('lang-chips', langs, state.langs, renderCards);
-  makeChips('year-chips', [...years].sort(), state.years, renderCards);
+  makeChips('type-chips', types, state.types, renderCards, EVENT_TYPE);
+  makeChips('mode-chips', modes, state.modes, renderCards, MODE);
+  makeChips('lang-chips', langs, state.langs, renderCards, LANG);
+  makeChips('year-chips', [...years].sort(), state.years, renderCards, null);
 }
 
 /* ── Filter + Sort Logic ── */
@@ -599,26 +615,26 @@ function cardHTML(d) {
     { zh: d.coOrg1, en: d.coOrg1En },
     { zh: d.coOrg2, en: d.coOrg2En },
   ].filter(o => o.zh).map(o =>
-    `<div class="card-org-co">協辦：${o.zh}${o.en ? ` <span class="card-org-co-en">· ${o.en}</span>` : ''}</div>`
+    `<div class="card-org-co">${L('協辦：', 'Co-host: ')}${o.zh}${o.en ? ` <span class="card-org-co-en">· ${o.en}</span>` : ''}</div>`
   ).join('');
   return `
     <div class="speech-card">
       <div class="card-meta-row">
         <span>${fmtDate(d.date)}</span>
-        <span>${d.edu}</span>
+        <span>${tr(EDU, d.edu)}</span>
       </div>
       ${topicHTML}
       ${d.org ? `<div class="card-org">${d.org}</div>` : ''}
       ${d.orgEn ? `<div class="card-org-en">${d.orgEn}</div>` : ''}
       ${coOrgHTML}
       <div class="card-stats">
-        ${d.audience ? `<span><b>${d.audience}</b>人</span>` : ''}
+        ${d.audience ? `<span><b>${d.audience}</b>${L('人', ' ppl')}</span>` : ''}
         ${d.hours ? `<span><b>${d.hours}</b>hr</span>` : ''}
       </div>
       <div class="card-badges">
-        ${d.type ? `<span class="${typeCls}">${d.type}</span>` : ''}
-        ${d.mode ? `<span class="${modeCls}">${d.mode}</span>` : ''}
-        ${d.lang ? `<span class="badge badge-lang">${d.lang}</span>` : ''}
+        ${d.type ? `<span class="${typeCls}">${tr(EVENT_TYPE, d.type)}</span>` : ''}
+        ${d.mode ? `<span class="${modeCls}">${tr(MODE, d.mode)}</span>` : ''}
+        ${d.lang ? `<span class="badge badge-lang">${tr(LANG, d.lang)}</span>` : ''}
       </div>
     </div>
   `;
@@ -648,6 +664,24 @@ function renderCards() {
     moreBtn.style.display = 'none';
   }
 }
+
+/* ── Bilingual search placeholder ── */
+function updateSearchPlaceholder() {
+  const inp = document.getElementById('search-input');
+  if (!inp) return;
+  const lang = document.documentElement.getAttribute('data-lang');
+  inp.placeholder = lang === 'en' ? 'Search topics, organizers…' : '搜尋主題、主辦單位…';
+}
+updateSearchPlaceholder();
+window.addEventListener('langchange', () => {
+  updateSearchPlaceholder();
+  if (!allData.length) return;
+  updateSpan();
+  renderChips();
+  renderCharts();
+  renderOrgLeaderboard();
+  renderCards();
+});
 
 /* ── Event Listeners ── */
 document.getElementById('search-input')?.addEventListener('input', e => {

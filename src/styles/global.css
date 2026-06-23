@@ -315,7 +315,7 @@ footer .container {
 
 /* ===== Writing Page ===== */
 .writing-header { margin-bottom: var(--spacing-lg); }
-.writing-header h1 { font-size: 1.5rem; font-weight: 700; }
+.writing-header h1 { font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; }
 
 /* ===== Single Post Page ===== */
 .post-page-header { margin-bottom: var(--spacing-lg); }
