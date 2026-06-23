@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import T from '../components/T.astro';
 import PostCard from '../components/PostCard.astro';
 import { getCollection } from 'astro:content';
 
@@ -28,14 +29,14 @@ const ROLES_URL     = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/t
         </h1>
         <p class="hero-tagline" id="hero-tagline"></p>
         <div class="hero-tags">
-          <span class="hero-tag">🧠 AI &amp; 認知科學研究</span>
-          <span class="hero-tag">🎤 150+ 場演講</span>
+          <span class="hero-tag">🧠 <T zh="AI ＆認知科學研究" en="AI &amp; Cognitive Science Research" /></span>
+          <span class="hero-tag">🎤 <T zh="150+ 場演講" en="150+ Talks Delivered" /></span>
           <span class="hero-tag">🎓 NTU PhD Candidate</span>
-          <span class="hero-tag">🏆 3MT 冠軍</span>
+          <span class="hero-tag">🏆 <T zh="3MT 冠軍" en="3MT Champion" /></span>
         </div>
         <div class="hero-actions">
           <a href="mailto:f08429008@ntu.edu.tw" class="hero-cta">
-            合作洽詢 →
+            <T zh="合作洽詢 →" en="Get in Touch →" />
           </a>
           <div class="hero-social">
             <a href="https://www.instagram.com/brown.yeh" target="_blank" rel="noopener" aria-label="Instagram" class="social-icon-btn">
@@ -69,34 +70,34 @@ const ROLES_URL     = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/t
           </div>
         </div>
         <div class="carousel-dots">
-          <button class="carousel-dot active" aria-label="照片 1"></button>
-          <button class="carousel-dot" aria-label="照片 2"></button>
-          <button class="carousel-dot" aria-label="照片 3"></button>
+          <button class="carousel-dot active" aria-label="Photo 1"></button>
+          <button class="carousel-dot" aria-label="Photo 2"></button>
+          <button class="carousel-dot" aria-label="Photo 3"></button>
         </div>
       </div>
     </section>
 
     <!-- ② Bento Stats -->
     <section style="margin-bottom: var(--spacing-xl)">
-      <p class="section-heading">By the numbers</p>
+      <p class="section-heading"><T zh="數字看見" en="By the Numbers" /></p>
       <div class="bento-grid">
         <div class="bento-card">
-          <div class="bento-card-label">Speeches</div>
+          <div class="bento-card-label"><T zh="演講場次" en="Speeches" /></div>
           <div class="bento-card-num" id="h-total">—</div>
-          <div class="bento-card-sub">場次累計</div>
+          <div class="bento-card-sub"><T zh="場次累計" en="Total sessions" /></div>
         </div>
         <div class="bento-card">
-          <div class="bento-card-label">Hours</div>
+          <div class="bento-card-label"><T zh="講台時數" en="Hours" /></div>
           <div class="bento-card-num" id="h-hours">—</div>
-          <div class="bento-card-sub">講台時數</div>
+          <div class="bento-card-sub"><T zh="講台時數" en="Hours on stage" /></div>
         </div>
         <div class="bento-card">
-          <div class="bento-card-label">Audience</div>
+          <div class="bento-card-label"><T zh="觸及人次" en="Audience" /></div>
           <div class="bento-card-num" id="h-audience">—</div>
-          <div class="bento-card-sub">觸及人次</div>
+          <div class="bento-card-sub"><T zh="觸及人次" en="People reached" /></div>
         </div>
         <div class="bento-card">
-          <div class="bento-card-label">Publications</div>
+          <div class="bento-card-label"><T zh="出版著作" en="Publications" /></div>
           <div class="bento-card-num" id="h-pubs">2</div>
           <div class="bento-card-sub">SCIE · SSCI</div>
           <a href="https://orcid.org/0009-0001-6085-8303" target="_blank" rel="noopener" class="bento-orcid-link">ORCID ↗</a>
@@ -106,33 +107,33 @@ const ROLES_URL     = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/t
 
     <!-- ③ Three Pillars (dynamic from Sheet: core_strengths) -->
     <section style="margin-bottom: var(--spacing-xl)">
-      <p class="section-heading">Core strengths</p>
+      <p class="section-heading"><T zh="核心優勢" en="Core Strengths" /></p>
       <div class="pillars-grid" id="pillars-grid">
-        <div class="data-loading">Loading…</div>
+        <div class="data-loading"><T zh="載入中…" en="Loading…" /></div>
       </div>
     </section>
 
     <!-- ④ Experience Roles (dynamic from Sheet: experience_roles) -->
     <section style="margin-bottom: var(--spacing-xl)">
-      <p class="section-heading">Experience &amp; Roles</p>
+      <p class="section-heading"><T zh="經歷 & 角色" en="Experience &amp; Roles" /></p>
       <div class="roles-list" id="roles-list">
-        <div class="data-loading">Loading…</div>
+        <div class="data-loading"><T zh="載入中…" en="Loading…" /></div>
       </div>
     </section>
 
     <!-- ⑤ Partners / Organizations (dynamic from Sheet) -->
     <section class="partners-section">
-      <p class="section-heading">Top collaborating organizations</p>
+      <p class="section-heading"><T zh="主要合作單位" en="Top Collaborating Organizations" /></p>
       <div class="partners-orgs-grid" id="partners-grid">
-        <div class="data-loading">Loading…</div>
+        <div class="data-loading"><T zh="載入中…" en="Loading…" /></div>
       </div>
-      <a href="/speeches" class="section-cta" style="margin-top:1rem">View all speeches →</a>
+      <a href="/speeches" class="section-cta" style="margin-top:1rem"><T zh="查看所有演講 →" en="View all speeches →" /></a>
     </section>
 
     <!-- ⑥ Recent Writing -->
     {posts.length > 0 && (
       <section style="margin-top: var(--spacing-xl)">
-        <p class="section-heading">Recent Writing</p>
+        <p class="section-heading"><T zh="近期文章" en="Recent Writing" /></p>
         <ul class="post-list">
           {posts.map(post => (
             <PostCard
@@ -144,7 +145,7 @@ const ROLES_URL     = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/t
             />
           ))}
         </ul>
-        <a href="/writing" class="section-cta">All posts →</a>
+        <a href="/writing" class="section-cta"><T zh="所有文章 →" en="All posts →" /></a>
       </section>
     )}
 
