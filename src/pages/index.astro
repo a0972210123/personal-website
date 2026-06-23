@@ -237,6 +237,13 @@ function makeHI(rows) {
   };
 }
 
+/* ── i18n helpers ── */
+function lang() { return document.documentElement.getAttribute('data-lang') === 'en' ? 'en' : 'zh'; }
+function pick(zh, en) { return (lang() === 'en' && en) ? en : (zh || en || ''); }
+
+/* render hooks set after each sheet loads; re-invoked on langchange */
+var contentRender = null, strengthsRender = null, rolesRender = null;
+
 /* ── Speeches sheet: stats + partners leaderboard ── */
 function loadSpeeches() {
   fetch(CSV_URL)
@@ -332,16 +339,18 @@ function loadContent() {
         if (key) kv[key] = val;
       });
 
-      /* Hero tagline: collect all hero_tagline_line* keys, sort, display */
+      /* Hero tagline: collect base hero_tagline_line* keys (skip _eng), sort, pick by lang */
       var taglineEl = document.getElementById('hero-tagline');
-      if (taglineEl) {
+      contentRender = function() {
+        if (!taglineEl) return;
         var lines = Object.keys(kv)
-          .filter(function(k) { return k.startsWith('hero_tagline_line'); })
+          .filter(function(k) { return k.indexOf('hero_tagline_line') === 0 && k.indexOf('_eng') === -1; })
           .sort()
-          .map(function(k) { return kv[k]; })
+          .map(function(k) { return pick(kv[k], kv[k + '_eng']); })
           .filter(Boolean);
         taglineEl.innerHTML = lines.join('<br>');
-      }
+      };
+      contentRender();
     })
     .catch(function() { /* silent fail — tagline stays empty */ });
 }
@@ -355,6 +364,7 @@ function loadStrengths() {
       if (rows.length < 2) return;
       var hi = makeHI(rows);
       var iSort = hi('排序'), iIcon = hi('icon'), iTitle = hi('title'), iDesc = hi('description');
+      var iTitleEn = hi('title_eng'), iDescEn = hi('description_eng');
 
       var data = rows.slice(1)
         .filter(function(r) { return (r[iTitle] || '').trim(); })
@@ -364,16 +374,19 @@ function loadStrengths() {
 
       var grid = document.getElementById('pillars-grid');
       if (!grid) return;
-      grid.innerHTML = '';
-      data.forEach(function(r) {
-        var card = document.createElement('div');
-        card.className = 'pillar-card';
-        card.innerHTML =
-          '<div class="pillar-icon">' + (r[iIcon] || '') + '</div>' +
-          '<div class="pillar-title">' + (r[iTitle] || '') + '</div>' +
-          '<p class="pillar-desc">' + (r[iDesc] || '') + '</p>';
-        grid.appendChild(card);
-      });
+      strengthsRender = function() {
+        grid.innerHTML = '';
+        data.forEach(function(r) {
+          var card = document.createElement('div');
+          card.className = 'pillar-card';
+          card.innerHTML =
+            '<div class="pillar-icon">' + (r[iIcon] || '') + '</div>' +
+            '<div class="pillar-title">' + pick(r[iTitle], iTitleEn >= 0 ? r[iTitleEn] : '') + '</div>' +
+            '<p class="pillar-desc">' + pick(r[iDesc], iDescEn >= 0 ? r[iDescEn] : '') + '</p>';
+          grid.appendChild(card);
+        });
+      };
+      strengthsRender();
     })
     .catch(function() {
       var g = document.getElementById('pillars-grid');
@@ -395,6 +408,7 @@ function loadRoles() {
       var iOrgEn  = hi('org_en');
       var iTitle  = hi('title');
       var iDesc   = hi('description');
+      var iDescEn = hi('description_eng');
       var iPeriod = hi('period');
 
       var data = rows.slice(1)
@@ -405,23 +419,26 @@ function loadRoles() {
 
       var list = document.getElementById('roles-list');
       if (!list) return;
-      list.innerHTML = '';
-      data.forEach(function(r) {
-        var card = document.createElement('div');
-        card.className = 'role-card';
-        var orgZh  = (r[iOrgZh]  || '').trim();
-        var orgEn  = (r[iOrgEn]  || '').trim();
-        var period = (r[iPeriod] || '').trim();
-        card.innerHTML =
-          '<div class="role-icon-box">' + (r[iIcon] || '') + '</div>' +
-          '<div class="role-body">' +
-            '<div class="role-org">' + orgZh + (orgEn ? ' <span class="role-org-en">· ' + orgEn + '</span>' : '') + '</div>' +
-            '<div class="role-title">' + (r[iTitle] || '') + '</div>' +
-            '<div class="role-desc">'  + (r[iDesc]  || '') + '</div>' +
-          '</div>' +
-          (period ? '<div class="role-period">' + period + '</div>' : '');
-        list.appendChild(card);
-      });
+      rolesRender = function() {
+        list.innerHTML = '';
+        data.forEach(function(r) {
+          var card = document.createElement('div');
+          card.className = 'role-card';
+          var orgZh  = (r[iOrgZh]  || '').trim();
+          var orgEn  = (r[iOrgEn]  || '').trim();
+          var period = (r[iPeriod] || '').trim();
+          card.innerHTML =
+            '<div class="role-icon-box">' + (r[iIcon] || '') + '</div>' +
+            '<div class="role-body">' +
+              '<div class="role-org">' + orgZh + (orgEn ? ' <span class="role-org-en">· ' + orgEn + '</span>' : '') + '</div>' +
+              '<div class="role-title">' + (r[iTitle] || '') + '</div>' +
+              '<div class="role-desc">'  + pick(r[iDesc], iDescEn >= 0 ? r[iDescEn] : '') + '</div>' +
+            '</div>' +
+            (period ? '<div class="role-period">' + period + '</div>' : '');
+          list.appendChild(card);
+        });
+      };
+      rolesRender();
     })
     .catch(function() {
       var l = document.getElementById('roles-list');
@@ -434,4 +451,10 @@ loadSpeeches();
 loadContent();
 loadStrengths();
 loadRoles();
+
+window.addEventListener('langchange', function() {
+  if (contentRender) contentRender();
+  if (strengthsRender) strengthsRender();
+  if (rolesRender) rolesRender();
+});
 </script>

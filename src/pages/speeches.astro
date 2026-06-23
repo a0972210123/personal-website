@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import T from '../components/T.astro';
+import { EVENT_TYPE, MODE, LANG, EDU } from '../i18n/dict';
 
 const SHEET_ID = '1vYSAfnbqFzLNBNcPY5dd8XRxvVozt1IDd-kIqKO5swA';
 const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=0`;
@@ -185,7 +186,7 @@ const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=
   </div>
 </BaseLayout>
 
-<script define:vars={{ CSV_URL }}>
+<script define:vars={{ CSV_URL, EVENT_TYPE, MODE, LANG, EDU }}>
 /* ── CSV Parser (robust: handles quoted multi-line cells) ── */
 function parseCSV(text) {
   const rows = [];
@@ -225,6 +226,13 @@ function fmtNum(n) {
   if (n >= 1000) return `${(n/1000).toFixed(1)}K`;
   return String(n);
 }
+
+/* ── i18n helpers ── */
+const lang = () => document.documentElement.getAttribute('data-lang') === 'en' ? 'en' : 'zh';
+const tr   = (map, v) => (lang() === 'en' && map && map[v]) ? map[v] : v;
+const L    = (zh, en) => lang() === 'en' ? en : zh;
+let chartInstances = [];
+function destroyCharts() { chartInstances.forEach(c => { try { c.destroy(); } catch (e) {} }); chartInstances = []; }
 
 /* ── Count-up animation ── */
 function countUp(el, finalVal, dur) {
@@ -333,7 +341,12 @@ function renderStats() {
   countUp(document.getElementById('val-audience'), audience,           1600);
   countUp(document.getElementById('val-orgs'),     orgs,               1200);
   countUp(document.getElementById('val-langs'),    2,                   600);
-  document.getElementById('val-span').textContent = `${total} events over 6 yrs`;
+  updateSpan();
+}
+
+function updateSpan() {
+  const el = document.getElementById('val-span');
+  if (el) el.textContent = L(`6 年 ${allData.length} 場`, `${allData.length} events over 6 yrs`);
 }
 
 function renderFilteredStats(filtered) {
@@ -354,19 +367,20 @@ function countBy(arr, key) {
   return m;
 }
 
-function makeDonut(canvasId, counts, biggestId, badgeId) {
+function makeDonut(canvasId, counts, biggestId, badgeId, labelMap) {
   const ctx = document.getElementById(canvasId);
   if (!ctx) return;
-  const labels = Object.keys(counts);
-  const values = labels.map(l => counts[l]);
+  const keys = Object.keys(counts);
+  const labels = keys.map(k => tr(labelMap, k));
+  const values = keys.map(k => counts[k]);
   const total = values.reduce((a, b) => a + b, 0);
   const sorted = labels.map((l, i) => ({ l, v: values[i] })).sort((a, b) => b.v - a.v);
   const biggestEl = document.getElementById(biggestId);
   const badgeEl = document.getElementById(badgeId);
   if (biggestEl) biggestEl.textContent = sorted[0].l + ' · ' + Math.round(sorted[0].v / total * 100) + '%';
-  if (badgeEl) badgeEl.textContent = labels.length + ' 類';
+  if (badgeEl) badgeEl.textContent = labels.length + L(' 類', labels.length === 1 ? ' type' : ' types');
 
-  new Chart(ctx, {
+  chartInstances.push(new Chart(ctx, {
     type: 'doughnut',
     data: {
       labels,
@@ -379,31 +393,32 @@ function makeDonut(canvasId, counts, biggestId, badgeId) {
       plugins: {
         legend: { position: 'bottom', labels: { boxWidth: 8, boxHeight: 8, padding: 8, font: { size: 11 }, usePointStyle: true, pointStyle: 'circle' } },
         tooltip: {
-          callbacks: { label: (c) => ' ' + c.label + ' · ' + c.parsed + ' 場 (' + (c.parsed / total * 100).toFixed(1) + '%)' }
+          callbacks: { label: (c) => ' ' + c.label + ' · ' + c.parsed + L(' 場 (', ' (') + (c.parsed / total * 100).toFixed(1) + '%)' }
         }
       }
     }
-  });
+  }));
 }
 
 function renderCharts() {
+  destroyCharts();
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
   Chart.defaults.color = isDark ? '#8b93bf' : '#666666';
   Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
   Chart.defaults.font.size = 11;
   Chart.defaults.borderColor = isDark ? 'rgba(255,255,255,.05)' : 'rgba(0,0,0,.06)';
 
-  makeDonut('chart-type', countBy(allData, 'type'), 'biggest-type', 'badge-type');
-  makeDonut('chart-mode', countBy(allData, 'mode'), 'biggest-mode', 'badge-mode');
-  makeDonut('chart-lang', countBy(allData, 'lang'), 'biggest-lang', 'badge-lang');
-  makeDonut('chart-edu',  countBy(allData, 'edu'),  'biggest-edu',  'badge-edu');
+  makeDonut('chart-type', countBy(allData, 'type'), 'biggest-type', 'badge-type', EVENT_TYPE);
+  makeDonut('chart-mode', countBy(allData, 'mode'), 'biggest-mode', 'badge-mode', MODE);
+  makeDonut('chart-lang', countBy(allData, 'lang'), 'biggest-lang', 'badge-lang', LANG);
+  makeDonut('chart-edu',  countBy(allData, 'edu'),  'biggest-edu',  'badge-edu',  EDU);
 
   /* Stacked bar by year */
   const years = [...new Set(allData.map(d => d.year).filter(Boolean))].sort();
   const types = [...new Set(allData.map(d => d.type))];
   const peak = years.map(y => ({ y, n: allData.filter(d => d.year === y).length })).sort((a, b) => b.n - a.n)[0];
   const peakEl = document.getElementById('peak-year');
-  if (peakEl && peak) peakEl.textContent = `Peak: ${peak.y} · ${peak.n} 場`;
+  if (peakEl && peak) peakEl.textContent = `Peak: ${peak.y} · ${peak.n}${L(' 場', '')}`;
 
   const legendEl = document.getElementById('year-legend');
   if (legendEl) {
@@ -411,19 +426,19 @@ function renderCharts() {
     types.forEach((t, i) => {
       const item = document.createElement('span');
       item.className = 'legend-item';
-      item.innerHTML = `<span class="legend-swatch" style="background:${PALETTE[i % PALETTE.length]}"></span>${t}`;
+      item.innerHTML = `<span class="legend-swatch" style="background:${PALETTE[i % PALETTE.length]}"></span>${tr(EVENT_TYPE, t)}`;
       legendEl.appendChild(item);
     });
   }
 
   const yearCtx = document.getElementById('chart-year');
   if (yearCtx) {
-    new Chart(yearCtx, {
+    chartInstances.push(new Chart(yearCtx, {
       type: 'bar',
       data: {
         labels: years,
         datasets: types.map((t, i) => ({
-          label: t,
+          label: tr(EVENT_TYPE, t),
           data: years.map(y => allData.filter(d => d.year === y && d.type === t).length),
           backgroundColor: PALETTE[i % PALETTE.length],
           borderRadius: 4, borderSkipped: false, maxBarThickness: 52,
@@ -435,7 +450,7 @@ function renderCharts() {
         plugins: {
           legend: { display: false },
           tooltip: {
-            callbacks: { footer: (items) => '合計 ' + items.reduce((a, b) => a + b.parsed.y, 0) + ' 場' }
+            callbacks: { footer: (items) => L('合計 ', 'Total ') + items.reduce((a, b) => a + b.parsed.y, 0) + L(' 場', '') }
           }
         },
         scales: {
@@ -443,7 +458,7 @@ function renderCharts() {
           y: { stacked: true, grid: { color: isDark ? 'rgba(255,255,255,.04)' : 'rgba(0,0,0,.06)' }, ticks: { precision: 0, padding: 6 } }
         }
       }
-    });
+    }));
   }
 }
 
@@ -491,7 +506,7 @@ function renderOrgLeaderboard(catFilter) {
   if (wrap) wrap.scrollTop = 0;
 
   if (ranked.length === 0) {
-    grid.innerHTML = '<div class="data-error" style="font-size:1.1rem">此分類尚無資料</div>';
+    grid.innerHTML = `<div class="data-error" style="font-size:1.1rem">${L('此分類尚無資料', 'No data in this category')}</div>`;
     return;
   }
 
@@ -533,14 +548,14 @@ function initOrgFilters() {
 }
 
 /* ── Filter Chips ── */
-function makeChips(containerId, values, stateSet, onChange) {
+function makeChips(containerId, values, stateSet, onChange, labelMap) {
   const container = document.getElementById(containerId);
   if (!container) return;
   container.innerHTML = '';
   [...values].sort().forEach(val => {
     const btn = document.createElement('button');
     btn.className = 'chip' + (stateSet.has(val) ? ' active' : '');
-    btn.textContent = val;
+    btn.textContent = tr(labelMap, val);
     btn.addEventListener('click', () => {
       stateSet.has(val) ? stateSet.delete(val) : stateSet.add(val);
       btn.classList.toggle('active');
@@ -557,10 +572,10 @@ function renderChips() {
   const langs = new Set(allData.map(d => d.lang).filter(Boolean));
   const years = new Set(allData.map(d => d.year).filter(Boolean));
 
-  makeChips('type-chips', types, state.types, renderCards);
-  makeChips('mode-chips', modes, state.modes, renderCards);
-  makeChips('lang-chips', langs, state.langs, renderCards);
-  makeChips('year-chips', [...years].sort(), state.years, renderCards);
+  makeChips('type-chips', types, state.types, renderCards, EVENT_TYPE);
+  makeChips('mode-chips', modes, state.modes, renderCards, MODE);
+  makeChips('lang-chips', langs, state.langs, renderCards, LANG);
+  makeChips('year-chips', [...years].sort(), state.years, renderCards, null);
 }
 
 /* ── Filter + Sort Logic ── */
@@ -600,26 +615,26 @@ function cardHTML(d) {
     { zh: d.coOrg1, en: d.coOrg1En },
     { zh: d.coOrg2, en: d.coOrg2En },
   ].filter(o => o.zh).map(o =>
-    `<div class="card-org-co">協辦：${o.zh}${o.en ? ` <span class="card-org-co-en">· ${o.en}</span>` : ''}</div>`
+    `<div class="card-org-co">${L('協辦：', 'Co-host: ')}${o.zh}${o.en ? ` <span class="card-org-co-en">· ${o.en}</span>` : ''}</div>`
   ).join('');
   return `
     <div class="speech-card">
       <div class="card-meta-row">
         <span>${fmtDate(d.date)}</span>
-        <span>${d.edu}</span>
+        <span>${tr(EDU, d.edu)}</span>
       </div>
       ${topicHTML}
       ${d.org ? `<div class="card-org">${d.org}</div>` : ''}
       ${d.orgEn ? `<div class="card-org-en">${d.orgEn}</div>` : ''}
       ${coOrgHTML}
       <div class="card-stats">
-        ${d.audience ? `<span><b>${d.audience}</b>人</span>` : ''}
+        ${d.audience ? `<span><b>${d.audience}</b>${L('人', ' ppl')}</span>` : ''}
         ${d.hours ? `<span><b>${d.hours}</b>hr</span>` : ''}
       </div>
       <div class="card-badges">
-        ${d.type ? `<span class="${typeCls}">${d.type}</span>` : ''}
-        ${d.mode ? `<span class="${modeCls}">${d.mode}</span>` : ''}
-        ${d.lang ? `<span class="badge badge-lang">${d.lang}</span>` : ''}
+        ${d.type ? `<span class="${typeCls}">${tr(EVENT_TYPE, d.type)}</span>` : ''}
+        ${d.mode ? `<span class="${modeCls}">${tr(MODE, d.mode)}</span>` : ''}
+        ${d.lang ? `<span class="badge badge-lang">${tr(LANG, d.lang)}</span>` : ''}
       </div>
     </div>
   `;
@@ -658,7 +673,15 @@ function updateSearchPlaceholder() {
   inp.placeholder = lang === 'en' ? 'Search topics, organizers…' : '搜尋主題、主辦單位…';
 }
 updateSearchPlaceholder();
-window.addEventListener('langchange', updateSearchPlaceholder);
+window.addEventListener('langchange', () => {
+  updateSearchPlaceholder();
+  if (!allData.length) return;
+  updateSpan();
+  renderChips();
+  renderCharts();
+  renderOrgLeaderboard();
+  renderCards();
+});
 
 /* ── Event Listeners ── */
 document.getElementById('search-input')?.addEventListener('input', e => {

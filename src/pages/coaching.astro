@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import T from '../components/T.astro';
+import { AWARD } from '../i18n/dict';
 
 const SHEET_ID = '1vYSAfnbqFzLNBNcPY5dd8XRxvVozt1IDd-kIqKO5swA';
 const AWARDS_URL       = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=mentees_award_records`;
@@ -86,7 +87,7 @@ const TESTIMONIALS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gvi
   </div>
 </BaseLayout>
 
-<script define:vars={{ AWARDS_URL, TESTIMONIALS_URL }}>
+<script define:vars={{ AWARDS_URL, TESTIMONIALS_URL, AWARD }}>
 /* ── CSV Parser ── */
 function parseCSV(text) {
   const rows = [], t = text.replace(/\r\n/g,'\n').replace(/\r/g,'\n');
@@ -106,6 +107,16 @@ function makeHI(rows) {
   return name => h.findIndex(v => v.includes(name.toLowerCase()));
 }
 
+/* ── i18n helpers ── */
+const lang = () => document.documentElement.getAttribute('data-lang') === 'en' ? 'en' : 'zh';
+const tr   = (map, v) => (lang() === 'en' && map && map[v]) ? map[v] : v;
+const pick = (zh, en) => (lang() === 'en' && en) ? en : (zh || en || '');
+const L    = (zh, en) => lang() === 'en' ? en : zh;
+
+/* render hooks set after data loads; re-invoked on langchange */
+let awardsRender = null;
+let testiRender  = null;
+
 /* ── Medal helper ── */
 function medalEmoji(award) {
   if (award.includes('一等') || award.includes('1st')) return '🥇';
@@ -114,20 +125,24 @@ function medalEmoji(award) {
   return '🏅';
 }
 
-/* ── Prize parser: "約22.95萬" → 229500 ── */
+/* ── Prize parser: pure number "229500" → 229500; legacy "約22.95萬" → 229500 ── */
 function parsePrize(str) {
-  if (!str) return 0;
-  const m = str.replace(/,/g,'').match(/[\d.]+/);
+  if (str == null || str === '') return 0;
+  const s = String(str).replace(/,/g, '');
+  const m = s.match(/[\d.]+/);
   if (!m) return 0;
   const n = parseFloat(m[0]);
-  return str.includes('萬') ? n * 10000 : n;
+  return s.includes('萬') ? n * 10000 : n;
 }
 
-/* ── Format NTD ── */
-function fmtNTD(n) {
-  if (n >= 1000000) return `${(n/10000).toFixed(0)} 萬`;
-  if (n >= 10000)   return `${(n/10000).toFixed(1)} 萬`;
-  return String(Math.round(n));
+/* ── Format money, language-aware. zh: "22.9 萬" · en: "NT$229,500" ──
+   sym=true prepends "NT$ " in zh contexts (en always carries the symbol). */
+function fmtMoney(n, sym) {
+  if (lang() === 'en') return `NT$${Math.round(n).toLocaleString('en-US')}`;
+  const z = n >= 1000000 ? `${(n/10000).toFixed(0)} 萬`
+          : n >= 10000   ? `${(n/10000).toFixed(1)} 萬`
+          : String(Math.round(n));
+  return sym ? `NT$ ${z}` : z;
 }
 
 /* ── Count-up ── */
@@ -168,16 +183,16 @@ function renderMAIC(rows) {
     const awardRows = entries.map(e => `
       <div class="maic-award-row">
         <span class="maic-medal">${medalEmoji(e.award)}</span>
-        <span class="maic-award-name">${e.award}</span>
-        <span class="maic-teams-x">×${e.teams} 組</span>
-        <span class="maic-prize-tag">${e.prize} / 組</span>
+        <span class="maic-award-name">${tr(AWARD, e.award)}</span>
+        <span class="maic-teams-x">×${e.teams} ${L('組', e.teams > 1 ? 'teams' : 'team')}</span>
+        <span class="maic-prize-tag">${fmtMoney(parsePrize(e.prize), true)} / ${L('組', 'team')}</span>
       </div>
     `).join('');
 
     block.innerHTML = `
       <div class="maic-year-header">
         <span class="maic-year-label">${year}</span>
-        <span class="maic-year-meta">${totalTeams} 組獲獎 · 獎金合計約 NT$ ${fmtNTD(totalPrize)}</span>
+        <span class="maic-year-meta">${L(`${totalTeams} 組獲獎 · 獎金合計約 ${fmtMoney(totalPrize, true)}`, `${totalTeams} teams awarded · total prize ≈ ${fmtMoney(totalPrize, true)}`)}</span>
       </div>
       <div class="maic-award-list">${awardRows}</div>
     `;
@@ -208,7 +223,7 @@ function renderFW(rows) {
   Object.values(byKey).sort((a, b) => a.year.localeCompare(b.year)).forEach(p => {
     const hasBerlin = p.venues.some(v => v.venue === 'Berlin');
     const venueHTML = p.venues.map(v =>
-      `<span class="fw-venue-tag">${v.venue === 'Berlin' ? '🇩🇪' : '🇹🇼'} ${v.venue} · ${v.award}</span>`
+      `<span class="fw-venue-tag">${v.venue === 'Berlin' ? '🇩🇪' : '🇹🇼'} ${v.venue} · ${tr(AWARD, v.award)}</span>`
     ).join('<span class="fw-venue-arrow">→</span>');
 
     const card = document.createElement('div');
@@ -262,18 +277,28 @@ async function loadAwards() {
     const maic = data.filter(r => r.abbr === 'MAIC' || r.name.includes('行動應用'));
     const fw   = data.filter(r => r.name.includes('圍牆'));
 
-    renderMAIC(maic);
-    renderFW(fw);
-
     /* Stats */
     const totalTeams  = maic.reduce((s, r) => s + r.teams, 0);
     const totalPrize  = maic.reduce((s, r) => s + parsePrize(r.prize) * r.teams, 0);
     const fwCount     = fw.length; // each row = one placement
 
-    countUp(document.getElementById('c-teams'), totalTeams, 1200);
-    countUp(document.getElementById('c-prize'), totalPrize, 1600,
-      v => v >= 10000 ? `${(v/10000).toFixed(0)} 萬` : Math.round(v));
-    countUp(document.getElementById('c-fw'), fwCount, 800);
+    let awardsAnimated = false;
+    awardsRender = (animate) => {
+      renderMAIC(maic);
+      renderFW(fw);
+      if (animate && !awardsAnimated) {
+        awardsAnimated = true;
+        countUp(document.getElementById('c-teams'), totalTeams, 1200);
+        countUp(document.getElementById('c-prize'), totalPrize, 1600, v => fmtMoney(v, false));
+        countUp(document.getElementById('c-fw'), fwCount, 800);
+      } else {
+        const set = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt; };
+        set('c-teams', String(totalTeams));
+        set('c-prize', fmtMoney(totalPrize, false));
+        set('c-fw', String(fwCount));
+      }
+    };
+    awardsRender(true);
 
   } catch (e) {
     console.error('Coaching data error:', e);
@@ -298,12 +323,20 @@ async function loadTestimonials() {
     if (rows.length < 2) { track.innerHTML = ''; return; }
 
     const hi = makeHI(rows);
-    const iQuote   = hi('quote');
-    const iContext = hi('context');
-    const iShow    = hi('show');
+    const iQuote    = hi('quote');
+    const iContext  = hi('context');
+    const iQuoteEn  = hi('quote_eng');
+    const iContextEn= hi('context_eng');
+    const iShow     = hi('show');
 
     const data = rows.slice(1)
-      .map(r => ({ quote: (r[iQuote] || '').trim(), context: (r[iContext] || '').trim(), show: (r[iShow] || '').trim().toUpperCase() }))
+      .map(r => ({
+        quote:     (r[iQuote] || '').trim(),
+        context:   (r[iContext] || '').trim(),
+        quoteEn:   iQuoteEn   >= 0 ? (r[iQuoteEn]   || '').trim() : '',
+        contextEn: iContextEn >= 0 ? (r[iContextEn] || '').trim() : '',
+        show:      (r[iShow] || '').trim().toUpperCase(),
+      }))
       .filter(r => r.quote && (iShow < 0 || r.show === 'TRUE'));
 
     if (!data.length) { track.innerHTML = ''; return; }
@@ -311,10 +344,21 @@ async function loadTestimonials() {
     track.innerHTML = data.map((t, i) => `
       <div class="testi-slide${i === 0 ? ' active' : ''}">
         <div class="testi-quote-mark">❝</div>
-        <p class="testi-quote">${t.quote}</p>
-        <div class="testi-context">— ${t.context}</div>
+        <p class="testi-quote">${pick(t.quote, t.quoteEn)}</p>
+        <div class="testi-context">— ${pick(t.context, t.contextEn)}</div>
       </div>
     `).join('');
+
+    /* re-render text in place on language change (keeps carousel state) */
+    testiRender = () => {
+      const slides = track.querySelectorAll('.testi-slide');
+      slides.forEach((s, i) => {
+        const q = s.querySelector('.testi-quote');
+        const c = s.querySelector('.testi-context');
+        if (q) q.textContent = pick(data[i].quote, data[i].quoteEn);
+        if (c) c.textContent = '— ' + pick(data[i].context, data[i].contextEn);
+      });
+    };
 
     if (dotsEl) {
       dotsEl.innerHTML = data.map((_, i) =>
@@ -354,4 +398,9 @@ async function loadTestimonials() {
 
 loadAwards();
 loadTestimonials();
+
+window.addEventListener('langchange', () => {
+  if (awardsRender) awardsRender(false);
+  if (testiRender) testiRender();
+});
 </script>
