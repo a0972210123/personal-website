@@ -13,6 +13,7 @@ const CSV_URL       = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/t
 const CONTENT_URL   = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=site_content`;
 const STRENGTHS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=core_strengths`;
 const ROLES_URL     = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=experience_roles`;
+const AWARDS_URL    = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=personal_awards`;
 ---
 <BaseLayout
   title="葉淨維 Matt Ye"
@@ -121,6 +122,14 @@ const ROLES_URL     = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/t
       </div>
     </section>
 
+    <!-- ④½ Personal Awards (dynamic from Sheet: personal_awards) -->
+    <section style="margin-bottom: var(--spacing-xl)">
+      <p class="section-heading"><T zh="個人獎項" en="Awards & Honors" /></p>
+      <div class="awards-timeline" id="awards-timeline">
+        <div class="data-loading"><T zh="載入中…" en="Loading…" /></div>
+      </div>
+    </section>
+
     <!-- ⑤ Partners / Organizations (dynamic from Sheet) -->
     <section class="partners-section">
       <p class="section-heading"><T zh="主要合作單位" en="Top Collaborating Organizations" /></p>
@@ -192,7 +201,7 @@ const ROLES_URL     = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/t
 })();
 </script>
 
-<script define:vars={{ CSV_URL, CONTENT_URL, STRENGTHS_URL, ROLES_URL }}>
+<script define:vars={{ CSV_URL, CONTENT_URL, STRENGTHS_URL, ROLES_URL, AWARDS_URL }}>
 /* ── Count-up animation ── */
 function countUp(el, finalVal, dur) {
   if (!el || isNaN(finalVal)) return;
@@ -242,7 +251,7 @@ function lang() { return document.documentElement.getAttribute('data-lang') === 
 function pick(zh, en) { return (lang() === 'en' && en) ? en : (zh || en || ''); }
 
 /* render hooks set after each sheet loads; re-invoked on langchange */
-var contentRender = null, strengthsRender = null, rolesRender = null;
+var contentRender = null, strengthsRender = null, rolesRender = null, awardsRender = null;
 
 /* ── Speeches sheet: stats + partners leaderboard ── */
 function loadSpeeches() {
@@ -446,15 +455,97 @@ function loadRoles() {
     });
 }
 
+/* ── personal_awards: year-grouped awards timeline ── */
+function loadPersonalAwards() {
+  fetch(AWARDS_URL)
+    .then(function(r) { return r.text(); })
+    .then(function(text) {
+      var rows = parseCSV(text);
+      if (rows.length < 2) { var e = document.getElementById('awards-timeline'); if (e) e.innerHTML = ''; return; }
+      var hi = makeHI(rows);
+      var iYear    = hi('年份');
+      var iCompZh  = hi('競賽名稱_zh');
+      var iCompEn  = hi('競賽名稱_eng');
+      var iAwardZh = hi('獎項_zh');
+      var iAwardEn = hi('獎項_eng');
+      var iOrgZh   = hi('主辦單位_zh');
+      var iOrgEn   = hi('主辦單位_eng');
+      var iUrl     = hi('連結');
+      var iNoteZh  = hi('說明_zh');
+      var iNoteEn  = hi('說明_eng');
+      var iIcon    = hi('icon');
+      var iShow    = hi('show');
+
+      var get = function(r, i) { return i >= 0 ? (r[i] || '').trim() : ''; };
+      var data = rows.slice(1)
+        .filter(function(r) {
+          var shown = iShow < 0 || (r[iShow] || '').trim().toUpperCase() !== 'FALSE';
+          return shown && (get(r, iCompZh) || get(r, iCompEn));
+        })
+        .map(function(r) {
+          return {
+            year:    get(r, iYear),
+            compZh:  get(r, iCompZh),  compEn:  get(r, iCompEn),
+            awardZh: get(r, iAwardZh), awardEn: get(r, iAwardEn),
+            orgZh:   get(r, iOrgZh),   orgEn:   get(r, iOrgEn),
+            url:     get(r, iUrl),
+            noteZh:  get(r, iNoteZh),  noteEn:  get(r, iNoteEn),
+            icon:    get(r, iIcon),
+          };
+        });
+
+      var el = document.getElementById('awards-timeline');
+      if (!el) return;
+
+      awardsRender = function() {
+        /* group by year, newest first */
+        var byYear = {};
+        data.forEach(function(d) { (byYear[d.year] = byYear[d.year] || []).push(d); });
+        var years = Object.keys(byYear).sort(function(a, b) { return b.localeCompare(a); });
+
+        el.innerHTML = years.map(function(year) {
+          var items = byYear[year].map(function(d) {
+            var comp  = pick(d.compZh, d.compEn);
+            var award = pick(d.awardZh, d.awardEn);
+            var org   = pick(d.orgZh, d.orgEn);
+            var note  = pick(d.noteZh, d.noteEn);
+            var titleInner =
+              (d.icon ? '<span class="award-icon">' + d.icon + '</span>' : '') +
+              (award ? '<span class="award-name">' + award + '</span>' : '') +
+              '<span class="award-comp">' + comp + '</span>';
+            var title = d.url
+              ? '<a class="award-title award-title-link" href="' + d.url + '" target="_blank" rel="noopener">' + titleInner + '</a>'
+              : '<div class="award-title">' + titleInner + '</div>';
+            return '<div class="award-item">' + title +
+              (org ? '<div class="award-org">' + org + '</div>' : '') +
+              (note ? '<div class="award-note">' + note + '</div>' : '') +
+              '</div>';
+          }).join('');
+          return '<div class="award-year-block">' +
+            '<div class="award-year">' + year + '</div>' +
+            '<div class="award-items">' + items + '</div>' +
+          '</div>';
+        }).join('');
+      };
+      awardsRender();
+    })
+    .catch(function() {
+      var e = document.getElementById('awards-timeline');
+      if (e) e.innerHTML = '';
+    });
+}
+
 /* ── Run all ── */
 loadSpeeches();
 loadContent();
 loadStrengths();
 loadRoles();
+loadPersonalAwards();
 
 window.addEventListener('langchange', function() {
   if (contentRender) contentRender();
   if (strengthsRender) strengthsRender();
   if (rolesRender) rolesRender();
+  if (awardsRender) awardsRender();
 });
 </script>
