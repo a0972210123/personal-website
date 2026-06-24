@@ -432,23 +432,25 @@
         </div>
 
         <div class="concept-card">
-          <h4><span class="dot dot-4"></span>④ 光子 EDA ≠ 光運算</h4>
-          <p>先釐清一個容易混淆的地方：<strong>光子 EDA（電子設計自動化）指的是「設計工具/演算法」本身</strong>——例如光子電路的自動布局繞線、邏輯合成、相位誤差與熱串擾校正；這跟「用光子晶片做運算」（optical computing，光運算硬體本身）是兩件不同的事。打個比方，EDA 是造工具的人，optical computing 是被造出來的晶片。近期光子 EDA 領域的代表性研究（例如台大團隊發表的下列題目）正落在設計自動化這一側：</p>
+          <h4><span class="dot dot-4"></span>④ 光子 EDA × 數位光學運算</h4>
+          <p><strong>先了解 EDA 的由來：</strong>傳統矽晶片因為能持續 scaling，設計複雜度爆炸後催生了 EDA（電子設計自動化）。EDA 流程分兩段：前端的<strong>邏輯合成</strong>——把 Verilog 描述語言像 compiler 一樣自動轉換成邏輯閘電路，輸出 GDS-II 格式；後端的<strong>實體設計</strong>——把邏輯閘在晶片上做 placement（鋪排）與 routing（繞線）。<strong>光子 EDA 就是把這套流程搬到光子電路</strong>，用 MZI、波導、微環諧振器等光子元件取代電晶體。</p>
+          <p>「光學運算（optical computing）」內部其實有兩種截然不同的範式——<strong>類比光學運算</strong>用光的連續物理量（振幅、相位）做矩陣乘法與 Fourier 運算，是 Lightmatter、Lightelligence 等 AI 加速器的路線；<strong>數位光學運算</strong>則用電光調變器與干涉儀組合出布林邏輯閘，在光子基材上實現傳統數位電路的功能。<strong>真正的交集在這裡：數位光學運算電路本身也需要 EDA 工具</strong>——邏輯合成從邏輯需求自動合成光學閘電路，繞線最佳化讓訊號在 MZI mesh 上高效排布。這兩件事是疊合的，不是對立的。台大團隊近期三篇論文正落在這個交集上：</p>
           <ul>
-            <li><strong>TriHOT</strong>（ACM TODAES 2026）：用三角形/六角形時序模型，解決晶片上光子互連的「WDM 波分多工感知繞線」問題——是繞線/時序最佳化問題。</li>
-            <li><strong>Harrow / p-Harrow</strong>（DAC 2025）：用調和平均數與整數拆分法，做「光學邏輯電路合成」——是邏輯合成問題。</li>
-            <li><strong>DCPPC</strong>（ASP-DAC 2026）：在可程式化光子電路（MZI mesh）裡實現數位邏輯運算，並用自動繞線演算法校正、最大化通過特定可調單元的訊號——同時碰到電路合成與校正。</li>
+            <li><strong>TriHOT</strong>（ACM TODAES 2026）：光子 EDA 實體設計側——WDM 波分多工感知繞線，類比矽晶片後端的 routing 最佳化。</li>
+            <li><strong>Harrow / p-Harrow</strong>（DAC 2025）：同時跨兩側——光子 EDA 前端（邏輯合成：把布林需求轉換成光學閘電路，類比 logic synthesis compiler）＋ 數位光學運算（目標是在光子基材上實現數位邏輯）。</li>
+            <li><strong>DCPPC</strong>（ASP-DAC 2026）：同時跨兩側——光子 EDA 後端（在可程式化光子電路上用繞線演算法校正訊號品質）＋ 數位光學運算（在 MZI mesh 上執行數位計算）。</li>
           </ul>
           <p class="lead" style="margin-bottom:0; font-size:0.8rem;">（以上三項定位依公開論文標題與摘要整理，正式定義以原始論文為準。）</p>
           <ul>
-            <li>商業化代表：iPronics（可程式化光子電路）；類比光子 AI 加速器如 Lightmatter、Lightelligence、Celestial AI（後者已於 2025/12 被 Marvell 以最高 55 億美元收購，且正轉向互連市場）</li>
+            <li>類比光學運算路線：Lightmatter、Lightelligence（矩陣加速）、Celestial AI（已於 2025/12 被 Marvell 以最高 55 億美元收購）</li>
+            <li>光子 EDA 商業工具：Synopsys OptoCompiler、Cadence Photonic IC Design；可程式化光子電路：iPronics</li>
             <li>主要學術發表場域：DAC、ICCAD、ASP-DAC、DATE</li>
           </ul>
         </div>
       </div>
 
       <div class="callout">
-        <strong>一句話總結：</strong>矽光子裡真正練出「在晶片上精準操控光」這個底層能力、並且通用到能延伸至量子硬體的，是「通用 PIC 代工」這條賽道，而非綁定先進封裝的 CPO 互連賽道；這個能力正好是量子電腦三種主流路線（光子、離子陷阱、中性原子）共同需要的東西。PQC 則是「在量子電腦真正威脅到現有加密之前」必須先完成的軟體層遷移。光子 EDA 是讓這一切「可被設計、可被驗證」的工具鏈。四者時間軸不同步，但互為因果。
+        <strong>一句話總結：</strong>矽光子裡真正練出「在晶片上精準操控光」這個底層能力、並且通用到能延伸至量子硬體的，是「通用 PIC 代工」這條賽道，而非綁定先進封裝的 CPO 互連賽道；這個能力正好是量子電腦三種主流路線（光子、離子陷阱、中性原子）共同需要的東西。PQC 則是「在量子電腦真正威脅到現有加密之前」必須先完成的軟體層遷移。光子 EDA 提供邏輯合成與實體設計工具，讓光子電路（包括數位光學運算電路）能系統化地被設計、最佳化與驗證。四者時間軸不同步，但互為因果。
       </div>
     </section>
 
@@ -600,7 +602,7 @@
           <thead><tr><th>ETF</th><th>代號</th><th>主題</th></tr></thead>
           <tbody>
             <tr><td>中信關鍵半導體</td><td>00891</td><td>半導體供應鏈，間接曝險</td></tr>
-            <tr><td>復華台灣科技優息</td><td>00904</td><td>科技股優息，間接曝險</td></tr>
+            <tr><td>復華台灣科技優息</td><td>00929</td><td>科技股優息，間接曝險</td></tr>
             <tr><td>台新 ESG 智慧車供應鏈</td><td>00947</td><td>非直接相關，部分供應鏈重疊</td></tr>
             <tr><td>富邦未來車</td><td>00892</td><td>非直接相關，部分供應鏈重疊</td></tr>
           </tbody>
@@ -710,7 +712,12 @@
       { term: "Waveguide", en: "光波導", cat: "光子元件/架構", def: "把光侷限在一條路徑裡導引的結構，類似電路板上的銅線，差別是導引的是光而非電流。", analogy: "像光纖或水管，把光（或水）限制在固定路徑中傳輸，不會四散逸失。", example: "矽光子晶片上所有光學元件（MRR、MZI 等）都是透過波導彼此連接。" },
       { term: "可程式化光子電路", en: "Programmable Photonic Circuit (PPC) / MZI mesh", cat: "光子元件/架構", def: "由大量 MZI 單元網格化組成的光子電路，可透過軟體設定動態改變光路與運算功能，而不需重新流片。", analogy: "像一塊『萬用麵包板』，透過程式設定就能組出不同電路，不必每次重新焊接。", example: "DCPPC 論文即是在這類可程式化光子電路（MZI mesh）上實現數位邏輯運算。" },
       { term: "WDM / DWDM", en: "(Dense) Wavelength Division Multiplexing", cat: "光子元件/架構", def: "把多個不同波長的光訊號同時送進同一條光纖或波導傳輸，藉此大幅提升單一通道的傳輸容量。", analogy: "像同一條高速公路上，用不同顏色的車道同時跑多種車流，互不干擾。", example: "TriHOT 論文處理的『波分多工感知繞線』，正是為了讓晶片內的光子互連支援 WDM。" },
-      { term: "Optical Computing", en: "光運算", cat: "光子元件/架構", def: "直接用光子（而非電子）進行運算的硬體技術，與光子 EDA（設計工具）是不同層次的概念。", analogy: "光子 EDA 是『造工具的人』，光運算硬體則是『被造出來的晶片』本身。", example: "Lightmatter、Lightelligence、Celestial AI 等公司開發類比光子 AI 加速器，屬於光運算範疇。" },
+      { term: "Optical Computing", en: "光學運算", cat: "光子元件/架構", def: "用光子進行運算的硬體技術，內部分兩種範式：（1）類比光學運算——用光的連續物理量（振幅、相位）做矩陣乘法與 Fourier 運算，是 AI 加速器的主流路線；（2）數位光學運算——用電光調變器與干涉儀組合出布林邏輯閘，在光子基材上實現傳統數位電路功能。數位光學運算與光子 EDA 高度疊合，因為設計數位光子電路本身也需要邏輯合成與布局繞線工具。", analogy: "類比光學運算像用光做『計算機』（連續模擬量）；數位光學運算像用光做『電腦』（布林邏輯閘），後者需要 EDA 工具輔助設計。", example: "Lightmatter、Lightelligence（類比，AI 矩陣加速）；Harrow/DCPPC 論文（數位光學運算 × 光子 EDA）。" },
+      { term: "EDA", en: "Electronic Design Automation（電子設計自動化）", cat: "光子EDA", def: "管理晶片設計複雜度的自動化工具鏈，分兩大段：前端邏輯合成（把 Verilog 等描述語言像 compiler 一樣自動轉換成邏輯閘電路，輸出 GDS-II）；後端實體設計（把邏輯閘在晶片上做 placement 鋪排與 routing 繞線）。光子 EDA 是把這套流程搬到光子電路。", analogy: "EDA 就是蓋晶片的『設計軟體套裝』——先有人把功能需求轉成施工圖（邏輯合成），再有人把施工圖轉成實際配置（實體設計），最後輸出製造用的格式（GDS-II）。", example: "商業 EDA 龍頭包含 Synopsys（含 OptoCompiler 光子版）、Cadence、Mentor（Siemens）；台大團隊的 TriHOT、Harrow、DCPPC 論文都是光子 EDA 的學術研究。" },
+      { term: "邏輯合成", en: "Logic Synthesis", cat: "光子EDA", def: "EDA 前端的核心步驟：把 Verilog/VHDL 等硬體描述語言寫的功能需求，自動轉換成最佳化的邏輯閘電路（gate-level netlist），是晶片設計流程中的「compiler」。光子 EDA 的邏輯合成則是把布林邏輯需求轉換成光學邏輯電路（用 MZI、調變器組成的光子閘）。", analogy: "就像把人類寫的程式碼（Verilog）自動翻譯並最佳化成機器可以執行的電路圖，工程師不需要手動設計每一個邏輯閘。", example: "Harrow 論文做的就是光子版邏輯合成：把布林需求自動轉換成光學閘電路，是數位光學運算 × 光子 EDA 的交集。" },
+      { term: "GDS-II", en: "Graphic Database System II", cat: "光子EDA", def: "積體電路版圖的標準儲存格式，包含晶片所有層次的幾何圖形資訊，是 EDA 實體設計完成後交給代工廠製造的最終格式（tape-out 用），光子晶片同樣需要輸出 GDS-II 給矽光子代工廠。", analogy: "GDS-II 就像蓋大樓的全套施工圖——所有尺寸、圖層、位置都精確標注，建設公司按圖施工。設計工程師只需確認『圖畫對』，後面就交給工廠。", example: "UMC、GF Fotonix、Tower PH18 等矽光子代工廠接受客戶的 GDS-II 檔案後，才能進行流片製造。" },
+      { term: "數位光學運算", en: "Digital Optical Computing", cat: "光子EDA", def: "用電光調變器與光學干涉儀（如 MZI）組合出布林邏輯閘（AND、OR、XOR），在光子基材上實現傳統數位電路的運算功能，與類比光學運算（做矩陣乘法）是不同的路線。設計此類電路需要光子 EDA 的邏輯合成與繞線工具輔助。", analogy: "如果把光子晶片想成一塊可以重新佈線的電路板，數位光學運算就是讓這塊板子做 1+1=2 這種布林邏輯；類比光學運算則是讓它做大型矩陣乘法。", example: "Harrow（光學邏輯合成）與 DCPPC（可程式化光子電路上的數位計算）論文是數位光學運算 × 光子 EDA 交集的代表性學術工作。" },
+      { term: "類比光學運算", en: "Analog Optical Computing", cat: "光子元件/架構", def: "用光的連續物理量（振幅、相位、波長）做矩陣乘法、Fourier 運算等類比計算，特別適合加速神經網路推論（矩陣向量乘法是深度學習的核心運算）。與數位光學運算（實現布林邏輯閘）是不同的路線。", analogy: "把光學干涉效應當成『天然的矩陣乘法器』——光通過一組特定排列的光學元件後，出口的光強分布就直接對應矩陣乘法的結果，比電子電路更省能。", example: "Lightmatter、Lightelligence 開發類比光子 AI 加速器；Celestial AI 已於 2025/12 被 Marvell 收購並轉向互連市場。" },
       { term: "LPO", en: "Linear Pluggable Optics（線性直驅光學）", cat: "光子元件/架構", def: "一種簡化的光收發模組設計，省略部分數位訊號處理（DSP）電路，直接以類比訊號驅動，藉此降低功耗與延遲。", analogy: "省去中間的『翻譯機』，讓訊號直接傳遞，速度更快但對線路品質要求更高。", example: "MACOM 是 LPO 技術的供應商之一，鎖定資料中心高速互連市場。" },
       { term: "Qubit", en: "量子位元", cat: "量子", def: "量子電腦的基本運算單位，與傳統位元（0 或 1）不同，量子位元可處於疊加態，同時代表 0 與 1 的機率組合。", analogy: "傳統位元像是只能朝上或朝下的硬幣；量子位元則像是正在旋轉中、同時帶有正反兩面機率的硬幣。", example: "五大主流硬體路線（超導、離子陷阱、光子、中性原子、拓樸）都是製備與操控 qubit 的不同方式。" },
       { term: "Shor 演算法", en: "Shor's Algorithm", cat: "量子", def: "量子演算法，能在多項式時間內找出大數的質因數，把「分解大數」轉換成「找週期」這個量子電腦能高效解的問題，是威脅 RSA/ECC 加密的核心原因。", analogy: "傳統電腦解密像在無窮長的走廊裡一間一間開門找答案；Shor 演算法則像是同時打開所有門，直接看出規律所在的那一間。", example: "一旦量子電腦具備足夠規模執行 Shor 演算法，現行 RSA、ECC 公鑰加密將失效，這正是 PQC 遷移的根本動機。" },
