@@ -341,21 +341,21 @@ function loadContent() {
     .then(function(text) {
       var rows = parseCSV(text);
       /* Build key → value map (header row is row[0], skip it) */
+      /* 3-column layout: key | value(zh) | value_eng */
       var kv = {};
       rows.slice(1).forEach(function(r) {
         var key = (r[0] || '').trim();
-        var val = (r[1] || '').trim();
-        if (key) kv[key] = val;
+        if (key) kv[key] = { zh: (r[1] || '').trim(), en: (r[2] || '').trim() };
       });
 
-      /* Hero tagline: collect base hero_tagline_line* keys (skip _eng), sort, pick by lang */
+      /* Hero tagline: collect hero_tagline_line* keys, sort, pick by lang (en falls back to zh) */
       var taglineEl = document.getElementById('hero-tagline');
       contentRender = function() {
         if (!taglineEl) return;
         var lines = Object.keys(kv)
           .filter(function(k) { return k.indexOf('hero_tagline_line') === 0 && k.indexOf('_eng') === -1; })
           .sort()
-          .map(function(k) { return pick(kv[k], kv[k + '_eng']); })
+          .map(function(k) { return pick(kv[k].zh, kv[k].en); })
           .filter(Boolean);
         taglineEl.innerHTML = lines.join('<br>');
       };
