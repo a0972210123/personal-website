@@ -416,6 +416,7 @@ function loadRoles() {
       var iOrgZh  = hi('org_zh');
       var iOrgEn  = hi('org_en');
       var iTitle  = hi('title');
+      var iTitleEn = hi('title_eng');
       var iDesc   = hi('description');
       var iDescEn = hi('description_eng');
       var iPeriod = hi('period');
@@ -440,7 +441,7 @@ function loadRoles() {
             '<div class="role-icon-box">' + (r[iIcon] || '') + '</div>' +
             '<div class="role-body">' +
               '<div class="role-org">' + orgZh + (orgEn ? ' <span class="role-org-en">· ' + orgEn + '</span>' : '') + '</div>' +
-              '<div class="role-title">' + (r[iTitle] || '') + '</div>' +
+              '<div class="role-title">' + pick(r[iTitle], iTitleEn >= 0 ? r[iTitleEn] : '') + '</div>' +
               '<div class="role-desc">'  + pick(r[iDesc], iDescEn >= 0 ? r[iDescEn] : '') + '</div>' +
             '</div>' +
             (period ? '<div class="role-period">' + period + '</div>' : '');

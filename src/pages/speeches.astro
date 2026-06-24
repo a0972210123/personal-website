@@ -231,6 +231,7 @@ function fmtNum(n) {
 const lang = () => document.documentElement.getAttribute('data-lang') === 'en' ? 'en' : 'zh';
 const tr   = (map, v) => (lang() === 'en' && map && map[v]) ? map[v] : v;
 const L    = (zh, en) => lang() === 'en' ? en : zh;
+const pick = (zh, en) => (lang() === 'en' && en) ? en : zh;
 let chartInstances = [];
 function destroyCharts() { chartInstances.forEach(c => { try { c.destroy(); } catch (e) {} }); chartInstances = []; }
 
@@ -280,6 +281,7 @@ async function init() {
     const iCoOrg2En    = hi('協辦單位_2_eng');
     const iCoOrg2Type  = hi('協辦單位_2_類型');
     const iTopic       = hi('主題');
+    const iTopicEn     = hi('topic');
     const iType        = hi('場次類型');
     const iMode        = hi('線上');
     const iLang        = hi('語言');
@@ -303,6 +305,7 @@ async function init() {
         coOrg2En:    iCoOrg2En >= 0   ? (r[iCoOrg2En]   ?? '') : '',
         coOrg2Type:  iCoOrg2Type >= 0 ? (r[iCoOrg2Type] ?? '') : '',
         topic:       r[iTopic]                          ?? '',
+        topicEn:     iTopicEn >= 0 ? (r[iTopicEn] ?? '') : '',
         type:        r[iType]                           ?? '',
         mode:        r[iMode]                           ?? '',
         lang:        r[iLang]                           ?? '',
@@ -582,7 +585,7 @@ function renderChips() {
 function applyFilters() {
   const q = state.search.toLowerCase();
   let result = allData.filter(d => {
-    if (q && !d.topic.toLowerCase().includes(q) && !d.org.toLowerCase().includes(q) && !d.orgEn.toLowerCase().includes(q)) return false;
+    if (q && !d.topic.toLowerCase().includes(q) && !(d.topicEn || '').toLowerCase().includes(q) && !d.org.toLowerCase().includes(q) && !d.orgEn.toLowerCase().includes(q)) return false;
     if (state.types.size && !state.types.has(d.type)) return false;
     if (state.modes.size && !state.modes.has(d.mode)) return false;
     if (state.langs.size && !state.langs.has(d.lang)) return false;
@@ -608,9 +611,10 @@ function cardHTML(d) {
   const typeCls = `badge badge-type-${d.type}`;
   const modeCls = `badge badge-mode-${d.mode}`;
   const linkUrl = d.youtubeUrl || d.url;
+  const topic = pick(d.topic, d.topicEn);
   const topicHTML = linkUrl
-    ? `<a class="card-topic card-topic-link" href="${linkUrl}" target="_blank" rel="noopener">${d.topic}</a>`
-    : `<div class="card-topic">${d.topic}</div>`;
+    ? `<a class="card-topic card-topic-link" href="${linkUrl}" target="_blank" rel="noopener">${topic}</a>`
+    : `<div class="card-topic">${topic}</div>`;
   const coOrgHTML = [
     { zh: d.coOrg1, en: d.coOrg1En },
     { zh: d.coOrg2, en: d.coOrg2En },
