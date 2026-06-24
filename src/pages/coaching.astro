@@ -138,7 +138,10 @@ function parsePrize(str) {
 /* ── Format money, language-aware. zh: "22.9 萬" · en: "NT$229,500" ──
    sym=true prepends "NT$ " in zh contexts (en always carries the symbol). */
 function fmtMoney(n, sym) {
-  if (lang() === 'en') return `NT$${Math.round(n).toLocaleString('en-US')}`;
+  if (lang() === 'en') {
+    if (n >= 1000000) return `NT$${(n / 1000000).toFixed(2)}M`;
+    return `NT$${Math.round(n).toLocaleString('en-US')}`;
+  }
   const z = n >= 1000000 ? `${(n/10000).toFixed(0)} 萬`
           : n >= 10000   ? `${(n/10000).toFixed(1)} 萬`
           : String(Math.round(n));

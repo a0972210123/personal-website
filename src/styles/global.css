@@ -2575,6 +2575,57 @@ footer .container {
   .role-period { grid-column: 2; margin-top: -4px; }
 }
 
+/* ===== Personal Awards Timeline ===== */
+.awards-timeline { display: flex; flex-direction: column; gap: var(--spacing-md); }
+.award-year-block {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 1rem;
+  position: relative;
+}
+.award-year {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  padding-top: 2px;
+}
+.award-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  border-left: 2px solid var(--color-border);
+  padding-left: 1.1rem;
+}
+.award-item { position: relative; }
+.award-item::before {
+  content: '';
+  position: absolute;
+  left: calc(-1.1rem - 6px);
+  top: 7px;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  border: 2px solid var(--color-bg);
+}
+.award-title {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.45rem;
+  font-size: 0.98rem; line-height: 1.45; color: var(--color-text);
+  text-decoration: none;
+}
+.award-title-link:hover .award-comp { color: var(--color-accent); text-decoration: underline; }
+.award-icon { font-size: 1rem; }
+.award-name { font-weight: 700; color: var(--color-accent); }
+.award-comp { font-weight: 600; }
+.award-org { font-size: 0.82rem; color: var(--color-text-muted); margin-top: 0.15rem; }
+.award-note { font-size: 0.85rem; color: var(--color-text-muted); line-height: 1.55; margin-top: 0.25rem; }
+
+@media (max-width: 560px) {
+  .award-year-block { grid-template-columns: 1fr; gap: 0.35rem; }
+  .award-items { border-left: none; padding-left: 0; }
+  .award-item::before { display: none; }
+}
+
 /* ===== Coaching Page ===== */
 .coaching-hero { margin-bottom: var(--spacing-xl); }
 .coaching-hero h1 { font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 0.5rem; }
