@@ -2386,6 +2386,11 @@ footer .container {
   line-height: 1.5;
 }
 
+[data-lang="en"] .hero-tagline {
+  font-size: clamp(0.82rem, 1.5vw, 0.95rem);
+  max-width: 520px;
+}
+
 [data-theme="dark"] .hero-tagline {
   color: var(--color-text);
   opacity: 0.8;
