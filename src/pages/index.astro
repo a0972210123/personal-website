@@ -420,9 +420,13 @@ function loadRoles() {
       var iDesc   = hi('description');
       var iDescEn = hi('description_eng');
       var iPeriod = hi('period');
+      var iShow   = hi('show');
 
       var data = rows.slice(1)
-        .filter(function(r) { return (r[iOrgZh] || '').trim() || (r[iTitle] || '').trim(); })
+        .filter(function(r) {
+          var shown = iShow < 0 || (r[iShow] || '').trim().toUpperCase() !== 'FALSE';
+          return shown && ((r[iOrgZh] || '').trim() || (r[iTitle] || '').trim());
+        })
         .sort(function(a, b) {
           return (parseInt(a[iSort]) || 99) - (parseInt(b[iSort]) || 99);
         });
