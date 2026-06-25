@@ -2761,3 +2761,18 @@ footer .container {
 .peop-venn .v-perf { font-weight: 700; font-size: 17px; fill: var(--color-text); }
 .peop-venn .v-perf-en { font-size: 10px; fill: var(--color-text-muted); letter-spacing: .04em; }
 .peop-venn-cap { font-size: .82rem; color: var(--color-text-muted); margin-top: .4rem; }
+
+/* Roadmap card: stacked variant (tag → title → desc), 硬核簡報 */
+.series-item--stacked { flex-direction: column; gap: 0.3rem; }
+.series-item--stacked .series-item-num { min-width: 0; padding-top: 0; }
+.series-item--stacked .series-item-title { margin-bottom: 0; }
+
+/* Johari 2×2 matrix (硬核簡報) */
+.johari { table-layout: fixed; }
+.johari th, .johari td { vertical-align: top; }
+.johari th:first-child, .johari td:first-child { width: 22%; }
+.johari thead th, .johari tbody th { background: var(--color-surface); }
+.johari .j-corner { background: transparent; border-bottom-color: transparent; }
+.johari tbody tr:last-child th { border-bottom: none; }
+.johari .j-desc { display: inline-block; margin-top: 0.2rem; color: var(--color-text-muted); font-size: 0.85em; line-height: 1.5; text-transform: none; }
+.johari-cap { font-size: 0.8rem; color: var(--color-text-muted); margin-top: 0.4rem; }
