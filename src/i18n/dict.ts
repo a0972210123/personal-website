@@ -29,6 +29,7 @@ export const LANG: Record<string, string> = {
 };
 
 export const EDU: Record<string, string> = {
+  '國小': 'Elementary',
   '國中': 'Junior High',
   '高中': 'High School',
   '學士（大學）': 'Undergraduate',
