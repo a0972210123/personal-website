@@ -2751,3 +2751,13 @@ footer .container {
   .home-intro h1 { font-size: 1.5rem; }
   .post-page-header h1 { font-size: 1.4rem; }
 }
+
+/* PEOP Venn diagram (硬核簡報 column) */
+.peop-venn-wrap { margin: 1.5rem 0 1.75rem; text-align: center; }
+.peop-venn { max-width: 360px; width: 100%; height: auto; color: var(--color-text); }
+.peop-venn circle { fill-opacity: .24; stroke-width: 1.6; stroke-opacity: .9; }
+.peop-venn .v-letter { font-weight: 700; font-size: 22px; }
+.peop-venn .v-zh { font-size: 13px; fill: var(--color-text); }
+.peop-venn .v-perf { font-weight: 700; font-size: 17px; fill: var(--color-text); }
+.peop-venn .v-perf-en { font-size: 10px; fill: var(--color-text-muted); letter-spacing: .04em; }
+.peop-venn-cap { font-size: .82rem; color: var(--color-text-muted); margin-top: .4rem; }
