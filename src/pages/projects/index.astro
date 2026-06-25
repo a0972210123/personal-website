@@ -34,6 +34,18 @@ const investingPosts = (await getCollection('blog', ({ data }) =>
 ))
   .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
   .slice(0, 3);
+
+const managementPosts = (await getCollection('blog', ({ data }) =>
+  !data.draft && data.series === 'management-3r'
+))
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .slice(0, 3);
+
+const presentationPosts = (await getCollection('blog', ({ data }) =>
+  !data.draft && data.series === 'hardcore-presentation'
+))
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .slice(0, 3);
 ---
 <BaseLayout
   title="Projects — Matt Ye"
@@ -73,6 +85,41 @@ const investingPosts = (await getCollection('blog', ({ data }) =>
       </div>
     ))}
 
+    <!-- Hardcore Presentation Series Card -->
+    <div class="project-card">
+      <div class="project-card-header">
+        <div>
+          <h2 class="project-title"><T zh="人、環境、職能：硬核簡報的科學" en="Hardcore Presentation" /></h2>
+          <p class="project-title-en">Presentation · The PEOP Field Guide</p>
+        </div>
+        <span class="project-badge badge-series"><T zh="連載中" en="Ongoing Series" /></span>
+      </div>
+
+      {presentationPosts.length > 0 ? (
+        <ul class="series-mini-list">
+          {presentationPosts.map(post => {
+            const dateStr = post.data.pubDate.toLocaleDateString('zh-TW', { month: 'numeric', day: 'numeric' });
+            return (
+              <li class="series-mini-item">
+                <a href={`/writing/${post.id}`} class="series-mini-title">{post.data.title}</a>
+                <span class="series-mini-date">{dateStr}</span>
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <p class="project-desc"><T zh="從認知科學、語言學到表演藝術，拆解「簡報表達」這項職能。硬核知識，逐步上線。" en="Deconstructing presentation as an occupation — from cognitive science and linguistics to the performing arts. Hardcore knowledge, rolling out." /></p>
+      )}
+
+      <div class="project-footer">
+        <div class="project-tags">
+          <span class="project-tag"><T zh="認知科學" en="Cognitive Science" /></span>
+          <span class="project-tag"><T zh="表達" en="Communication" /></span>
+        </div>
+        <a href="/writing?series=硬核簡報" class="project-link"><T zh="查看全部 →" en="View all →" /></a>
+      </div>
+    </div>
+
     <!-- Investing Series Card -->
     <div class="project-card">
       <div class="project-card-header">
@@ -105,6 +152,41 @@ const investingPosts = (await getCollection('blog', ({ data }) =>
           <span class="project-tag"><T zh="總體經濟" en="Macroeconomics" /></span>
         </div>
         <a href="/writing?series=family-investing" class="project-link"><T zh="查看全部 →" en="View all →" /></a>
+      </div>
+    </div>
+
+    <!-- Management 3R Series Card -->
+    <div class="project-card">
+      <div class="project-card-header">
+        <div>
+          <h2 class="project-title"><T zh="天時、地利、人和：現代管理者的 3R 實踐指南" en="Right Time, Right Place, Right People" /></h2>
+          <p class="project-title-en">Management · The 3R Practice Guide</p>
+        </div>
+        <span class="project-badge badge-series"><T zh="連載中" en="Ongoing Series" /></span>
+      </div>
+
+      {managementPosts.length > 0 ? (
+        <ul class="series-mini-list">
+          {managementPosts.map(post => {
+            const dateStr = post.data.pubDate.toLocaleDateString('zh-TW', { month: 'numeric', day: 'numeric' });
+            return (
+              <li class="series-mini-item">
+                <a href={`/writing/${post.id}`} class="series-mini-title">{post.data.title}</a>
+                <span class="series-mini-date">{dateStr}</span>
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <p class="project-desc"><T zh="用「天時、地利、人和」對接策略、營運、組織三大管理面向。自學與紀錄管理知能的空間，文章即將上線。" en="Mapping strategy, operations, and organization onto Right Time, Right Place, Right People — a space to learn and document management. Posts coming soon." /></p>
+      )}
+
+      <div class="project-footer">
+        <div class="project-tags">
+          <span class="project-tag"><T zh="策略" en="Strategy" /></span>
+          <span class="project-tag"><T zh="組織" en="Organization" /></span>
+        </div>
+        <a href="/writing?series=management-3r" class="project-link"><T zh="查看全部 →" en="View all →" /></a>
       </div>
     </div>
   </div>
