@@ -16,3 +16,8 @@ ORCID: 0009-0001-6085-8303
 - Speeches: https://mattye.dev/speeches
 - Coaching: https://mattye.dev/coaching
 - Writing: https://mattye.dev/writing
+
+## Writing Columns
+
+- Hardcore Presentation (硬核簡報): A column on the science of presentation and communication, drawing on cognitive science, neuroaesthetics, linguistics, design theory, and occupational therapy. Each piece moves from practical technique to applied scenario to underlying theory and cited literature. https://mattye.dev/writing?series=硬核簡報
+- Investing for Family (投資專欄): A beginner-friendly column on investing mindset and lifelong learning. https://mattye.dev/writing?series=投資專欄
