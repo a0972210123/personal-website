@@ -28,8 +28,8 @@ draft: false
 
 涵蓋外部環境與時間維度的管理。
 
-- **戰略時機（Timing）**：何時進入新市場、何時推出新產品（敏捷開發、精實創業的市場驗證）。
-- **變革管理（Change Management）**：組織轉型的時機點——在公司大賺錢時轉型，還是危機發生時轉型？
+- **戰略時機（Timing）**：何時進入新市場、何時推出新產品（[敏捷開發](https://agilemanifesto.org/)、[精實創業](https://theleanstartup.com/principles)的市場驗證）。
+- **變革管理（Change Management）**：組織轉型的時機點——在公司大賺錢時轉型，還是危機發生時轉型？（見 [Kotter 變革八步驟](https://hbr.org/1995/05/leading-change-why-transformation-efforts-fail-2)）
 - **危機處理（Crisis Management）**：在黃金時間內做出決策。
 
 ### 2. 地利（Right Place）── 營運、流程與資源配置
@@ -37,15 +37,15 @@ draft: false
 涵蓋內部空間、架構與資源的管理。
 
 - **組織架構（Structure）**：部門如何劃分？權力如何下放？（矩陣式組織、扁平化管理）。
-- **資源與流程優化（Operations）**：把資金、設備、技術投放在「最能產生價值的地方」（精實生產、供應鏈管理）。
+- **資源與流程優化（Operations）**：把資金、設備、技術投放在「最能產生價值的地方」（[精實生產](https://www.lean.org/explore-lean/a-brief-history-of-lean/)、供應鏈管理）。
 - **物理與數位空間**：遠端工作（Remote Work）與辦公室文化的平衡。
 
 ### 3. 人和（Right People）── 組織文化與人力資本
 
 涵蓋人際、心理與團隊的管理。
 
-- **適才適所（Talent Acquisition）**：選拔、考核與留才機制，讓每個人發揮天賦（蓋洛普優勢管理）。
-- **團隊協作（Psychological Safety）**：打造高信任度的組織文化，解決跨部門溝通內耗。
+- **適才適所（Talent Acquisition）**：選拔、考核與留才機制，讓每個人發揮天賦（[蓋洛普優勢管理](https://www.gallup.com/cliftonstrengths/en/253754/history-cliftonstrengths.aspx)）。
+- **團隊協作（[Psychological Safety](https://rework.withgoogle.com/intl/en/guides/understand-team-effectiveness)）**：打造高信任度的組織文化，解決跨部門溝通內耗。
 - **領導力（Leadership）**：主管如何激勵人心、建立願景，達成上下同欲。
 
 ---
@@ -58,17 +58,17 @@ draft: false
 | 地利 | Right Place | 營運與架構 | 在哪做？（流程與資源） |
 | 人和 | Right People | 組織與文化 | 誰來做？（人才與協作） |
 
-這個框架的妙處在於：任何管理學工具（OKR、KPI、PDCA、SWOT）或最新商業案例，都能輕鬆歸進這三個抽屜其中之一，結構非常嚴謹。
+這個框架的妙處在於：任何管理學工具（[OKR](https://www.whatmatters.com/articles/the-origin-story)、KPI、[PDCA](https://deming.org/explore/pdsa/)、[SWOT](https://www.sciencedirect.com/science/article/pii/S0024630123000110)）或最新商業案例，都能輕鬆歸進這三個抽屜其中之一，結構非常嚴謹。
 
 ---
 
 ## 橫向檢索維度：八大職能
 
-3R 是縱向的「管理視角」，而企業實際運作則由橫向的**企業功能**支撐。管理學教科書最常見的是「產、銷、人、發、財」五大功能（生產、行銷、人資、研發、財務），常再補上資訊成為「六管」。本專欄為了檢索方便，把它擴充成八項：
+3R 是縱向的「管理視角」，而企業實際運作則由橫向的**企業功能**支撐。[許士軍《管理學》](https://www.sanmin.com.tw/Product/index/006974510)把企業活動分為「企業功能」（生產、行銷、人事、研發、財務）與「管理功能」（規劃、組織、領導、控制）；這「產、銷、人、發、財」五大功能，常再補上資訊成為「六管」。本專欄為了檢索方便，把它擴充成八項：
 
 > **行銷 · 人資 · 生產 · 財務 · 研發 · 總務 · 資訊 · 管理**
 
-每一篇文章，除了歸進某個 3R 抽屜，也會用 `tags` 標註它所屬的職能（例如 `人資`、`財務`、`研發`）。如此一來，日後既能用「天時／地利／人和」找思考的層次，也能用職能找具體的工作場景，兩個維度交叉檢索。
+每一篇文章，除了歸進某個 3R 抽屜，也會用 `tags` 標註它所屬的職能（例如 `人資`、`財務`、`研發`）。如此一來，日後既能用「天時／地利／人和」找思考的層次，也能用職能找具體的工作場景，兩個維度交叉檢索——這種「縱向視角 × 橫向職能」的交叉思路，與[司徒達賢《管理學的新世界》](https://bookzone.cwgv.com.tw/book/BBW0105A)提出的「管理矩陣」精神相通。
 
 ---
 
@@ -92,7 +92,8 @@ draft: false
 **框架本體**
 
 - 天時、地利、人和——語出《孟子·公孫丑下》：「天時不如地利，地利不如人和。」本專欄借其三分結構，對接 Right Time / Right Place / Right People。
-- 企業功能（產、銷、人、發、財）——管理學常見的企業機能分類，常再加入資訊等職能。可參考[亞洲大學企管系：管理五要](https://ba.au.edu.tw/p/404-1043-63549.php)的整理。「八項」為本專欄為檢索而做的擴充，非標準術語。
+- 企業功能（產、銷、人、發、財）——[許士軍《管理學》](https://www.sanmin.com.tw/Product/index/006974510)區分「企業功能」與「管理功能」，是台灣管理教育的經典分類（亦可參考[亞洲大學企管系：管理五要](https://ba.au.edu.tw/p/404-1043-63549.php)）。本專欄的「八項」為檢索擴充，非標準術語。
+- 管理矩陣——[司徒達賢《管理學的新世界》](https://bookzone.cwgv.com.tw/book/BBW0105A)以「管理元素 × 組織層級」建構整合性矩陣；本專欄「3R × 職能」的交叉檢索思路即受其啟發。
 
 **方法論工具**
 
