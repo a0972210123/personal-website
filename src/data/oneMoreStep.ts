@@ -12,6 +12,15 @@ export interface OmsDoc {
 
 export const oneMoreStep: OmsDoc[] = [
   {
+    slug: 'symbolic-reminder',
+    title: '我的符號：一份個人宣言',
+    titleEn: 'My Symbol: A Personal Declaration',
+    description: '從一個污點出發，疊建出十二層符號——這不是 LOGO 設計，這是我對「何謂能力」的哲學宣言。中英雙語。',
+    tags: ['個人哲學', 'Personal Brand'],
+    date: '2026-06-25',
+    url: '/writing/symbolic-reminder',
+  },
+  {
     slug: 'quantum-photonics-investing',
     title: '矽光子 × 量子電腦 × PQC 投資地圖',
     titleEn: 'Silicon Photonics, Quantum & PQC Investing Map',
