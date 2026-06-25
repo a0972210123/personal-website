@@ -201,13 +201,24 @@ nav a[aria-current="page"] {
 [data-lang="en"] .lang-en { display: inline; }
 
 @media (max-width: 640px) {
-  .nav-right { gap: 10px; }
-  nav { gap: 10px; }
-}
-@media (max-width: 400px) {
-  nav { gap: 6px; }
-  nav a { font-size: 0.78rem; }
-  .nav-right { gap: 8px; }
+  .nav-right {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+  .lang-toggle,
+  .theme-toggle {
+    order: 1;
+  }
+  nav {
+    order: 2;
+    width: 100%;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  nav::-webkit-scrollbar { display: none; }
 }
 
 /* ===== Footer ===== */
