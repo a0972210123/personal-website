@@ -11,7 +11,9 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).map(p => 
   desc: p.data.description,
   href: `/writing/${p.id}`,
   date: p.data.pubDate,
-  category: p.data.series === 'family-investing' ? '投資專欄' : '隨筆',
+  category: p.data.series === 'family-investing' ? '投資專欄'
+          : p.data.series === 'management-3r' ? '管理專欄'
+          : '隨筆',
   badge: p.data.lang === 'zh' ? '中' : 'EN',
   kind: 'post',
 }));
@@ -30,7 +32,7 @@ const features = oneMoreStep.map(d => ({
 
 const items = [...posts, ...features].sort((a, b) => b.date.getTime() - a.date.getTime());
 
-const CAT_ORDER = ['投資專欄', 'One More Step', '隨筆'];
+const CAT_ORDER = ['投資專欄', '管理專欄', 'One More Step', '隨筆'];
 const categories = CAT_ORDER.filter(c => items.some(i => i.category === c));
 
 const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
@@ -47,7 +49,7 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
   <div class="filter-group">
     <div class="filter-row" id="cat-row" aria-label="系列篩選">
       <button class="filter-btn active" data-cat=""><T zh="全部" en="All" /></button>
-      {categories.map(c => <button class="filter-btn" data-cat={c}><T zh={c} en={c === '投資專欄' ? 'Investing' : c === 'One More Step' ? 'One More Step' : 'Essays'} /></button>)}
+      {categories.map(c => <button class="filter-btn" data-cat={c}><T zh={c} en={c === '投資專欄' ? 'Investing' : c === '管理專欄' ? 'Management' : c === 'One More Step' ? 'One More Step' : 'Essays'} /></button>)}
     </div>
     <p class="result-count" id="result-count"></p>
   </div>
