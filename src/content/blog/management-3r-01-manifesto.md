@@ -64,7 +64,7 @@ draft: false
 
 ## 橫向檢索維度：八大職能
 
-3R 是縱向的「管理視角」，而企業實際運作則由**八大職能**橫向支撐：
+3R 是縱向的「管理視角」，而企業實際運作則由橫向的**企業功能**支撐。管理學教科書最常見的是「產、銷、人、發、財」五大功能（生產、行銷、人資、研發、財務），常再補上資訊成為「六管」。本專欄為了檢索方便，把它擴充成八項：
 
 > **行銷 · 人資 · 生產 · 財務 · 研發 · 總務 · 資訊 · 管理**
 
@@ -82,6 +82,31 @@ draft: false
 4. **善意為原作者引流**——遇到好的書、文章、課程或創作者，附上連結與署名，把流量與肯定還給原始出處。
 
 學習別人的智慧，本就該心懷感謝，並讓更多人找得到源頭。
+
+---
+
+## 參考資料與延伸閱讀
+
+本文提到的概念，多數有明確的原始出處。以下依「框架本體」與「方法論工具」整理，方便回溯與延伸閱讀。
+
+**框架本體**
+
+- 天時、地利、人和——語出《孟子·公孫丑下》：「天時不如地利，地利不如人和。」本專欄借其三分結構，對接 Right Time / Right Place / Right People。
+- 企業功能（產、銷、人、發、財）——管理學常見的企業機能分類，常再加入資訊等職能。可參考[亞洲大學企管系：管理五要](https://ba.au.edu.tw/p/404-1043-63549.php)的整理。「八項」為本專欄為檢索而做的擴充，非標準術語。
+
+**方法論工具**
+
+- 敏捷開發（Agile）——[Agile Manifesto《敏捷宣言》](https://agilemanifesto.org/)（Kent Beck 等 17 人，2001）。
+- 精實創業 / Build-Measure-Learn——Eric Ries，[*The Lean Startup*](https://theleanstartup.com/principles)（2011）。
+- 變革管理——John P. Kotter，[Leading Change: Why Transformation Efforts Fail](https://hbr.org/1995/05/leading-change-why-transformation-efforts-fail-2)（HBR, 1995；書《領導變革》, 1996）。
+- 精實生產 / 豐田生產方式（TPS）——大野耐一（Taiichi Ohno）開創；Womack & Jones 以「Lean」推廣。參見 [Lean Enterprise Institute：A Brief History of Lean](https://www.lean.org/explore-lean/a-brief-history-of-lean/)。
+- 蓋洛普優勢管理（CliftonStrengths）——Don Clifton 與 Gallup，[History of CliftonStrengths](https://www.gallup.com/cliftonstrengths/en/253754/history-cliftonstrengths.aspx)。
+- 心理安全感（Psychological Safety）——Amy C. Edmondson（1999）提出；經 Google「亞里斯多德專案」驗證，見 [Google re:Work — Understand team effectiveness](https://rework.withgoogle.com/intl/en/guides/understand-team-effectiveness)。
+- OKR——源自 Andy Grove（Intel），John Doerr 推廣（《Measure What Matters》）。見 [What Matters — The Origin Story](https://www.whatmatters.com/articles/the-origin-story)。
+- PDCA——Walter Shewhart 提出、W. Edwards Deming 發揚，[The Deming Institute — PDSA Cycle](https://deming.org/explore/pdsa/)。
+- SWOT——一般歸於 Albert Humphrey 與 SRI（史丹佛研究院）；其源流可參考學術回顧 [The origins of SWOT analysis](https://www.sciencedirect.com/science/article/pii/S0024630123000110)。
+
+> 連結僅為延伸閱讀與善意引流之用，相關著作與商標權利均屬原作者及各機構所有。
 
 ---
 
