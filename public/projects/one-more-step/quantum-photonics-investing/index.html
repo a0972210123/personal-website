@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>矽光子 × 量子電腦 × PQC — 趨勢與投資地圖 · One More Step</title>
-  <meta name="description" content="從 AppWorks AW#32 / AW#33 的 PQC 與矽光子趨勢出發，整理矽光子、量子電腦五大硬體路線、光子 EDA / 光運算，以及對應的台股、美股投資標的總覽。" />
+  <meta name="description" content="從 AppWorks AW#32 / AW#33 的 PQC 與矽光子趨勢出發，整理矽光子、量子電腦五大硬體路線、光子 EDA / 光運算、光互連物理層（光纖／連接器／FAU），以及 Nvidia 逾 65 億美元光子投資版圖與對應的台股、美股投資標的總覽。" />
   <meta property="article:published_time" content="2026-06-25T00:00:00+08:00" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -350,7 +350,7 @@
 
   <div class="wrapper">
     <section class="hero" style="border-top:none;">
-      <span class="hero-badge">Deep Tech · 2026/6/25</span>
+      <span class="hero-badge">Deep Tech · 2026/6/25（2026/6 更新：光互連物理層）</span>
       <h1>矽光子 × 量子電腦 × <span>PQC</span></h1>
       <p>從 AppWorks AW#32、AW#33 的 PQC 與矽光子議題，加上與業界矽光子晶片專家交流趨勢時延伸整理出的觀念地圖：光、量子、密碼學如何在下一個十年交織成一個產業賽道，以及台股、美股的對應投資標的。</p>
       <div class="hero-tags">
@@ -466,7 +466,43 @@
     <section id="siph">
       <div class="section-label">Part 2 · 投資標的</div>
       <h2>矽光子 / 光互連 / CPO</h2>
-      <p class="lead">資料中心 AI 算力需求帶動光互連與 CPO 的近期營收成長，是矽光子目前最具體的變現場景；但如 Part 1 所說，這不是唯一賽道。下表新增「賽道」欄位區分 <strong>CPO 互連</strong>（綁定先進封裝、服務資料中心現金流）與 <strong>通用 PIC 代工</strong>（開放式流片平台，較有機會延伸到量子光子晶片）。</p>
+      <p class="lead">資料中心 AI 算力需求帶動光互連與 CPO 的近期營收成長，是矽光子目前最具體的變現場景；但如 Part 1 所說，這不是唯一賽道。下表「賽道」欄位區分三條路線：<strong>CPO 互連</strong>（綁定先進封裝、服務資料中心現金流）、<strong>通用 PIC 代工</strong>（開放式流片平台，較有機會延伸到量子光子晶片），以及這次新增的 <strong>光纖/連接器物理層</strong>（光真正傳輸與耦合進晶片的最底層——光纖、纜線、連接器、光纖陣列單元 FAU）。</p>
+
+      <div class="callout">
+        <strong>2026 年的關鍵訊號：輝達把錢砸進「光」。</strong>自 2026/3 起，Nvidia 在半年內對矽光子／光互連投入 <strong>逾 65 億美元</strong>，這條資本軌跡本身就是上面那條因果鏈最有力的市場佐證——當銅線互連的功耗與頻寬撐不住 AI 算力擴張，光成為唯一解，而且投資對象從「晶片層」一路延伸到「光纖物理層」：
+        <ul style="margin-top:0.6rem;">
+          <li><strong>2026/3/2</strong>　Coherent (COHR) 投資 20 億美元（普通股）＋ Lumentum (LITE) 20 億美元（A 系列可轉換特別股）</li>
+          <li><strong>2026/3/31</strong>　Marvell (MRVL) 20 億美元（A 系列可轉換特別股）＋ NVLink Fusion 整合</li>
+          <li><strong>2026/5/6</strong>　Corning (GLW) 最高約 32 億美元（5 億美元認股權證＋多年期採購協議），將美國光連接製造產能拉到 <strong>10 倍</strong>、光纖產能 +50%，於北卡與德州新建 3 廠</li>
+          <li>另參與 Ayar Labs（光互連 chiplet）5 億美元 E 輪</li>
+        </ul>
+        值得注意的是：前三筆都還在「晶片／模組／雷射」層，第四筆 Corning 才首度把投資延伸到 <strong>光纖與連接器這個物理層</strong>——這正是本文這次擴充要補上的一塊。
+      </div>
+
+      <p class="lead">下圖把光互連的供應鏈由下而上分層，看 Corning 與既有公司各自站在哪一層：物理層（光纖／玻璃／連接器）→ 耦合層（FAU／edge coupler）→ 晶片層（PIC／光引擎）→ 封裝層（CPO）→ 系統層（交換器）。</p>
+
+      <div class="flow-diagram">
+        <div class="flow-layer" style="grid-template-columns:1fr;">
+          <div class="flow-node is-muted"><strong>系統層 · 交換器 / AI Factory</strong><span>Nvidia Spectrum-X / Quantum-X CPO 交換器</span></div>
+        </div>
+        <div class="flow-arrow"><span class="flow-arrow-glyph">↑</span></div>
+        <div class="flow-layer" style="grid-template-columns:1fr;">
+          <div class="flow-node is-c1"><strong>封裝層 · CPO 共同封裝</strong><span>把光引擎與電子 IC 封在一起（台積電 COUPE）</span></div>
+        </div>
+        <div class="flow-arrow"><span class="flow-arrow-glyph">↑</span></div>
+        <div class="flow-layer" style="grid-template-columns:1fr;">
+          <div class="flow-node is-c2"><strong>晶片層 · PIC / 光引擎</strong><span>通用 PIC 代工：GlobalFoundries、聯電、Tower</span></div>
+        </div>
+        <div class="flow-arrow"><span class="flow-arrow-glyph">↑</span><span class="flow-arrow-note">光要從光纖「耦合」進晶片</span></div>
+        <div class="flow-layer" style="grid-template-columns:1fr;">
+          <div class="flow-node is-c4"><strong>耦合層 · FAU / Edge Coupler</strong><span>光纖陣列、可拆卸連接器：Corning GlassBridge、上詮</span></div>
+        </div>
+        <div class="flow-arrow"><span class="flow-arrow-glyph">↑</span></div>
+        <div class="flow-layer" style="grid-template-columns:1fr;">
+          <div class="flow-node is-c3"><strong>物理層 · 光纖 / 玻璃 / 纜線</strong><span>多芯光纖 MCF、抗彎光纖：Corning（輝達 2026/5 投資對象）</span></div>
+        </div>
+        <p class="flow-caption">由下而上：光在最底層的光纖／玻璃裡傳輸，經 FAU／edge coupler 耦合進矽光子晶片（PIC），再透過 CPO 封裝接上交換器系統。文章原本詳述的是中上層（PIC、CPO、交換器），這次補上最底下兩層的物理層與耦合層。</p>
+      </div>
 
       <h3>美股</h3>
       <div class="table-wrap">
@@ -487,7 +523,8 @@
             <tr><td>Astera Labs</td><td>ALAB</td><td>CPO 互連</td><td>PCIe/CXL Retimer 與智慧連接模組，資料中心互連生態系</td></tr>
             <tr><td>MACOM</td><td>MTSI</td><td>CPO 互連</td><td>類比與光通訊半導體，LPO（線性直驅光學）技術供應商</td></tr>
             <tr><td>Intel</td><td>INTC</td><td>CPO 互連</td><td>矽光子研發資歷最久，2023 年將可插拔光收發模組業務出售予 Jabil（2024 為內部 IPS 部門整併進 DCAI，非 2025 撤資）</td></tr>
-            <tr><td>GlobalFoundries</td><td>GFS</td><td>通用 PIC 代工</td><td>GF Fotonix 為開放式矽光子代工平台，官方明確列出資料中心互連、光學網路、光運算、FTTH、CPO 等多元應用場景，是少數可單獨流片的通用 PIC 平台</td></tr>
+            <tr><td>GlobalFoundries</td><td>GFS</td><td>通用 PIC 代工</td><td>GF Fotonix 為開放式矽光子代工平台，官方明確列出資料中心互連、光學網路、光運算、FTTH、CPO 等多元應用場景，是少數可單獨流片的通用 PIC 平台；2025/9 與 Corning 合作，將其 GlassBridge 玻璃波導 edge-coupler 整合進 GF Fotonix（物理層↔通用 PIC 代工的交叉點）</td></tr>
+            <tr><td>Corning</td><td>GLW</td><td>光纖/連接器物理層</td><td>光互連最底層的玻璃／光纖／連接器供應商：多芯光纖 MCF（同 125μm 包層 4 核心，單纖 4× 容量）、可拆卸光纖陣列單元 FAU 連接器、端到端 CPO 系統、GlassBridge 玻璃波導 edge-coupler（相容 GF 矽光子 v-groove）。2026/5 獲 Nvidia 投資擴產</td></tr>
           </tbody>
         </table>
       </div>
@@ -503,11 +540,16 @@
             <tr><td>日月光</td><td>3711</td><td>CPO 互連／封裝</td><td>先進封裝大廠，CPO 模組封裝測試潛在受惠者（下游封測，兩條賽道皆可能受惠）</td></tr>
             <tr><td>鴻海</td><td>2317</td><td>CPO 互連</td><td>透過子公司／策略佈局切入 AI 資料中心光通訊模組組裝</td></tr>
             <tr><td>廣達</td><td>2382</td><td>CPO 互連</td><td>AI 伺服器與資料中心系統整合，光互連模組導入的下游應用方</td></tr>
+            <tr><td>上詮</td><td>3363</td><td>光纖/連接器物理層</td><td>光纖陣列單元 FAU／光連接器，與 Corning 同屬物理層；FAU 出貨放大、握多項矽光專利，LPO FAU 製程難度高（最貼近本文新增物理層的台廠）</td></tr>
+            <tr><td>聯亞</td><td>3081</td><td>上游光源</td><td>磊晶／雷射二極體（III-V 族），矽光子無法自體發光所需的光源上游</td></tr>
+            <tr><td>波若威</td><td>3163</td><td>CPO 互連</td><td>光收發模組，黃仁勳 GTC 點名為光收發模組平台合作夥伴</td></tr>
+            <tr><td>華星光</td><td>4979</td><td>CPO 互連</td><td>光收發模組／矽光封裝相關</td></tr>
+            <tr><td>光聖</td><td>6442</td><td>光纖/連接器物理層</td><td>光纖連接器／纜線，美系資料中心客戶，毛利率長期維持 60% 以上</td></tr>
           </tbody>
         </table>
       </div>
       <div class="callout amber">
-        <strong>資料缺口：</strong>台廠矽光子被動元件 / 模組供應鏈（上詮、聯亞、聯鈞、華星光等）目前查無足夠公開資料可驗證其矽光子相關業務比重，故未列入表格，留待後續確認。
+        <strong>純度提醒：</strong>上表台廠多被市場歸類為「矽光子／CPO 概念股」，但各家矽光子相關營收佔比、認列時程差異大，部分尚未經公開財報充分驗證（資料多來自媒體報導與法人估計，見文末 References）。請以「題材曝險」而非「純概念股」看待，個股佔比與時程務必自行查證。其餘常被點名者尚有聯鈞、全新(2455)、眾達-KY、前鼎、環宇-KY 等，定位與上游磊晶／模組重疊度高，暫不逐一列入。
       </div>
     </section>
 
@@ -617,7 +659,7 @@
       <div class="section-label">附註</div>
       <h2>資料範圍與聲明</h2>
       <div class="callout amber">
-        <strong>待補：</strong>台股矽光子被動元件／模組供應鏈中較小型的公司（上詮、聯亞、聯鈞、華星光等）尚未能找到足夠公開資料驗證其矽光子業務比重，本篇暫不列入投資標的表格。
+        <strong>2026/6 更新：</strong>本次擴充已將台股被動光元件／物理層供應鏈（上詮、聯亞、波若威、華星光、光聖等）依公開報導與法人估計納入上方台股表格，並新增「光纖/連接器物理層」賽道。惟各家矽光子營收佔比與認列時程仍有不確定性，資料多來自媒體與法人，請以「題材曝險」看待、自行查證；聯鈞、全新、眾達-KY、前鼎、環宇-KY 等與上游磊晶／模組重疊度高者暫未逐一列入。
       </div>
       <p class="lead" style="margin-top:1.25rem;">本文為產業研究筆記整理，非投資建議，個股與 ETF 之配置請自行評估風險與盡職調查。</p>
     </section>
@@ -661,6 +703,23 @@
         <li>GlobalFoundries, "GlobalFoundries Announces Next-Generation Silicon Photonics Solutions" — <a href="https://gf.com/gf-press-release/globalfoundries-announces-next-generation-silicon-photonics-solutions-and/" target="_blank" rel="noopener">gf.com</a></li>
         <li>Tower Semiconductor, PH18 製程平台公告 — <a href="https://towersemi.com/2023/03/02/03022023/" target="_blank" rel="noopener">towersemi.com</a></li>
       </ul>
+
+      <h3>光互連物理層 / Nvidia 光子投資</h3>
+      <ul>
+        <li>NVIDIA &amp; Corning, "NVIDIA and Corning Announce Long-Term Partnership to Strengthen US Manufacturing for AI Infrastructure"（2026/5/6） — <a href="https://nvidianews.nvidia.com/news/nvidia-and-corning-announce-long-term-partnership-to-strengthen-us-manufacturing-for-ai-infrastructure" target="_blank" rel="noopener">nvidianews.nvidia.com</a></li>
+        <li>CNBC, "Nvidia to invest up to $3.2 billion in Corning…"（2026/5/6） — <a href="https://www.cnbc.com/2026/05/06/nvidia-corning-optical-factories-nc-texas-ai.html" target="_blank" rel="noopener">cnbc.com</a></li>
+        <li>CNBC, "Nvidia to invest $4 billion into photonics companies Coherent and Lumentum"（2026/3/2） — <a href="https://www.cnbc.com/2026/03/02/nvidia-investment-coherent-lumentum.html" target="_blank" rel="noopener">cnbc.com</a></li>
+        <li>Corning, "Corning To Launch AI Innovations in Fiber, Cable, and Connectivity at OFC 2026"（多芯光纖 MCF／CPO 系統） — <a href="https://www.corning.com/worldwide/en/about-us/news-events/news-releases/2026/03/corning-to-launch-ai-innovations-in-fiber-cable-and-connectivity-at-ofc-2026.html" target="_blank" rel="noopener">corning.com</a></li>
+        <li>GlobalFoundries, "GlobalFoundries and Corning Collaborate To Deliver Detachable Fiber Connector Solutions…"（GlassBridge，2025/9） — <a href="https://investors.gf.com/news-releases/news-release-details/2025/GlobalFoundries-and-Corning-Collaborate-To-Deliver-Detachable-Fiber-Connector-Solutions-to-Scale-Next-Generation-Optical-Connectivity/default.aspx" target="_blank" rel="noopener">investors.gf.com</a></li>
+      </ul>
+
+      <h3>台股光通訊供應鏈（媒體報導／法人估計）</h3>
+      <ul>
+        <li>今周刊, "上詮(3363)、波若威(3163)…矽光子與 CPO 台廠迎獲利爆發期"（2026/3） — <a href="https://www.businesstoday.com.tw/article/category/183008/post/202603180009/" target="_blank" rel="noopener">businesstoday.com.tw</a></li>
+        <li>鉅亨網, "矽光族群抱團風光 波若威年漲近 3 倍 上詮封關寫新高"（2025 封關） — <a href="https://news.cnyes.com/news/id/6294625" target="_blank" rel="noopener">cnyes.com</a></li>
+        <li>財報狗新聞, "矽光子族群續創新高！聯亞、上詮、華星光…" — <a href="https://statementdog.com/news/16235" target="_blank" rel="noopener">statementdog.com</a></li>
+      </ul>
+      <p class="lead" style="margin-top:0.6rem; font-size:0.78rem;">註：台股供應鏈段落之個股定位整理自上述媒體與法人報導，非經官方財報逐項核實，僅供題材理解，不構成投資建議。</p>
 
       <h3>產業併購 / 上市</h3>
       <ul>
@@ -738,6 +797,10 @@
       { term: "PCIe / CXL", en: "Peripheral Component Interconnect Express / Compute Express Link", cat: "互連IC", def: "伺服器與資料中心常用的高速匯流排標準，PCIe 是通用元件互連介面，CXL 在其基礎上進一步支援記憶體共享與一致性互連。", analogy: "PCIe 像是一般的高速道路系統，CXL 則像是新增了「共用停車場」功能，讓不同設備能共享資源而非各自獨占。", example: "Astera Labs 的智慧連接模組即圍繞 PCIe/CXL 標準，服務 AI 資料中心互連需求。" },
       { term: "Chiplet", en: "小晶片", cat: "互連IC", def: "把原本做成單一大晶片的功能，拆分成多顆較小的晶粒分別製造，再透過先進封裝技術互連整合，藉此提升良率與設計彈性。", analogy: "像把一台大型機器拆成幾個模組化零件分別製造、再組裝，比起整台機器一次成型更有彈性、出錯成本更低。", example: "Ayar Labs 開發的光互連 chiplet 即是把光學 I/O 做成獨立小晶片，供其他晶片廠商整合使用。" },
       { term: "QaaS", en: "Quantum Computing as a Service", cat: "量子", def: "透過雲端提供量子運算資源的服務模式，使用者不需自建量子硬體，即可透過 API 存取量子電腦或模擬器進行運算。", analogy: "像雲端運算的 IaaS，只是這次租用的不是傳統伺服器，而是量子電腦的運算時間。", example: "IBM、Microsoft Azure Quantum 等大型科技公司主要以 QaaS 形式間接參與量子運算市場。" },
+      { term: "MCF", en: "Multicore Fiber（多芯光纖）", cat: "光互連物理層", def: "在同一條光纖的單一包層（如標準 125μm）裡放入多個獨立的纖芯，讓一條光纖同時傳輸多路訊號，藉此在不增加佈線體積的前提下倍增傳輸密度。", analogy: "把原本單線道的隧道，在同樣的外徑內重劃成四線道，車流量翻倍但隧道沒變粗。", example: "Corning 在 2026 OFC／GTC 期間推出的多芯光纖，可在同一 125μm 包層內提供 4 個纖芯、單纖 4 倍容量，鎖定 AI 資料中心的高密度佈線。" },
+      { term: "FAU", en: "Fiber Array Unit（光纖陣列單元）", cat: "光互連物理層", def: "把多條光纖以極高精度排列、固定成一個陣列模組，再對準耦合到矽光子晶片（PIC）的波導上，是「光纖↔晶片」之間的關鍵連接元件，對準精度直接決定耦合損耗。", analogy: "像把一束電線整理進一個精準的排線接頭，插上主機板時每一根都剛好對到對應的金手指。", example: "Corning 與台廠上詮(3363) 都是 FAU／光連接器供應商；LPO 等高速應用對 FAU 對準精度的要求更高，製程難度與單價同步上升。" },
+      { term: "Edge Coupler", en: "邊緣耦合器", cat: "光互連物理層", def: "讓光從晶片邊緣的波導端面與外部光纖之間高效率進出的耦合結構，是把光「送進／帶出」矽光子晶片的兩大耦合方式之一（另一種為頂部的光柵耦合 grating coupler）。", analogy: "像隧道的入口匝道，設計得好車流（光）就能順暢進出、不堵車（低損耗）。", example: "Corning 的 GlassBridge 就是一種玻璃波導 edge-coupler，設計成相容 GlobalFoundries 矽光子平台所用的 v-groove。" },
+      { term: "GlassBridge", en: "Corning GlassBridge", cat: "光互連物理層", def: "Corning 開發的玻璃波導 edge-coupler 技術，用來把光纖低損耗地耦合進矽光子 PIC，並設計成相容 GlobalFoundries 矽光子平台的 v-groove 結構，是 Corning 切入晶片級光耦合（而不只是長距光纖）的代表技術。", analogy: "像一段量身訂做的『轉接橋』，把外面的光纖管線精準接到晶片門口的接口上，水（光）流過去幾乎不漏。", example: "GlobalFoundries 與 Corning 於 2025/9 宣布合作，將 GlassBridge 整合進 GF Fotonix 平台，並於 ECOC 2025 展示，是物理層與通用 PIC 代工的交叉點。" },
     ];
 
     function renderTerms(filter) {
