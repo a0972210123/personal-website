@@ -229,9 +229,19 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       <p class="calc-feasibility warn" id="cc-fat-warning" style="display:none">⚠️ 在目前的熱量赤字與碳水設定下，部分日子的脂肪額度會被壓到很低（可能低於必需脂肪酸建議量）。可考慮放寬熱量赤字，或在第 3 節減少該日的訓練強度。</p>
     </section>
 
+    <!-- Food-group servings (六大類食物換算) -->
+    <section class="calc-section">
+      <p class="section-heading">6. 六大類食物份數建議</p>
+      <p class="calc-section-desc">
+        依衛福部《每日飲食指南》官方代換系統，把上方的週平均巨量營養素換算成六大類食物份數，方便採買與備餐參考。蔬菜、水果、乳品採一般建議的基礎份數，其餘依你的蛋白質／脂肪／碳水目標分配。
+      </p>
+      <div class="stat-list" id="servings-grid"></div>
+      <p class="calc-section-desc" id="servings-carb-delta" style="display:none"></p>
+    </section>
+
     <!-- References -->
     <section class="calc-section">
-      <p class="section-heading">6. 參考文獻</p>
+      <p class="section-heading">7. 參考文獻</p>
       <ul class="ref-list">
         <li>衛生福利部國民健康署《國人膳食營養素參考攝取量》第八版 — 蛋白質、脂質、碳水化合物專章。<a href="https://www.hpa.gov.tw/Pages/Detail.aspx?nodeid=4248&pid=12285" target="_blank" rel="noopener">hpa.gov.tw</a></li>
         <li>Jäger R, et al. (2017). International Society of Sports Nutrition Position Stand: Protein and exercise. <em>J Int Soc Sports Nutr.</em> <a href="https://jissn.biomedcentral.com/articles/10.1186/s12970-017-0177-8" target="_blank" rel="noopener">連結</a></li>
@@ -239,7 +249,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         <li>Frankenfield D, Roth-Yousey L, Compher C (2005). Comparison of predictive equations for resting metabolic rate. <em>J Am Diet Assoc.</em></li>
         <li>American College of Sports Medicine (ACSM) 運動前健康篩檢建議。</li>
         <li>Targeted/Cyclical Ketogenic Diet（TKD/CKD）研究：訓練前後少量碳水攝取可緩解生酮飲食者的運動低血糖並提升表現，同時維持酮症狀態 — 生酮／極低醣飲食的訓練日碳水微調依此設計，而非直接套用一般 ACSM 訓練量框架。</li>
-        <li>衛生福利部國民健康署《每日飲食指南》六大類食物代換系統（Phase 2 採買建議將採用）。</li>
+        <li>衛生福利部國民健康署《每日飲食指南》六大類食物代換系統 — 第 6 節食物份數建議的計算依據。<a href="https://www.hpa.gov.tw/Pages/EBook.aspx?nodeid=1208" target="_blank" rel="noopener">hpa.gov.tw</a></li>
       </ul>
       <p class="calc-changelog">
         本工具重新檢視並更新了原先 Excel 試算表中，部分取自計算機網站／部落格而非一手文獻的數值（如蛋白質與碳循環的每公斤攝取量），並修正了活動量倍率重複平均、飲食類型比例表不一致等問題。訓練排程功能已由「碳循環飲食」單一選項，擴展為適用於所有飲食類型的每週碳水調整機制。詳見 PR 說明。
@@ -248,7 +258,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
     <!-- Glossary -->
     <section class="calc-section">
-      <p class="section-heading">7. 常見名詞解釋</p>
+      <p class="section-heading">8. 常見名詞解釋</p>
       <div class="glossary-grid">
         <div class="glossary-item"><b>BMR（基礎代謝率）</b>Basal Metabolic Rate — 身體在完全靜止、清醒狀態下維持生命所需的最低熱量。</div>
         <div class="glossary-item"><b>TDEE（每日總消耗熱量）</b>Total Daily Energy Expenditure — BMR 加上日常活動與運動消耗的熱量，等於「不增不減體重」所需的每日總熱量。</div>
@@ -464,6 +474,21 @@ const SHORT_LABEL = { high: '高強度', low: '低強度', rest: '休息' };
 const KETO_LIKE = new Set(['keto', 'verylowcarb', 'verylowcarbketo']);
 const TKD_BUMP = { rest: 0, low: 25, high: 50 };
 
+/* ── 六大類食物 (Taiwan HPA official food-exchange system) — per-serving macros ──
+   豆魚蛋肉 uses the medium-fat average; 乳品 uses the whole/regular average
+   (current guidance treats whole vs. low-fat dairy as equally acceptable). */
+const FOOD_GROUPS = {
+  grain:  { label: '全穀雜糧', example: '¼碗飯／1 片全麥吐司／2 湯匙紫米', protein: 2, fat: 0, carb: 15 },
+  protein:{ label: '豆魚蛋肉', example: '1 顆蛋／35g 雞胸肉／80g 嫩豆腐',   protein: 7, fat: 5, carb: 0 },
+  dairy:  { label: '乳品',     example: '1 杯（240ml）鮮奶／2 片起司',      protein: 8, fat: 8, carb: 12 },
+  veg:    { label: '蔬菜',     example: '100g 生重（約煮熟後半碗）',        protein: 1, fat: 0, carb: 5 },
+  fruit:  { label: '水果',     example: '1 個拳頭大小水果／半根香蕉',       protein: 0, fat: 0, carb: 15 },
+  fat:    { label: '油脂與堅果種子', example: '1 茶匙油／6–7 顆堅果',       protein: 0, fat: 5, carb: 0 },
+};
+/* Fixed baseline servings for micronutrient coverage, regardless of calorie target
+   (matches the official guide's typical minimums) */
+const BASELINE_SERVINGS = { veg: 4, fruit: 3, dairy: 1.5 };
+
 /* ── BMR formulas ── */
 function bmrMifflin(w, h, age, sex) {
   return sex === 'male' ? 10 * w + 6.25 * h - 5 * age + 5 : 10 * w + 6.25 * h - 5 * age - 161;
@@ -524,6 +549,30 @@ function computeDayMacros(weight, targetKcal, proteinGkg, dietKey, dietType, day
   const carbKcal = carbG * 4;
   const fatKcal = Math.max(targetKcal - proteinKcal - carbKcal, 0);
   return { proteinG, proteinKcal, carbG, carbKcal, fatG: fatKcal / 9, fatKcal };
+}
+
+/* ── Food-group servings: converts weekly-average macro grams into 六大類食物 servings,
+   the same way a dietitian manually builds a food-exchange plan (fixed micronutrient
+   baseline first, then allocate the remaining protein/fat/carb need to the flexible groups) ── */
+function computeServings(proteinG, fatG, carbG) {
+  const veg = BASELINE_SERVINGS.veg, fruit = BASELINE_SERVINGS.fruit, dairy = BASELINE_SERVINGS.dairy;
+  const baselineProtein = veg * FOOD_GROUPS.veg.protein + dairy * FOOD_GROUPS.dairy.protein;
+  const baselineCarb = veg * FOOD_GROUPS.veg.carb + fruit * FOOD_GROUPS.fruit.carb + dairy * FOOD_GROUPS.dairy.carb;
+  const baselineFat = dairy * FOOD_GROUPS.dairy.fat;
+
+  const proteinServings = Math.max(0, Math.round(((proteinG - baselineProtein) / FOOD_GROUPS.protein.protein) * 2) / 2);
+  const fatFromProteinGroup = proteinServings * FOOD_GROUPS.protein.fat;
+  const fatServings = Math.max(0, Math.round(((fatG - baselineFat - fatFromProteinGroup) / FOOD_GROUPS.fat.fat) * 2) / 2);
+  const grainServings = Math.max(0, Math.round(((carbG - baselineCarb) / FOOD_GROUPS.grain.carb) * 2) / 2);
+
+  return { grain: grainServings, protein: proteinServings, dairy, veg, fruit, fat: fatServings };
+}
+
+/* Simple additive note: how many extra 全穀雜糧 servings a training day carries vs. the weekly average */
+function computeCarbDelta(dayResults, avgCarbG) {
+  const maxDay = dayResults.reduce((m, d) => Math.max(m, d.carbG), avgCarbG);
+  const extraG = maxDay - avgCarbG;
+  return extraG > 5 ? Math.round((extraG / FOOD_GROUPS.grain.carb) * 2) / 2 : 0;
 }
 
 /* ── ACSM risk screening ── */
@@ -626,6 +675,7 @@ function render() {
   document.getElementById('dri-fat').textContent = driBadge((fatKcal/targetKcal)*100, DRI.fat);
 
   renderWeekGrid(dayResults);
+  renderServings(proteinG, fatG, carbG, dayResults);
 }
 
 let ccPlan = DEFAULT_CC_PLAN.slice();
@@ -675,6 +725,38 @@ function renderWeekGrid(dayResults) {
   }).join('');
 
   document.getElementById('cc-fat-warning').style.display = lowFatDay ? '' : 'none';
+}
+
+function renderServings(proteinG, fatG, carbG, dayResults) {
+  const grid = document.getElementById('servings-grid');
+  if (!grid) return;
+  const s = computeServings(proteinG, fatG, carbG);
+
+  const rows = [
+    ['grain', s.grain], ['protein', s.protein], ['dairy', s.dairy],
+    ['veg', s.veg], ['fruit', s.fruit], ['fat', s.fat],
+  ];
+  grid.innerHTML = rows.map(([key, count]) => {
+    const g = FOOD_GROUPS[key];
+    return `
+      <div class="stat-row">
+        <div class="stat-row-label">
+          <div class="stat-row-title">${g.label}</div>
+          <div class="stat-row-sub">例如：${g.example}</div>
+        </div>
+        <div class="stat-row-num">${count} 份</div>
+      </div>
+    `;
+  }).join('');
+
+  const delta = computeCarbDelta(dayResults, carbG);
+  const deltaEl = document.getElementById('servings-carb-delta');
+  if (delta > 0) {
+    deltaEl.style.display = '';
+    deltaEl.textContent = `訓練日（碳水最高的一天）比週平均多需要約 +${delta} 份全穀雜糧。`;
+  } else {
+    deltaEl.style.display = 'none';
+  }
 }
 
 document.querySelectorAll('#in-sex, #in-age, #in-weight, #in-height, #in-bfr, #in-target, #in-pal, #in-protein-gkg, #in-diettype')
