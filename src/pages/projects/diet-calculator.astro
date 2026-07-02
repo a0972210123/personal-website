@@ -140,7 +140,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       <p class="calc-section-desc">
         選擇你每天的訓練強度，第 5 節的巨量營養素會依此調整每日碳水：一般飲食類型採 ACSM/AND/Dietitians of Canada 2016 聯合聲明的訓練量框架（依一般健身族群調整，非耐力運動員數值）；生酮／極低醣類飲食則改採「Targeted/Cyclical Ketogenic Diet」小幅碳水微調，避免破壞酮症。
       </p>
-      <div class="week-grid" id="schedule-grid"></div>
+      <div class="stat-list" id="schedule-grid"></div>
     </section>
 
     <!-- BMR/TDEE results -->
@@ -225,18 +225,44 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       <p class="dri-legend">✅ 符合 DRIs 建議範圍 &nbsp;&nbsp; ⚠️ 超出 DRIs 一般建議範圍（特殊飲食型態，建議諮詢營養師）</p>
 
       <p class="week-grid-heading">每日明細（依第 3 節的訓練排程）</p>
-      <div class="week-grid" id="week-grid"></div>
+      <div class="supp-table-wrap">
+        <table class="supp-table week-detail-table">
+          <thead><tr><th>星期</th><th>蛋白</th><th>碳水</th><th>脂肪</th></tr></thead>
+          <tbody id="week-grid"></tbody>
+        </table>
+      </div>
       <p class="calc-feasibility warn" id="cc-fat-warning" style="display:none">⚠️ 在目前的熱量赤字與碳水設定下，部分日子的脂肪額度會被壓到很低（可能低於必需脂肪酸建議量）。可考慮放寬熱量赤字，或在第 3 節減少該日的訓練強度。</p>
     </section>
 
     <!-- Food-group servings (六大類食物換算) -->
     <section class="calc-section">
       <p class="section-heading">6. 六大類食物份數建議</p>
+
+      <p class="calc-subheading">6a. 總食物採買量（週）</p>
       <p class="calc-section-desc">
         依衛福部《每日飲食指南》官方代換系統，把上方的週平均巨量營養素換算成六大類食物份數，方便採買與備餐參考。蔬菜、水果、乳品採一般建議的基礎份數，其餘依你的蛋白質／脂肪／碳水目標分配。
       </p>
       <div class="stat-list" id="servings-grid"></div>
       <p class="calc-section-desc" id="servings-carb-delta" style="display:none"></p>
+
+      <p class="calc-subheading">6b. 每日飲食規劃</p>
+      <p class="calc-section-desc">
+        把第 5 節每天的巨量營養素平均分配到 2–4 餐。均分是依 ISSN 蛋白質時機建議（Kerksick et al. 2017；Areta et al. 2013 發現平均分配優於過於集中或過於分散的攝取模式）；2 餐版本對應 16:8 限時進食（Time-Restricted Eating）。
+      </p>
+      <label class="form-field meal-count-field">
+        <span>每日餐數 <em>Meals per day</em></span>
+        <select id="in-mealcount">
+          <option value="2">2 餐（16:8 限時進食）</option>
+          <option value="3" selected>3 餐</option>
+          <option value="4">4 餐</option>
+        </select>
+      </label>
+      <p class="calc-section-desc" id="mealplan-168-note" style="display:none">
+        <b>16:8 建議：</b>在 8 小時進食窗口內平均分配兩餐（例如 12:00 與 20:00）。研究顯示搭配阻力訓練與足夠蛋白質，16:8 可減少脂肪量且不影響肌肉量與肌力（Moro et al. 2016；2024 統合分析），但可能略微降低睪固酮／IGF-1（Moro et al. 2016）。孕婦、糖尿病／血糖藥物使用者、有飲食失調病史者、青少年不建議嘗試，請先諮詢醫師。
+      </p>
+      <div class="supp-table-wrap">
+        <table class="supp-table" id="mealplan-table"></table>
+      </div>
     </section>
 
     <!-- Eating out + whole food guidance -->
@@ -369,6 +395,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         <li>Trexler ET, et al. (2015). ISSN Position Stand: Beta-Alanine. <em>J Int Soc Sports Nutr.</em> <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4501114/" target="_blank" rel="noopener">連結</a></li>
         <li>Jackman SR, et al. (2017). Branched chain amino acid ingestion and muscle protein synthesis: myth or reality? <em>J Int Soc Sports Nutr.</em> <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5568273/" target="_blank" rel="noopener">連結</a></li>
         <li>Kerksick CM, et al. (2018). ISSN exercise & sports nutrition review update: research & recommendations（Category I/II/III 證據分級架構出處）。<em>J Int Soc Sports Nutr.</em> <a href="https://jissn.biomedcentral.com/articles/10.1186/s12970-018-0242-y" target="_blank" rel="noopener">連結</a></li>
+        <li>World Health Organization (2015). <em>Guideline: Sugars intake for adults and children.</em> 第 7 節游離糖建議之依據。<a href="https://www.who.int/publications/i/item/9789241549028" target="_blank" rel="noopener">who.int</a></li>
+        <li>U.S. Department of Health and Human Services & U.S. Department of Agriculture (2025–2030). <em>Dietary Guidelines for Americans.</em> 第 7 節原型食物／加工食品建議之依據。</li>
+        <li>台大公共衛生學院（2026）。手搖飲含糖量調查：85.6% 飲品總糖量超過標示、55.6%「無糖」飲品仍檢出糖分。轉引自 <a href="https://health.ettoday.net/news/3154312" target="_blank" rel="noopener">ETtoday 健康雲</a>。</li>
+        <li>Kerksick CM, et al. (2017). ISSN Position Stand: Nutrient timing. <em>J Int Soc Sports Nutr.</em> 第 6b 節每日餐數分配之依據。<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5596471/" target="_blank" rel="noopener">連結</a></li>
+        <li>Areta JL, et al. (2013). Timing and distribution of protein ingestion during prolonged recovery from resistance exercise alters myofibrillar protein synthesis. <em>J Physiol.</em> <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3650697/" target="_blank" rel="noopener">連結</a></li>
+        <li>Moro T, et al. (2016). Effects of eight weeks of time-restricted feeding (16/8) on basal metabolism, maximal strength, body composition, inflammation, and cardiovascular risk factors in resistance-trained males. <em>J Transl Med.</em> 16:8 效益與睪固酮/IGF-1 下降之依據。<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5064803/" target="_blank" rel="noopener">連結</a></li>
+        <li>Time-restricted eating + resistance training 統合分析 (2024). <em>Nutrients.</em> <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11434652/" target="_blank" rel="noopener">連結</a></li>
         <li>外食技巧、原型食物定義為業界／營養師實務共識整理，非一手文獻回顧，僅供參考。</li>
       </ul>
       <p class="calc-changelog">
@@ -454,6 +487,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   }
   .form-field input:focus, .form-field select:focus { border-color: var(--color-accent); outline: none; }
   .form-hint { margin-top: 1rem; font-size: 0.82rem; color: var(--color-text-muted); }
+  .meal-count-field { max-width: 280px; margin-bottom: 1rem; }
 
   .acsm-list { display: flex; flex-direction: column; gap: 0.55rem; margin-bottom: 1rem; }
   .acsm-item { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.88rem; line-height: 1.5; cursor: pointer; }
@@ -502,25 +536,18 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   .dri-badge { font-size: 0.85rem; margin-left: 0.3rem; }
   .dri-legend { font-size: 0.78rem; color: var(--color-text-muted); margin-top: 0.8rem; }
 
-  .week-grid {
-    display: grid;
-    grid-template-columns: repeat(7, minmax(110px, 1fr));
-    gap: 0.6rem;
-    overflow-x: auto;
-  }
-  .week-day {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
+  .schedule-select {
+    flex-shrink: 0;
+    width: 140px;
+    font-size: 0.85rem;
+    padding: 0.5rem 0.6rem;
     border-radius: var(--radius-sm);
-    padding: 0.7rem 0.6rem;
-    text-align: center;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+    color: var(--color-text);
   }
-  .week-day-label { font-size: 0.78rem; font-weight: 700; margin-bottom: 0.4rem; }
-  .week-day-type { font-weight: 400; color: var(--color-text-muted); }
-  .week-day select { width: 100%; font-size: 0.78rem; padding: 0.3rem; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-bg); color: var(--color-text); margin-bottom: 0.5rem; }
-  .week-day-macro { font-size: 0.74rem; color: var(--color-text-muted); line-height: 1.5; }
-  .week-day-macro b { color: var(--color-text); }
   .week-grid-heading { font-size: 0.85rem; font-weight: 700; margin: 1.2rem 0 0.6rem; }
+  .week-detail-table { min-width: 480px; }
 
   .ref-list { font-size: 0.85rem; line-height: 1.8; color: var(--color-text-muted); padding-left: 1.2rem; }
   .ref-list a { color: var(--color-accent); }
@@ -564,10 +591,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   .tier-1 { color: #2fbf71; }
   .tier-2 { color: #f5a623; }
   .tier-3 { color: #e5484d; }
-
-  @media (max-width: 700px) {
-    .week-grid { grid-template-columns: repeat(7, minmax(96px, 1fr)); }
-  }
 </style>
 
 <script>
@@ -823,6 +846,7 @@ function render() {
 
   renderWeekGrid(dayResults);
   renderServings(proteinG, fatG, carbG, dayResults);
+  renderMealPlan(dayResults);
 }
 
 let ccPlan = DEFAULT_CC_PLAN.slice();
@@ -832,9 +856,9 @@ function renderSchedule() {
   const grid = document.getElementById('schedule-grid');
   if (!grid) return;
   grid.innerHTML = ccPlan.map((dayType, i) => `
-    <div class="week-day">
-      <div class="week-day-label">週${DAYS[i]}</div>
-      <select data-day="${i}">
+    <div class="stat-row">
+      <div class="stat-row-label"><div class="stat-row-title">週${DAYS[i]}</div></div>
+      <select class="schedule-select" data-day="${i}">
         <option value="high" ${dayType === 'high' ? 'selected' : ''}>高強度</option>
         <option value="low" ${dayType === 'low' ? 'selected' : ''}>低強度</option>
         <option value="rest" ${dayType === 'rest' ? 'selected' : ''}>休息</option>
@@ -860,14 +884,12 @@ function renderWeekGrid(dayResults) {
     const d = dayResults[i];
     if (d.fatG < 20) lowFatDay = true;
     return `
-      <div class="week-day">
-        <div class="week-day-label">週${DAYS[i]} <span class="week-day-type">${SHORT_LABEL[dayType]}</span></div>
-        <div class="week-day-macro">
-          蛋白 <b>${round(d.proteinG)}g</b><br>
-          碳水 <b>${round(d.carbG)}g</b><br>
-          脂肪 <b>${round(d.fatG)}g</b>
-        </div>
-      </div>
+      <tr>
+        <td>週${DAYS[i]}<br><span class="supp-sub">${SHORT_LABEL[dayType]}</span></td>
+        <td>${round(d.proteinG)}g</td>
+        <td>${round(d.carbG)}g</td>
+        <td>${round(d.fatG)}g</td>
+      </tr>
     `;
   }).join('');
 
@@ -906,7 +928,42 @@ function renderServings(proteinG, fatG, carbG, dayResults) {
   }
 }
 
-document.querySelectorAll('#in-sex, #in-age, #in-weight, #in-height, #in-bfr, #in-target, #in-pal, #in-protein-gkg, #in-diettype')
+/* 6b — split each day's already-computed macros evenly across N meals
+   (even distribution, per ISSN nutrient timing: Kerksick et al. 2017; Areta et al. 2013) */
+function computeMealSplit(dayResults, mealCount) {
+  return dayResults.map(d => {
+    const meals = [];
+    for (let i = 0; i < mealCount; i++) {
+      meals.push({
+        proteinG: d.proteinG / mealCount,
+        carbG: d.carbG / mealCount,
+        fatG: d.fatG / mealCount,
+      });
+    }
+    return meals;
+  });
+}
+
+function renderMealPlan(dayResults) {
+  const table = document.getElementById('mealplan-table');
+  if (!table) return;
+  const mealCount = parseInt(document.getElementById('in-mealcount').value, 10);
+  const noteEl = document.getElementById('mealplan-168-note');
+  noteEl.style.display = mealCount === 2 ? '' : 'none';
+
+  const weekMeals = computeMealSplit(dayResults, mealCount);
+  const mealHeaders = Array.from({ length: mealCount }, (_, i) => `<th>第 ${i + 1} 餐</th>`).join('');
+  const rows = ccPlan.map((dayType, i) => {
+    const cells = weekMeals[i].map(m =>
+      `<td>蛋白 ${round(m.proteinG)}g<br>碳水 ${round(m.carbG)}g<br>脂肪 ${round(m.fatG)}g</td>`
+    ).join('');
+    return `<tr><td>週${DAYS[i]}<br><span class="supp-sub">${SHORT_LABEL[dayType]}</span></td>${cells}</tr>`;
+  }).join('');
+
+  table.innerHTML = `<thead><tr><th>星期</th>${mealHeaders}</tr></thead><tbody>${rows}</tbody>`;
+}
+
+document.querySelectorAll('#in-sex, #in-age, #in-weight, #in-height, #in-bfr, #in-target, #in-pal, #in-protein-gkg, #in-diettype, #in-mealcount')
   .forEach(el => el.addEventListener('input', render));
 
 /* Changing Goal auto-suggests a matching protein g/kg default (still overridable afterward) */
