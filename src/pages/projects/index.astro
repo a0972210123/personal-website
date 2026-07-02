@@ -27,6 +27,18 @@ const projects = [
     tagsEn: ['Learning Notes'],
     internal: true,
   },
+  {
+    slug: 'diet-calculator',
+    title: '體態管理計算機',
+    titleEn: 'Body Composition Calculator',
+    description: '以台灣 DRIs 第八版、ISSN、ACSM 文獻為基礎，估算 BMR、TDEE、巨量營養素與碳循環週計畫。純前端計算，不上傳不儲存。',
+    descriptionEn: 'BMR, TDEE, macro, and carb-cycling calculator grounded in Taiwan DRIs 8th ed., ISSN, and ACSM literature. Fully client-side — nothing is uploaded or stored.',
+    status: 'live',
+    url: '/projects/diet-calculator',
+    tags: ['健康工具', '文獻實證'],
+    tagsEn: ['Health Tool', 'Evidence-Based'],
+    internal: true,
+  },
 ];
 
 const investingPosts = (await getCollection('blog', ({ data }) =>
