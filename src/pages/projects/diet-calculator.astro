@@ -134,18 +134,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       <div class="acsm-result" id="acsm-result">請勾選以上項目查看風險評估結果</div>
     </section>
 
-    <!-- Weekly training schedule (universal — applies to every diet type) -->
-    <section class="calc-section">
-      <p class="section-heading">3. 每週訓練排程</p>
-      <p class="calc-section-desc">
-        選擇你每天的訓練強度，第 5 節的巨量營養素會依此調整每日碳水：一般飲食類型採 ACSM/AND/Dietitians of Canada 2016 聯合聲明的訓練量框架（依一般健身族群調整，非耐力運動員數值）；生酮／極低醣類飲食則改採「Targeted/Cyclical Ketogenic Diet」小幅碳水微調，避免破壞酮症。
-      </p>
-      <div class="stat-list" id="schedule-grid"></div>
-    </section>
-
     <!-- BMR/TDEE results -->
     <section class="calc-section">
-      <p class="section-heading">4. BMR / TDEE 估算結果</p>
+      <p class="section-heading">3. BMR / TDEE 估算結果</p>
       <div class="calc-bento stat-list">
         <div class="stat-row">
           <div class="stat-row-label">
@@ -193,11 +184,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       <p class="calc-feasibility" id="feasibility-msg"></p>
     </section>
 
-    <!-- Macro targets -->
+    <!-- Macro targets + weekly training schedule (merged) -->
     <section class="calc-section">
-      <p class="section-heading">5. 每日巨量營養素目標</p>
+      <p class="section-heading">4. 每日巨量營養素目標</p>
       <p class="calc-section-desc">
-        蛋白質採「體重 × 每公斤克數」計算（ISSN 2017 實證範圍），每日固定；碳水依你在第 3 節設定的訓練排程逐日調整；脂肪為每日剩餘熱量的彈性項。以下先顯示週平均，7 天明細在下方。
+        蛋白質採「體重 × 每公斤克數」計算（ISSN 2017 實證範圍），每日固定；碳水依下方每天的訓練強度逐日調整：一般飲食類型採 ACSM/AND/Dietitians of Canada 2016 聯合聲明的訓練量框架（依一般健身族群調整，非耐力運動員數值）；生酮／極低醣類飲食則改採「Targeted/Cyclical Ketogenic Diet」小幅碳水微調，避免破壞酮症；脂肪為每日剩餘熱量的彈性項。以下先顯示週平均，可在下方表格調整每天的訓練強度。
       </p>
       <div class="stat-list" id="macro-grid">
         <div class="stat-row" data-macro="protein">
@@ -224,30 +215,30 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       </div>
       <p class="dri-legend">✅ 符合 DRIs 建議範圍 &nbsp;&nbsp; ⚠️ 超出 DRIs 一般建議範圍（特殊飲食型態，建議諮詢營養師）</p>
 
-      <p class="week-grid-heading">每日明細（依第 3 節的訓練排程）</p>
+      <p class="week-grid-heading">每日訓練強度與巨量營養素明細（選擇下方下拉選單即時更新）</p>
       <div class="supp-table-wrap">
         <table class="supp-table week-detail-table">
-          <thead><tr><th>星期</th><th>蛋白</th><th>碳水</th><th>脂肪</th></tr></thead>
+          <thead><tr><th>星期</th><th>訓練強度</th><th>蛋白</th><th>碳水</th><th>脂肪</th></tr></thead>
           <tbody id="week-grid"></tbody>
         </table>
       </div>
-      <p class="calc-feasibility warn" id="cc-fat-warning" style="display:none">⚠️ 在目前的熱量赤字與碳水設定下，部分日子的脂肪額度會被壓到很低（可能低於必需脂肪酸建議量）。可考慮放寬熱量赤字，或在第 3 節減少該日的訓練強度。</p>
+      <p class="calc-feasibility warn" id="cc-fat-warning" style="display:none">⚠️ 在目前的熱量赤字與碳水設定下，部分日子的脂肪額度會被壓到很低（可能低於必需脂肪酸建議量）。可考慮放寬熱量赤字，或降低該日的訓練強度。</p>
     </section>
 
     <!-- Food-group servings (六大類食物換算) -->
     <section class="calc-section">
-      <p class="section-heading">6. 六大類食物份數建議</p>
+      <p class="section-heading">5. 六大類食物份數建議</p>
 
-      <p class="calc-subheading">6a. 總食物採買量（週）</p>
+      <p class="calc-subheading">5a. 總食物採買量（週）</p>
       <p class="calc-section-desc">
         依衛福部《每日飲食指南》官方代換系統，把上方的週平均巨量營養素換算成六大類食物份數，方便採買與備餐參考。蔬菜、水果、乳品採一般建議的基礎份數，其餘依你的蛋白質／脂肪／碳水目標分配。
       </p>
       <div class="stat-list" id="servings-grid"></div>
       <p class="calc-section-desc" id="servings-carb-delta" style="display:none"></p>
 
-      <p class="calc-subheading">6b. 每日飲食規劃</p>
+      <p class="calc-subheading">5b. 每日飲食規劃</p>
       <p class="calc-section-desc">
-        把第 5 節每天的巨量營養素平均分配到 2–4 餐。均分是依 ISSN 蛋白質時機建議（Kerksick et al. 2017；Areta et al. 2013 發現平均分配優於過於集中或過於分散的攝取模式）；2 餐版本對應 16:8 限時進食（Time-Restricted Eating）。
+        把第 4 節每天的巨量營養素平均分配到 2–4 餐。均分是依 ISSN 蛋白質時機建議（Kerksick et al. 2017；Areta et al. 2013 發現平均分配優於過於集中或過於分散的攝取模式）；2 餐版本對應 16:8 限時進食（Time-Restricted Eating）。
       </p>
       <label class="form-field meal-count-field">
         <span>每日餐數 <em>Meals per day</em></span>
@@ -267,7 +258,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
     <!-- Eating out + whole food guidance -->
     <section class="calc-section">
-      <p class="section-heading">7. 外食技巧與原型食物</p>
+      <p class="section-heading">6. 外食技巧與原型食物</p>
       <p class="calc-section-desc">
         以下為業界／營養師的實務共識整理，並非一手文獻回顧（跟本頁其他章節的 DRIs/ISSN/ACSM 引用等級不同），僅供參考。內容為靜態整理，未依你選擇的飲食類型或目標動態調整。
       </p>
@@ -318,7 +309,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
     <!-- Sports supplements -->
     <section class="calc-section">
-      <p class="section-heading">8. 運動營養補充劑</p>
+      <p class="section-heading">7. 運動營養補充劑</p>
       <p class="calc-section-desc">
         依 ISSN（國際運動營養學會）的實證等級分類：<b>Category I</b> 證據充分支持；<b>Category II</b> 證據有限／不一致；<b>Category III</b> 證據不足或無效。補充劑無法取代足夠的整體飲食與訓練，僅為輔助工具。
       </p>
@@ -381,7 +372,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
     <!-- References -->
     <section class="calc-section">
-      <p class="section-heading">9. 參考文獻</p>
+      <p class="section-heading">8. 參考文獻</p>
       <ul class="ref-list">
         <li>衛生福利部國民健康署《國人膳食營養素參考攝取量》第八版 — 蛋白質、脂質、碳水化合物專章。<a href="https://www.hpa.gov.tw/Pages/Detail.aspx?nodeid=4248&pid=12285" target="_blank" rel="noopener">hpa.gov.tw</a></li>
         <li>Jäger R, et al. (2017). International Society of Sports Nutrition Position Stand: Protein and exercise. <em>J Int Soc Sports Nutr.</em> <a href="https://jissn.biomedcentral.com/articles/10.1186/s12970-017-0177-8" target="_blank" rel="noopener">連結</a></li>
@@ -389,14 +380,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         <li>Frankenfield D, Roth-Yousey L, Compher C (2005). Comparison of predictive equations for resting metabolic rate. <em>J Am Diet Assoc.</em></li>
         <li>American College of Sports Medicine (ACSM) 運動前健康篩檢建議。</li>
         <li>Targeted/Cyclical Ketogenic Diet（TKD/CKD）研究：訓練前後少量碳水攝取可緩解生酮飲食者的運動低血糖並提升表現，同時維持酮症狀態 — 生酮／極低醣飲食的訓練日碳水微調依此設計，而非直接套用一般 ACSM 訓練量框架。</li>
-        <li>衛生福利部國民健康署《每日飲食指南》六大類食物代換系統 — 第 6 節食物份數建議的計算依據。<a href="https://www.hpa.gov.tw/Pages/EBook.aspx?nodeid=1208" target="_blank" rel="noopener">hpa.gov.tw</a></li>
+        <li>衛生福利部國民健康署《每日飲食指南》六大類食物代換系統 — 第 5 節食物份數建議的計算依據。<a href="https://www.hpa.gov.tw/Pages/EBook.aspx?nodeid=1208" target="_blank" rel="noopener">hpa.gov.tw</a></li>
         <li>Kreider RB, et al. (2017). ISSN Position Stand: Safety and efficacy of creatine supplementation. <em>J Int Soc Sports Nutr.</em> <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5469049/" target="_blank" rel="noopener">連結</a></li>
         <li>Guest NS, et al. (2021). ISSN Position Stand: Caffeine and exercise performance. <em>J Int Soc Sports Nutr.</em> <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7777221/" target="_blank" rel="noopener">連結</a></li>
         <li>Trexler ET, et al. (2015). ISSN Position Stand: Beta-Alanine. <em>J Int Soc Sports Nutr.</em> <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4501114/" target="_blank" rel="noopener">連結</a></li>
         <li>Jackman SR, et al. (2017). Branched chain amino acid ingestion and muscle protein synthesis: myth or reality? <em>J Int Soc Sports Nutr.</em> <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5568273/" target="_blank" rel="noopener">連結</a></li>
         <li>Kerksick CM, et al. (2018). ISSN exercise & sports nutrition review update: research & recommendations（Category I/II/III 證據分級架構出處）。<em>J Int Soc Sports Nutr.</em> <a href="https://jissn.biomedcentral.com/articles/10.1186/s12970-018-0242-y" target="_blank" rel="noopener">連結</a></li>
-        <li>World Health Organization (2015). <em>Guideline: Sugars intake for adults and children.</em> 第 7 節游離糖建議之依據。<a href="https://www.who.int/publications/i/item/9789241549028" target="_blank" rel="noopener">who.int</a></li>
-        <li>U.S. Department of Health and Human Services & U.S. Department of Agriculture (2025–2030). <em>Dietary Guidelines for Americans.</em> 第 7 節原型食物／加工食品建議之依據。</li>
+        <li>World Health Organization (2015). <em>Guideline: Sugars intake for adults and children.</em> 第 6 節游離糖建議之依據。<a href="https://www.who.int/publications/i/item/9789241549028" target="_blank" rel="noopener">who.int</a></li>
+        <li>U.S. Department of Health and Human Services & U.S. Department of Agriculture (2025–2030). <em>Dietary Guidelines for Americans.</em> 第 6 節原型食物／加工食品建議之依據。</li>
         <li>台大公共衛生學院（2026）。手搖飲含糖量調查：85.6% 飲品總糖量超過標示、55.6%「無糖」飲品仍檢出糖分。轉引自 <a href="https://health.ettoday.net/news/3154312" target="_blank" rel="noopener">ETtoday 健康雲</a>。</li>
         <li>Kerksick CM, et al. (2017). ISSN Position Stand: Nutrient timing. <em>J Int Soc Sports Nutr.</em> 第 6b 節每日餐數分配之依據。<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5596471/" target="_blank" rel="noopener">連結</a></li>
         <li>Areta JL, et al. (2013). Timing and distribution of protein ingestion during prolonged recovery from resistance exercise alters myofibrillar protein synthesis. <em>J Physiol.</em> <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3650697/" target="_blank" rel="noopener">連結</a></li>
@@ -411,7 +402,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
     <!-- Glossary -->
     <section class="calc-section">
-      <p class="section-heading">10. 常見名詞解釋</p>
+      <p class="section-heading">9. 常見名詞解釋</p>
       <div class="glossary-grid">
         <div class="glossary-item"><b>BMR（基礎代謝率）</b>Basal Metabolic Rate — 身體在完全靜止、清醒狀態下維持生命所需的最低熱量。</div>
         <div class="glossary-item"><b>TDEE（每日總消耗熱量）</b>Total Daily Energy Expenditure — BMR 加上日常活動與運動消耗的熱量，等於「不增不減體重」所需的每日總熱量。</div>
@@ -824,7 +815,7 @@ function render() {
   const proteinGkg = parseFloat(document.getElementById('in-protein-gkg').value);
   const dietType = DIET_TYPES[dietKey];
   document.getElementById('diettype-hint').textContent =
-    `蛋白質採你選擇的 ${proteinGkg} g/kg 體重／天計算；其餘熱量依「${dietType.label}」的脂肪:碳水 = ${dietType.f}:${dietType.c} 比例分配，並依第 3 節的訓練排程逐日調整碳水。`;
+    `蛋白質採你選擇的 ${proteinGkg} g/kg 體重／天計算；其餘熱量依「${dietType.label}」的脂肪:碳水 = ${dietType.f}:${dietType.c} 比例分配，並依下方每天的訓練強度逐日調整碳水。`;
 
   const dayResults = ccPlan.map(dayType => computeDayMacros(weight, targetKcal, proteinGkg, dietKey, dietType, dayType));
   const avg = key => dayResults.reduce((s, d) => s + d[key], 0) / dayResults.length;
@@ -851,30 +842,9 @@ function render() {
 
 let ccPlan = DEFAULT_CC_PLAN.slice();
 
-/* Section 3 — the schedule picker itself. Built once; independent of any computed values. */
-function renderSchedule() {
-  const grid = document.getElementById('schedule-grid');
-  if (!grid) return;
-  grid.innerHTML = ccPlan.map((dayType, i) => `
-    <div class="stat-row">
-      <div class="stat-row-label"><div class="stat-row-title">週${DAYS[i]}</div></div>
-      <select class="schedule-select" data-day="${i}">
-        <option value="high" ${dayType === 'high' ? 'selected' : ''}>高強度</option>
-        <option value="low" ${dayType === 'low' ? 'selected' : ''}>低強度</option>
-        <option value="rest" ${dayType === 'rest' ? 'selected' : ''}>休息</option>
-      </select>
-    </div>
-  `).join('');
-
-  grid.querySelectorAll('select[data-day]').forEach(sel => {
-    sel.addEventListener('change', () => {
-      ccPlan[parseInt(sel.dataset.day, 10)] = sel.value;
-      render();
-    });
-  });
-}
-
-/* Section 5 — read-only 7-day macro breakdown reflecting the schedule above */
+/* Section 4 — merged: each row has a live training-intensity picker + that day's
+   resulting macros, rebuilt every render() call (select's 'selected' state is
+   re-derived from ccPlan each time, so it stays in sync without losing the user's choice) */
 function renderWeekGrid(dayResults) {
   const grid = document.getElementById('week-grid');
   if (!grid) return;
@@ -885,13 +855,27 @@ function renderWeekGrid(dayResults) {
     if (d.fatG < 20) lowFatDay = true;
     return `
       <tr>
-        <td>週${DAYS[i]}<br><span class="supp-sub">${SHORT_LABEL[dayType]}</span></td>
+        <td>週${DAYS[i]}</td>
+        <td>
+          <select class="schedule-select" data-day="${i}">
+            <option value="high" ${dayType === 'high' ? 'selected' : ''}>高強度</option>
+            <option value="low" ${dayType === 'low' ? 'selected' : ''}>低強度</option>
+            <option value="rest" ${dayType === 'rest' ? 'selected' : ''}>休息</option>
+          </select>
+        </td>
         <td>${round(d.proteinG)}g</td>
         <td>${round(d.carbG)}g</td>
         <td>${round(d.fatG)}g</td>
       </tr>
     `;
   }).join('');
+
+  grid.querySelectorAll('select[data-day]').forEach(sel => {
+    sel.addEventListener('change', () => {
+      ccPlan[parseInt(sel.dataset.day, 10)] = sel.value;
+      render();
+    });
+  });
 
   document.getElementById('cc-fat-warning').style.display = lowFatDay ? '' : 'none';
 }
@@ -911,7 +895,7 @@ function renderServings(proteinG, fatG, carbG, dayResults) {
       <div class="stat-row">
         <div class="stat-row-label">
           <div class="stat-row-title">${g.label}</div>
-          <div class="stat-row-sub">例如：${g.example}</div>
+          <div class="stat-row-sub">1 份 ≈ ${g.example}</div>
         </div>
         <div class="stat-row-num">${count} 份</div>
       </div>
@@ -975,7 +959,6 @@ document.getElementById('in-goal').addEventListener('input', () => {
 
 document.querySelectorAll('#acsm-list input[type=checkbox]').forEach(cb => cb.addEventListener('change', computeAcsmRisk));
 
-renderSchedule();
 render();
 computeAcsmRisk();
 </script>
