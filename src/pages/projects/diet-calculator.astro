@@ -80,6 +80,20 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             </select>
           </label>
           <label class="form-field">
+            <span>蛋白質攝取量 <em>Protein intake (g/kg/day)</em></span>
+            <select id="in-protein-gkg">
+              <option value="1.1">1.1 g/kg — 一般成人（台灣 DRIs RDA，無特別運動需求）</option>
+              <option value="1.2">1.2 g/kg — 70 歲以上高齡者（台灣 DRIs 建議）</option>
+              <option value="1.4">1.4 g/kg — 開始運動／輕度訓練族群（ISSN 下限）</option>
+              <option value="1.6" selected>1.6 g/kg — 規律阻力訓練、維持體態</option>
+              <option value="1.8">1.8 g/kg — 增肌訓練族群</option>
+              <option value="2.0">2.0 g/kg — 高強度訓練（ISSN 一般上限）</option>
+              <option value="2.3">2.3 g/kg — 減脂期保留肌肉量（ISSN 下限）</option>
+              <option value="2.4">2.4 g/kg — 減脂期保留肌肉量（中）</option>
+              <option value="3.1">3.1 g/kg — 積極減脂／高強度保留肌肉量（ISSN 上限）</option>
+            </select>
+          </label>
+          <label class="form-field">
             <span>飲食規劃類型 <em>Diet type</em></span>
             <select id="in-diettype">
               <option value="baseline">一般飲食（Baseline）</option>
@@ -122,36 +136,48 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     <!-- BMR/TDEE results -->
     <section class="calc-section">
       <p class="section-heading">3. BMR / TDEE 估算結果</p>
-      <div class="bento-grid calc-bento">
-        <div class="bento-card">
-          <div class="bento-card-label">BMR（Mifflin-St Jeor）</div>
-          <div class="bento-card-num" id="out-bmr-mifflin">—</div>
-          <div class="bento-card-sub">主要採用值，文獻實證最準確</div>
+      <div class="calc-bento stat-list">
+        <div class="stat-row">
+          <div class="stat-row-label">
+            <div class="stat-row-title">BMR（Mifflin-St Jeor）</div>
+            <div class="stat-row-sub">主要採用值，文獻實證最準確</div>
+          </div>
+          <div class="stat-row-num" id="out-bmr-mifflin">—</div>
         </div>
-        <div class="bento-card">
-          <div class="bento-card-label">BMR（Katch-McArdle）</div>
-          <div class="bento-card-num" id="out-bmr-katch">—</div>
-          <div class="bento-card-sub" id="katch-sub">需輸入體脂率</div>
+        <div class="stat-row">
+          <div class="stat-row-label">
+            <div class="stat-row-title">BMR（Katch-McArdle）</div>
+            <div class="stat-row-sub" id="katch-sub">需輸入體脂率</div>
+          </div>
+          <div class="stat-row-num" id="out-bmr-katch">—</div>
         </div>
-        <div class="bento-card">
-          <div class="bento-card-label">BMR（Harris-Benedict）</div>
-          <div class="bento-card-num" id="out-bmr-hb">—</div>
-          <div class="bento-card-sub">僅供參考，易高估</div>
+        <div class="stat-row">
+          <div class="stat-row-label">
+            <div class="stat-row-title">BMR（Harris-Benedict）</div>
+            <div class="stat-row-sub">僅供參考，易高估</div>
+          </div>
+          <div class="stat-row-num" id="out-bmr-hb">—</div>
         </div>
-        <div class="bento-card">
-          <div class="bento-card-label">TDEE（每日總消耗）</div>
-          <div class="bento-card-num" id="out-tdee">—</div>
-          <div class="bento-card-sub">BMR（Mifflin）× 活動量倍率</div>
+        <div class="stat-row">
+          <div class="stat-row-label">
+            <div class="stat-row-title">TDEE（每日總消耗）</div>
+            <div class="stat-row-sub">BMR（Mifflin）× 活動量倍率</div>
+          </div>
+          <div class="stat-row-num" id="out-tdee">—</div>
         </div>
-        <div class="bento-card">
-          <div class="bento-card-label">目標每日攝取熱量</div>
-          <div class="bento-card-num" id="out-target-kcal">—</div>
-          <div class="bento-card-sub" id="target-kcal-sub">—</div>
+        <div class="stat-row">
+          <div class="stat-row-label">
+            <div class="stat-row-title">目標每日攝取熱量</div>
+            <div class="stat-row-sub" id="target-kcal-sub">—</div>
+          </div>
+          <div class="stat-row-num" id="out-target-kcal">—</div>
         </div>
-        <div class="bento-card">
-          <div class="bento-card-label">預估達標天數</div>
-          <div class="bento-card-num" id="out-days">—</div>
-          <div class="bento-card-sub">以 7700 kcal ≈ 1kg 換算</div>
+        <div class="stat-row">
+          <div class="stat-row-label">
+            <div class="stat-row-title">預估達標天數</div>
+            <div class="stat-row-sub">以 7700 kcal ≈ 1kg 換算</div>
+          </div>
+          <div class="stat-row-num" id="out-days">—</div>
         </div>
       </div>
       <p class="calc-feasibility" id="feasibility-msg"></p>
@@ -163,21 +189,27 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       <p class="calc-section-desc">
         蛋白質採「體重 × 每公斤克數」計算（ISSN 2017 實證範圍），其餘熱量再依所選飲食類型的脂肪／碳水比例分配 — 比單純按總熱量固定 % 更貼近運動營養學實務。
       </p>
-      <div class="macro-grid" id="macro-grid">
-        <div class="macro-card" data-macro="protein">
-          <div class="macro-card-head"><span>蛋白質 Protein</span><span class="dri-badge" id="dri-protein">—</span></div>
-          <div class="macro-num" id="out-protein-g">— g</div>
-          <div class="macro-sub" id="out-protein-detail">—</div>
+      <div class="stat-list" id="macro-grid">
+        <div class="stat-row" data-macro="protein">
+          <div class="stat-row-label">
+            <div class="stat-row-title">蛋白質 Protein <span class="dri-badge" id="dri-protein">—</span></div>
+            <div class="stat-row-sub" id="out-protein-detail">—</div>
+          </div>
+          <div class="stat-row-num" id="out-protein-g">— g</div>
         </div>
-        <div class="macro-card" data-macro="fat">
-          <div class="macro-card-head"><span>脂肪 Fat</span><span class="dri-badge" id="dri-fat">—</span></div>
-          <div class="macro-num" id="out-fat-g">— g</div>
-          <div class="macro-sub" id="out-fat-detail">—</div>
+        <div class="stat-row" data-macro="fat">
+          <div class="stat-row-label">
+            <div class="stat-row-title">脂肪 Fat <span class="dri-badge" id="dri-fat">—</span></div>
+            <div class="stat-row-sub" id="out-fat-detail">—</div>
+          </div>
+          <div class="stat-row-num" id="out-fat-g">— g</div>
         </div>
-        <div class="macro-card" data-macro="carb">
-          <div class="macro-card-head"><span>碳水化合物 Carbohydrate</span><span class="dri-badge" id="dri-carb">—</span></div>
-          <div class="macro-num" id="out-carb-g">— g</div>
-          <div class="macro-sub" id="out-carb-detail">—</div>
+        <div class="stat-row" data-macro="carb">
+          <div class="stat-row-label">
+            <div class="stat-row-title">碳水化合物 Carbohydrate <span class="dri-badge" id="dri-carb">—</span></div>
+            <div class="stat-row-sub" id="out-carb-detail">—</div>
+          </div>
+          <div class="stat-row-num" id="out-carb-g">— g</div>
         </div>
       </div>
       <p class="dri-legend">✅ 符合 DRIs 建議範圍 &nbsp;&nbsp; ⚠️ 超出 DRIs 一般建議範圍（特殊飲食型態，建議諮詢營養師）</p>
@@ -207,6 +239,30 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       <p class="calc-changelog">
         本工具重新檢視並更新了原先 Excel 試算表中，部分取自計算機網站／部落格而非一手文獻的數值（如蛋白質與碳循環的每公斤攝取量），並修正了活動量倍率重複平均、飲食類型比例表不一致等問題。詳見 PR 說明。
       </p>
+    </section>
+
+    <!-- Glossary -->
+    <section class="calc-section">
+      <p class="section-heading">7. 常見名詞解釋</p>
+      <div class="glossary-grid">
+        <div class="glossary-item"><b>BMR（基礎代謝率）</b>Basal Metabolic Rate — 身體在完全靜止、清醒狀態下維持生命所需的最低熱量。</div>
+        <div class="glossary-item"><b>TDEE（每日總消耗熱量）</b>Total Daily Energy Expenditure — BMR 加上日常活動與運動消耗的熱量，等於「不增不減體重」所需的每日總熱量。</div>
+        <div class="glossary-item"><b>PAL（活動量倍率）</b>Physical Activity Level — 依生活型態估算的 BMR 乘數，用來從 BMR 推算 TDEE。</div>
+        <div class="glossary-item"><b>Mifflin-St Jeor 公式</b>1990 年提出，以體重、身高、年齡估算 BMR，文獻實證最準確，美國營養與飲食學會正式推薦。</div>
+        <div class="glossary-item"><b>Katch-McArdle 公式</b>以「除脂體重（LBM）」估算 BMR，體脂率越準確、估算越準，適合已知精確體脂率者。</div>
+        <div class="glossary-item"><b>Harris-Benedict 公式（修訂版）</b>1984 年修訂版，最早被廣泛使用的 BMR 公式之一，但對過重／肥胖者容易高估，本工具僅列為參考。</div>
+        <div class="glossary-item"><b>LBM（除脂體重）</b>Lean Body Mass — 體重扣除脂肪重量後的重量，包含肌肉、骨骼、器官與水分。</div>
+        <div class="glossary-item"><b>BMI（身體質量指數）</b>Body Mass Index = 體重(kg) ÷ 身高(m)²，常用體位篩檢指標，但無法區分肌肉與脂肪。</div>
+        <div class="glossary-item"><b>LDL（低密度脂蛋白膽固醇）</b>俗稱「壞膽固醇」，過高與心血管疾病風險上升有關。</div>
+        <div class="glossary-item"><b>HDL（高密度脂蛋白膽固醇）</b>俗稱「好膽固醇」，具保護心血管作用，數值越高越好。</div>
+        <div class="glossary-item"><b>AMDR（巨量營養素可接受範圍）</b>Acceptable Macronutrient Distribution Range — 官方建議的三大營養素熱量佔比範圍。</div>
+        <div class="glossary-item"><b>RDA／EAR</b>Recommended Dietary Allowance／Estimated Average Requirement（建議攝取量／平均需要量）— 官方營養素攝取建議的兩種標準。</div>
+        <div class="glossary-item"><b>DRIs（膳食營養素參考攝取量）</b>Dietary Reference Intakes — 台灣衛福部制定的整套營養素攝取建議標準，本工具的主要文獻依據。</div>
+        <div class="glossary-item"><b>ACSM（美國運動醫學會）</b>American College of Sports Medicine — 制定運動前健康篩檢與運動處方指引的權威機構。</div>
+        <div class="glossary-item"><b>ISSN（國際運動營養學會）</b>International Society of Sports Nutrition — 制定蛋白質與運動營養實證建議的專業學會。</div>
+        <div class="glossary-item"><b>碳循環（Carb Cycling）</b>依訓練強度每日調整碳水攝取量的飲食策略，訓練日碳水較高、休息日較低。</div>
+        <div class="glossary-item"><b>MHR（最大心跳率）</b>Maximum Heart Rate — 估算運動強度區間的基準心跳率，常用 220−年齡或 208−0.7×年齡估算。</div>
+      </div>
     </section>
 
   </div>
@@ -280,18 +336,31 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   .calc-feasibility.warn { color: #f5a623; }
   .calc-feasibility.bad { color: #e5484d; }
 
-  .macro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
-  .macro-card {
+  /* N×1 stat rows: label (+ optional badge) on the left, number pinned right with guaranteed room */
+  .stat-list { display: flex; flex-direction: column; gap: 0.7rem; }
+  .stat-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     border-radius: var(--radius-md);
-    padding: 1.1rem 1.3rem;
+    padding: 0.9rem 1.3rem;
     box-shadow: var(--card-shadow);
+    flex-wrap: wrap;
   }
-  .macro-card-head { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.5rem; }
-  .dri-badge { font-size: 0.85rem; }
-  .macro-num { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em; }
-  .macro-sub { font-size: 0.8rem; color: var(--color-text-muted); margin-top: 0.3rem; }
+  .stat-row-label { flex: 1 1 220px; min-width: 0; }
+  .stat-row-title { font-size: 0.88rem; font-weight: 700; }
+  .stat-row-sub { font-size: 0.8rem; color: var(--color-text-muted); margin-top: 0.2rem; }
+  .stat-row-num {
+    flex-shrink: 0;
+    font-size: clamp(1.2rem, 3vw, 1.7rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+  .dri-badge { font-size: 0.85rem; margin-left: 0.3rem; }
   .dri-legend { font-size: 0.78rem; color: var(--color-text-muted); margin-top: 0.8rem; }
 
   .carbcycle-grid {
@@ -316,6 +385,18 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   .ref-list a { color: var(--color-accent); }
   .calc-changelog { font-size: 0.8rem; color: var(--color-text-muted); margin-top: 1rem; padding: 0.8rem 1rem; background: var(--color-surface); border-radius: var(--radius-sm); }
 
+  .glossary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.9rem; }
+  .glossary-item {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 0.8rem 1rem;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+  .glossary-item b { display: block; color: var(--color-text); font-size: 0.86rem; margin-bottom: 0.2rem; }
+
   @media (max-width: 700px) {
     .carbcycle-grid { grid-template-columns: repeat(7, minmax(96px, 1fr)); }
   }
@@ -325,10 +406,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 /* ── Reference data (Taiwan DRI 8th ed. + ISSN 2017 + ACSM/AND/DC 2016) ── */
 const DRI = { protein: [10, 35], fat: [20, 30], carb: [50, 65] };
 
-const PROTEIN_GKG = {
-  bulk_high: 1.8, bulk_low: 1.8,
-  maintain: 1.6,
-  cut_low: 2.0, cut_high: 2.4,
+/* Goal → suggested protein g/kg default (must exactly match an <option value> below) */
+const PROTEIN_GKG_SUGGEST = {
+  bulk_high: '1.8', bulk_low: '1.8',
+  maintain: '1.6',
+  cut_low: '2.0', cut_high: '2.4',
 };
 
 const GOALS = {
@@ -477,10 +559,10 @@ function render() {
   }
 
   /* Macros */
-  const proteinGkg = PROTEIN_GKG[goalKey];
+  const proteinGkg = parseFloat(document.getElementById('in-protein-gkg').value);
   const dietType = DIET_TYPES[dietKey];
   document.getElementById('diettype-hint').textContent =
-    `蛋白質採 ISSN 建議 ${proteinGkg} g/kg 體重／天（依目標調整）；其餘熱量依「${dietType.label}」的脂肪:碳水 = ${dietType.f}:${dietType.c} 比例分配。`;
+    `蛋白質採你選擇的 ${proteinGkg} g/kg 體重／天計算；其餘熱量依「${dietType.label}」的脂肪:碳水 = ${dietType.f}:${dietType.c} 比例分配。`;
 
   const isCarbCycle = dietKey === 'carbcycle';
   document.getElementById('carbcycle-section').style.display = isCarbCycle ? '' : 'none';
@@ -565,8 +647,16 @@ function renderCarbCycle(weight, targetKcal, proteinGkg) {
   });
 }
 
-document.querySelectorAll('#in-sex, #in-age, #in-weight, #in-height, #in-bfr, #in-target, #in-pal, #in-goal, #in-diettype')
+document.querySelectorAll('#in-sex, #in-age, #in-weight, #in-height, #in-bfr, #in-target, #in-pal, #in-protein-gkg, #in-diettype')
   .forEach(el => el.addEventListener('input', render));
+
+/* Changing Goal auto-suggests a matching protein g/kg default (still overridable afterward) */
+document.getElementById('in-goal').addEventListener('input', () => {
+  const suggested = PROTEIN_GKG_SUGGEST[document.getElementById('in-goal').value];
+  if (suggested != null) document.getElementById('in-protein-gkg').value = suggested;
+  render();
+});
+
 document.querySelectorAll('#acsm-list input[type=checkbox]').forEach(cb => cb.addEventListener('change', computeAcsmRisk));
 
 render();
