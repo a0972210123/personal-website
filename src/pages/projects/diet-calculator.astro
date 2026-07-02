@@ -239,9 +239,123 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       <p class="calc-section-desc" id="servings-carb-delta" style="display:none"></p>
     </section>
 
+    <!-- Eating out + whole food guidance -->
+    <section class="calc-section">
+      <p class="section-heading">7. 外食技巧與原型食物</p>
+      <p class="calc-section-desc">
+        以下為業界／營養師的實務共識整理，並非一手文獻回顧（跟本頁其他章節的 DRIs/ISSN/ACSM 引用等級不同），僅供參考。內容為靜態整理，未依你選擇的飲食類型或目標動態調整。
+      </p>
+
+      <p class="calc-subheading">依場景挑選</p>
+      <div class="venue-grid">
+        <div class="venue-card">
+          <div class="venue-title">🏪 便利商店</div>
+          <p><b>優先：</b>舒肥雞胸、茶葉蛋、無糖豆漿、溫泉蛋沙拉、地瓜</p>
+          <p><b>少選：</b>含糖飲料、沙拉醬包、油炸品（奶油可頌、燒烤飯糰）</p>
+        </div>
+        <div class="venue-card">
+          <div class="venue-title">🍱 自助餐</div>
+          <p><b>優先：</b>清蒸／滷／涼拌（蒜泥白肉、清蒸鱈魚），2 份純蔬菜</p>
+          <p><b>少選：</b>糖醋排骨、勾芡類；飯減 1/3～1/2</p>
+        </div>
+        <div class="venue-card">
+          <div class="venue-title">🌃 夜市／小吃</div>
+          <p><b>優先：</b>鹽水雞（雞胸）、蒸玉米、蒸地瓜</p>
+          <p><b>少選：</b>大腸包小腸（澱粉＋高脂雙重疊加）、羹湯／勾芡</p>
+        </div>
+        <div class="venue-card">
+          <div class="venue-title">🍔 連鎖速食</div>
+          <p><b>優先：</b>嫩煎雞腿堡／烤雞沙拉；去雞皮（約 40% 熱量在皮）</p>
+          <p><b>少選：</b>薯條（換玉米湯／沙拉）、含糖汽水</p>
+        </div>
+        <div class="venue-card">
+          <div class="venue-title">🧋 手搖飲料</div>
+          <p>700ml 全糖珍奶≈60g 糖，已超過 WHO 每日游離糖建議上限。台大研究：市售「無糖」飲料 55.6% 仍檢出糖分。純茶不加料最安全。</p>
+        </div>
+        <div class="venue-card">
+          <div class="venue-title">🍱 辦公室便當</div>
+          <p><b>公式：</b>飯半碗～1 碗＋2–3 份蛋白質＋2–3 份蔬菜。烹調法排序：蒸／燙 &gt; 滷／烤 &gt; 煎／炒 &gt; 炸／糖醋。</p>
+        </div>
+      </div>
+
+      <p class="calc-subheading">原型食物與烹飪方式</p>
+      <p class="calc-section-desc">
+        原型食物指仍可辨識原始樣貌、少添加物的食物（相對於高鹽糖油的加工食品）。美國 2025–2030 飲食指南與 WHO 皆建議減少高度加工食品與添加糖攝取。
+      </p>
+      <p class="calc-section-desc">
+        <b>烹調法對熱量的影響（低到高）：</b>水煮／蒸／舒肥 → 少油快炒／烤箱 → 氣炸 → 油炸／勾芡／裹粉。氣炸並非等同水煮：澱粉類食物 &gt;130°C、蛋白質 &gt;150°C 高溫烹調可能產生丙烯醯胺／雜環胺，建議氣炸溫度控制在 160–180°C 以下。
+      </p>
+      <p class="calc-section-desc">
+        <b>備餐小技巧：</b>選 3 種蛋白質＋3 種碳水＋3 種油脂來源，一次批量烹煮、當週混搭，減少每日決策疲勞；冷藏建議 4 天內食用完畢，多餘份量冷凍保存。
+      </p>
+    </section>
+
+    <!-- Sports supplements -->
+    <section class="calc-section">
+      <p class="section-heading">8. 運動營養補充劑</p>
+      <p class="calc-section-desc">
+        依 ISSN（國際運動營養學會）的實證等級分類：<b>Category I</b> 證據充分支持；<b>Category II</b> 證據有限／不一致；<b>Category III</b> 證據不足或無效。補充劑無法取代足夠的整體飲食與訓練，僅為輔助工具。
+      </p>
+      <div class="supp-table-wrap">
+        <table class="supp-table">
+          <thead><tr><th>補充劑</th><th>ISSN 等級</th><th>有效劑量</th><th>誠實結論</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>蛋白質<br><span class="supp-sub">乳清／酪蛋白／植物性</span></td>
+              <td class="supp-tier tier-1">I</td>
+              <td>20–40g／次，每 3–4 小時一次</td>
+              <td>本工具蛋白質目標已依此設計；「合成代謝窗口」沒有想像中嚴格，整日總量與分次攝取比精準時機更重要。</td>
+            </tr>
+            <tr>
+              <td>肌酸 Creatine<br><span class="supp-sub">一水肌酸</span></td>
+              <td class="supp-tier tier-1">I</td>
+              <td>維持期 3–5g／天（免負荷法約 3–4 週見效）</td>
+              <td>目前最多研究支持的合法運動營養補充劑；健康人腎功能無害為實證共識，但已有腎臟疾病者仍應諮詢醫師。</td>
+            </tr>
+            <tr>
+              <td>咖啡因 Caffeine</td>
+              <td class="supp-tier tier-1">I</td>
+              <td>3–6 mg/kg，運動前約 60 分鐘</td>
+              <td>證據最紮實的增補劑之一，效果因個人耐受度差異大。</td>
+            </tr>
+            <tr>
+              <td>Beta-alanine</td>
+              <td class="supp-tier tier-1">I</td>
+              <td>4–6g／天，需連續補充 2–4 週才有效果</td>
+              <td>刺痛感是無害的副作用；非「即效型」，需要負荷期。</td>
+            </tr>
+            <tr>
+              <td>Citrulline malate</td>
+              <td class="supp-tier tier-2">II</td>
+              <td>6–8g，運動前 45–60 分鐘</td>
+              <td>有潛力但證據不如前述穩定，可視為選用而非核心。</td>
+            </tr>
+            <tr>
+              <td>BCAA<br><span class="supp-sub">支鏈胺基酸</span></td>
+              <td class="supp-tier tier-3">實務上近 III</td>
+              <td>—</td>
+              <td><b>誠實破除迷思：</b>當整日蛋白質總量已足夠時，額外補充 BCAA 幾乎沒有額外效果。</td>
+            </tr>
+            <tr>
+              <td>HMB</td>
+              <td class="supp-tier tier-2">II</td>
+              <td>3g／天，需連續 12 週以上</td>
+              <td>對未訓練者／高齡者較有效，對已規律訓練者效果薄弱。</td>
+            </tr>
+            <tr>
+              <td>EAA<br><span class="supp-sub">必需胺基酸</span></td>
+              <td class="supp-tier tier-1">同 Category I 蛋白質標準</td>
+              <td>1.5–6g 白胺酸強化配方</td>
+              <td>效果與全蛋白質相當；全食物／乳清蛋白通常更划算。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
     <!-- References -->
     <section class="calc-section">
-      <p class="section-heading">7. 參考文獻</p>
+      <p class="section-heading">9. 參考文獻</p>
       <ul class="ref-list">
         <li>衛生福利部國民健康署《國人膳食營養素參考攝取量》第八版 — 蛋白質、脂質、碳水化合物專章。<a href="https://www.hpa.gov.tw/Pages/Detail.aspx?nodeid=4248&pid=12285" target="_blank" rel="noopener">hpa.gov.tw</a></li>
         <li>Jäger R, et al. (2017). International Society of Sports Nutrition Position Stand: Protein and exercise. <em>J Int Soc Sports Nutr.</em> <a href="https://jissn.biomedcentral.com/articles/10.1186/s12970-017-0177-8" target="_blank" rel="noopener">連結</a></li>
@@ -250,6 +364,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         <li>American College of Sports Medicine (ACSM) 運動前健康篩檢建議。</li>
         <li>Targeted/Cyclical Ketogenic Diet（TKD/CKD）研究：訓練前後少量碳水攝取可緩解生酮飲食者的運動低血糖並提升表現，同時維持酮症狀態 — 生酮／極低醣飲食的訓練日碳水微調依此設計，而非直接套用一般 ACSM 訓練量框架。</li>
         <li>衛生福利部國民健康署《每日飲食指南》六大類食物代換系統 — 第 6 節食物份數建議的計算依據。<a href="https://www.hpa.gov.tw/Pages/EBook.aspx?nodeid=1208" target="_blank" rel="noopener">hpa.gov.tw</a></li>
+        <li>Kreider RB, et al. (2017). ISSN Position Stand: Safety and efficacy of creatine supplementation. <em>J Int Soc Sports Nutr.</em> <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5469049/" target="_blank" rel="noopener">連結</a></li>
+        <li>Guest NS, et al. (2021). ISSN Position Stand: Caffeine and exercise performance. <em>J Int Soc Sports Nutr.</em> <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7777221/" target="_blank" rel="noopener">連結</a></li>
+        <li>Trexler ET, et al. (2015). ISSN Position Stand: Beta-Alanine. <em>J Int Soc Sports Nutr.</em> <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4501114/" target="_blank" rel="noopener">連結</a></li>
+        <li>Jackman SR, et al. (2017). Branched chain amino acid ingestion and muscle protein synthesis: myth or reality? <em>J Int Soc Sports Nutr.</em> <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5568273/" target="_blank" rel="noopener">連結</a></li>
+        <li>Kerksick CM, et al. (2018). ISSN exercise & sports nutrition review update: research & recommendations（Category I/II/III 證據分級架構出處）。<em>J Int Soc Sports Nutr.</em> <a href="https://jissn.biomedcentral.com/articles/10.1186/s12970-018-0242-y" target="_blank" rel="noopener">連結</a></li>
+        <li>外食技巧、原型食物定義為業界／營養師實務共識整理，非一手文獻回顧，僅供參考。</li>
       </ul>
       <p class="calc-changelog">
         本工具重新檢視並更新了原先 Excel 試算表中，部分取自計算機網站／部落格而非一手文獻的數值（如蛋白質與碳循環的每公斤攝取量），並修正了活動量倍率重複平均、飲食類型比例表不一致等問題。訓練排程功能已由「碳循環飲食」單一選項，擴展為適用於所有飲食類型的每週碳水調整機制。詳見 PR 說明。
@@ -258,7 +378,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
     <!-- Glossary -->
     <section class="calc-section">
-      <p class="section-heading">8. 常見名詞解釋</p>
+      <p class="section-heading">10. 常見名詞解釋</p>
       <div class="glossary-grid">
         <div class="glossary-item"><b>BMR（基礎代謝率）</b>Basal Metabolic Rate — 身體在完全靜止、清醒狀態下維持生命所需的最低熱量。</div>
         <div class="glossary-item"><b>TDEE（每日總消耗熱量）</b>Total Daily Energy Expenditure — BMR 加上日常活動與運動消耗的熱量，等於「不增不減體重」所需的每日總熱量。</div>
@@ -417,6 +537,33 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     color: var(--color-text-muted);
   }
   .glossary-item b { display: block; color: var(--color-text); font-size: 0.86rem; margin-bottom: 0.2rem; }
+
+  .calc-subheading { font-size: 0.95rem; font-weight: 700; margin: 1.5rem 0 0.8rem; }
+  .venue-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.9rem; }
+  .venue-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.2rem;
+    box-shadow: var(--card-shadow);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+  .venue-card p { margin: 0.3rem 0 0; }
+  .venue-title { font-size: 0.92rem; font-weight: 700; color: var(--color-text); margin-bottom: 0.3rem; }
+
+  .supp-table-wrap { overflow-x: auto; }
+  .supp-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 640px; }
+  .supp-table th, .supp-table td { text-align: left; padding: 0.7rem 0.8rem; border-bottom: 1px solid var(--color-border); vertical-align: top; }
+  .supp-table th { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-muted); }
+  .supp-table td { color: var(--color-text-muted); line-height: 1.6; }
+  .supp-table td:first-child { color: var(--color-text); font-weight: 600; }
+  .supp-sub { font-size: 0.74rem; color: var(--color-text-muted); font-weight: 400; }
+  .supp-tier { font-weight: 700; white-space: nowrap; }
+  .tier-1 { color: #2fbf71; }
+  .tier-2 { color: #f5a623; }
+  .tier-3 { color: #e5484d; }
 
   @media (max-width: 700px) {
     .week-grid { grid-template-columns: repeat(7, minmax(96px, 1fr)); }
