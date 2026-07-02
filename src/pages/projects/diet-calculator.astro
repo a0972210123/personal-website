@@ -1,0 +1,574 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="體態管理計算機 — Matt Ye"
+  description="以台灣國人膳食營養素參考攝取量（DRIs）第八版與國際運動營養學會（ISSN）、ACSM 文獻為基礎的 BMR / TDEE / 巨量營養素與碳循環計算工具。純前端計算，資料不上傳、不儲存。"
+>
+  <div class="container-wide calc-page">
+
+    <!-- Hero -->
+    <section class="calc-hero">
+      <h1>體態管理 <span class="accent-text">計算機</span></h1>
+      <p class="calc-subtitle">
+        依據台灣「國人膳食營養素參考攝取量」第八版（DRIs）與國際運動營養學會（ISSN）、美國運動醫學會（ACSM）等文獻，估算你的 BMR、TDEE、每日巨量營養素目標，並規劃碳循環週菜單。
+      </p>
+      <p class="calc-privacy">🔒 所有計算都在你的瀏覽器內完成，資料不會上傳或儲存到任何伺服器。</p>
+    </section>
+
+    <!-- Disclaimer -->
+    <section class="calc-disclaimer">
+      <p><strong>⚠️ 重要提醒：</strong>本工具僅供健康成人的自我管理參考，並非醫療建議，不能取代醫師或營養師的專業判斷。</p>
+      <ul>
+        <li>孕婦、哺乳婦：每日醣類攝取不建議低於 175 公克，請勿自行嘗試低碳/碳循環飲食。</li>
+        <li>糖尿病或血糖異常者：碳循環的每日醣類變化幅度大，可能造成血糖波動，請先諮詢醫師。</li>
+        <li>有飲食失調（厭食、暴食）病史者：不建議在無專業協助下使用熱量赤字或碳循環策略。</li>
+        <li>本工具的 ACSM 風險評估為中高風險者，建議先諮詢醫師再開始運動計畫或大幅熱量調整。</li>
+      </ul>
+    </section>
+
+    <!-- Input form -->
+    <section class="calc-section">
+      <p class="section-heading">1. 輸入基本資料</p>
+      <div class="calc-form-card">
+        <div class="form-grid">
+          <label class="form-field">
+            <span>生理性別 <em>Sex</em></span>
+            <select id="in-sex">
+              <option value="male">男性 Male</option>
+              <option value="female">女性 Female</option>
+            </select>
+          </label>
+          <label class="form-field">
+            <span>年齡 <em>Age (years)</em></span>
+            <input type="number" id="in-age" value="30" min="15" max="100" step="1" />
+          </label>
+          <label class="form-field">
+            <span>體重 <em>Weight (kg)</em></span>
+            <input type="number" id="in-weight" value="70" min="30" max="250" step="0.1" />
+          </label>
+          <label class="form-field">
+            <span>身高 <em>Height (cm)</em></span>
+            <input type="number" id="in-height" value="170" min="120" max="220" step="0.1" />
+          </label>
+          <label class="form-field">
+            <span>體脂率（選填）<em>Body fat % (optional)</em></span>
+            <input type="number" id="in-bfr" placeholder="e.g. 25" min="3" max="70" step="0.1" />
+          </label>
+          <label class="form-field">
+            <span>目標體重 <em>Target weight (kg)</em></span>
+            <input type="number" id="in-target" value="65" min="30" max="250" step="0.1" />
+          </label>
+          <label class="form-field">
+            <span>活動量 <em>Activity level</em></span>
+            <select id="in-pal">
+              <option value="1.2">久坐（幾乎不運動）Sedentary</option>
+              <option value="1.375">輕度活動（每週運動 1–3 次）Light</option>
+              <option value="1.55" selected>中度活動（每週運動 3–5 次）Moderate</option>
+              <option value="1.725">高度活動（每週運動 6–7 次）Active</option>
+              <option value="1.9">極高強度（勞力工作／每日訓練）Athlete</option>
+            </select>
+          </label>
+          <label class="form-field">
+            <span>目標 <em>Goal</em></span>
+            <select id="in-goal">
+              <option value="bulk_high">增肌增重（TDEE +20% 或 +500kcal）</option>
+              <option value="bulk_low">增肌增重（TDEE +10% 或 +200kcal）</option>
+              <option value="maintain" selected>維持體態（100% TDEE）</option>
+              <option value="cut_low">減脂減重（TDEE -10% 或 -200kcal）</option>
+              <option value="cut_high">減脂減重（TDEE -20% 或 -500kcal）</option>
+            </select>
+          </label>
+          <label class="form-field">
+            <span>飲食規劃類型 <em>Diet type</em></span>
+            <select id="in-diettype">
+              <option value="baseline">一般飲食（Baseline）</option>
+              <option value="balanced">均衡飲食</option>
+              <option value="dash">得舒飲食 DASH Diet</option>
+              <option value="zone">區域飲食 Zone Diet</option>
+              <option value="modlowcarb" selected>中度低醣飲食</option>
+              <option value="lowcarb">低醣飲食</option>
+              <option value="verylowcarb">極低醣</option>
+              <option value="verylowcarbketo">極低醣＋生酮</option>
+              <option value="keto">生酮飲食 Keto Diet</option>
+              <option value="highcarb">高碳飲食</option>
+              <option value="carbcycle">碳循環飲食（Carb Cycling）</option>
+            </select>
+          </label>
+        </div>
+        <p class="form-hint" id="diettype-hint"></p>
+      </div>
+    </section>
+
+    <!-- ACSM risk screening -->
+    <section class="calc-section">
+      <p class="section-heading">2. ACSM 運動健康風險評估</p>
+      <p class="calc-section-desc">美國運動醫學會（ACSM）建議開始運動計畫前的自我篩檢，勾選符合你狀況的項目。</p>
+      <div class="acsm-list" id="acsm-list">
+        <label class="acsm-item"><input type="checkbox" data-acsm="1" /> 年齡：男性 ≥ 45 歲 / 女性 ≥ 55 歲</label>
+        <label class="acsm-item"><input type="checkbox" data-acsm="1" /> 家族史：父親 55 歲前或母親 65 歲前出現心臟、肝臟或代謝疾病</label>
+        <label class="acsm-item"><input type="checkbox" data-acsm="1" /> 吸菸：有吸菸習慣或戒菸未滿六個月，或長期暴露於二手菸</label>
+        <label class="acsm-item"><input type="checkbox" data-acsm="1" /> 近三個月內，未參與每週至少三天的中等強度運動</label>
+        <label class="acsm-item"><input type="checkbox" data-acsm="1" /> 肥胖：BMI ≥ 30，或男性腰圍 ≥ 102cm／女性腰圍 ≥ 88cm</label>
+        <label class="acsm-item"><input type="checkbox" data-acsm="1" /> 高血壓：收縮壓 ≥ 140 mmHg 或舒張壓 ≥ 90 mmHg，或正在服用降血壓藥物</label>
+        <label class="acsm-item"><input type="checkbox" data-acsm="1" /> 血脂異常：LDL ≥ 130、總膽固醇 ≥ 200 mg/dL，或正在服用降血脂藥物</label>
+        <label class="acsm-item"><input type="checkbox" data-acsm="1" /> 糖尿病前期：空腹血糖 ≥ 100 mg/dL</label>
+        <label class="acsm-item"><input type="checkbox" data-acsm="-1" /> HDL（高密度膽固醇）大於 60 mg/dL（保護因子，可抵銷 1 項風險）</label>
+        <label class="acsm-item"><input type="checkbox" data-acsm="1" /> 本人已確診心臟、肝臟或肺部疾病</label>
+      </div>
+      <div class="acsm-result" id="acsm-result">請勾選以上項目查看風險評估結果</div>
+    </section>
+
+    <!-- BMR/TDEE results -->
+    <section class="calc-section">
+      <p class="section-heading">3. BMR / TDEE 估算結果</p>
+      <div class="bento-grid calc-bento">
+        <div class="bento-card">
+          <div class="bento-card-label">BMR（Mifflin-St Jeor）</div>
+          <div class="bento-card-num" id="out-bmr-mifflin">—</div>
+          <div class="bento-card-sub">主要採用值，文獻實證最準確</div>
+        </div>
+        <div class="bento-card">
+          <div class="bento-card-label">BMR（Katch-McArdle）</div>
+          <div class="bento-card-num" id="out-bmr-katch">—</div>
+          <div class="bento-card-sub" id="katch-sub">需輸入體脂率</div>
+        </div>
+        <div class="bento-card">
+          <div class="bento-card-label">BMR（Harris-Benedict）</div>
+          <div class="bento-card-num" id="out-bmr-hb">—</div>
+          <div class="bento-card-sub">僅供參考，易高估</div>
+        </div>
+        <div class="bento-card">
+          <div class="bento-card-label">TDEE（每日總消耗）</div>
+          <div class="bento-card-num" id="out-tdee">—</div>
+          <div class="bento-card-sub">BMR（Mifflin）× 活動量倍率</div>
+        </div>
+        <div class="bento-card">
+          <div class="bento-card-label">目標每日攝取熱量</div>
+          <div class="bento-card-num" id="out-target-kcal">—</div>
+          <div class="bento-card-sub" id="target-kcal-sub">—</div>
+        </div>
+        <div class="bento-card">
+          <div class="bento-card-label">預估達標天數</div>
+          <div class="bento-card-num" id="out-days">—</div>
+          <div class="bento-card-sub">以 7700 kcal ≈ 1kg 換算</div>
+        </div>
+      </div>
+      <p class="calc-feasibility" id="feasibility-msg"></p>
+    </section>
+
+    <!-- Macro targets -->
+    <section class="calc-section">
+      <p class="section-heading">4. 每日巨量營養素目標</p>
+      <p class="calc-section-desc">
+        蛋白質採「體重 × 每公斤克數」計算（ISSN 2017 實證範圍），其餘熱量再依所選飲食類型的脂肪／碳水比例分配 — 比單純按總熱量固定 % 更貼近運動營養學實務。
+      </p>
+      <div class="macro-grid" id="macro-grid">
+        <div class="macro-card" data-macro="protein">
+          <div class="macro-card-head"><span>蛋白質 Protein</span><span class="dri-badge" id="dri-protein">—</span></div>
+          <div class="macro-num" id="out-protein-g">— g</div>
+          <div class="macro-sub" id="out-protein-detail">—</div>
+        </div>
+        <div class="macro-card" data-macro="fat">
+          <div class="macro-card-head"><span>脂肪 Fat</span><span class="dri-badge" id="dri-fat">—</span></div>
+          <div class="macro-num" id="out-fat-g">— g</div>
+          <div class="macro-sub" id="out-fat-detail">—</div>
+        </div>
+        <div class="macro-card" data-macro="carb">
+          <div class="macro-card-head"><span>碳水化合物 Carbohydrate</span><span class="dri-badge" id="dri-carb">—</span></div>
+          <div class="macro-num" id="out-carb-g">— g</div>
+          <div class="macro-sub" id="out-carb-detail">—</div>
+        </div>
+      </div>
+      <p class="dri-legend">✅ 符合 DRIs 建議範圍 &nbsp;&nbsp; ⚠️ 超出 DRIs 一般建議範圍（特殊飲食型態，建議諮詢營養師）</p>
+    </section>
+
+    <!-- Carb cycling weekly plan -->
+    <section class="calc-section" id="carbcycle-section" style="display:none">
+      <p class="section-heading">5. 碳循環週計畫</p>
+      <p class="calc-section-desc">
+        蛋白質維持每日固定量；碳水依訓練強度調整（依 ACSM/AND/Dietitians of Canada 2016 聯合聲明架構，並依一般健身族群調整，非耐力運動員數值）；脂肪為當日剩餘熱量的彈性項。點擊切換每天的訓練強度。
+      </p>
+      <div class="carbcycle-grid" id="carbcycle-grid"></div>
+      <p class="calc-feasibility warn" id="cc-fat-warning" style="display:none">⚠️ 在目前的熱量赤字與碳水設定下，部分日子的脂肪額度會被壓到很低（可能低於必需脂肪酸建議量）。可考慮放寬熱量赤字，或降低該日的碳水 g/kg 目標。</p>
+    </section>
+
+    <!-- References -->
+    <section class="calc-section">
+      <p class="section-heading">6. 參考文獻</p>
+      <ul class="ref-list">
+        <li>衛生福利部國民健康署《國人膳食營養素參考攝取量》第八版 — 蛋白質、脂質、碳水化合物專章。<a href="https://www.hpa.gov.tw/Pages/Detail.aspx?nodeid=4248&pid=12285" target="_blank" rel="noopener">hpa.gov.tw</a></li>
+        <li>Jäger R, et al. (2017). International Society of Sports Nutrition Position Stand: Protein and exercise. <em>J Int Soc Sports Nutr.</em> <a href="https://jissn.biomedcentral.com/articles/10.1186/s12970-017-0177-8" target="_blank" rel="noopener">連結</a></li>
+        <li>Thomas DT, Erdman KA, Burke LM (2016). ACSM/Academy of Nutrition and Dietetics/Dietitians of Canada Joint Position Statement: Nutrition and Athletic Performance. <em>Med Sci Sports Exerc.</em></li>
+        <li>Frankenfield D, Roth-Yousey L, Compher C (2005). Comparison of predictive equations for resting metabolic rate. <em>J Am Diet Assoc.</em></li>
+        <li>American College of Sports Medicine (ACSM) 運動前健康篩檢建議。</li>
+        <li>衛生福利部國民健康署《每日飲食指南》六大類食物代換系統（Phase 2 採買建議將採用）。</li>
+      </ul>
+      <p class="calc-changelog">
+        本工具重新檢視並更新了原先 Excel 試算表中，部分取自計算機網站／部落格而非一手文獻的數值（如蛋白質與碳循環的每公斤攝取量），並修正了活動量倍率重複平均、飲食類型比例表不一致等問題。詳見 PR 說明。
+      </p>
+    </section>
+
+  </div>
+</BaseLayout>
+
+<style>
+  .calc-hero { margin-bottom: var(--spacing-md); }
+  .calc-hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.6rem); margin-bottom: 0.6rem; }
+  .calc-subtitle { color: var(--color-text-muted); font-size: 1rem; line-height: 1.7; max-width: 720px; }
+  .calc-privacy { font-size: 0.85rem; color: var(--color-accent); margin-top: 0.6rem; }
+
+  .calc-disclaimer {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-left: 4px solid #e5484d;
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    margin-bottom: var(--spacing-lg);
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+  .calc-disclaimer ul { margin: 0.5rem 0 0; padding-left: 1.2rem; color: var(--color-text-muted); }
+  .calc-disclaimer li { margin-bottom: 0.3rem; }
+
+  .calc-section { margin-bottom: var(--spacing-xl); }
+  .calc-section-desc { color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem; }
+
+  .calc-form-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    box-shadow: var(--card-shadow);
+  }
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+  .form-field { display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.85rem; font-weight: 600; }
+  .form-field em { font-weight: 400; font-style: normal; color: var(--color-text-muted); font-size: 0.78rem; }
+  .form-field input, .form-field select {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+    padding: 0.55rem 0.7rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.92rem;
+    font-family: var(--font-sans);
+  }
+  .form-field input:focus, .form-field select:focus { border-color: var(--color-accent); outline: none; }
+  .form-hint { margin-top: 1rem; font-size: 0.82rem; color: var(--color-text-muted); }
+
+  .acsm-list { display: flex; flex-direction: column; gap: 0.55rem; margin-bottom: 1rem; }
+  .acsm-item { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.88rem; line-height: 1.5; cursor: pointer; }
+  .acsm-item input { margin-top: 0.2rem; flex-shrink: 0; }
+  .acsm-result {
+    background: var(--color-surface);
+    border-radius: var(--radius-sm);
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  .acsm-result.risk-low { color: #2fbf71; }
+  .acsm-result.risk-mid { color: #f5a623; }
+  .acsm-result.risk-high { color: #e5484d; }
+
+  .calc-bento { margin-bottom: 0.5rem; }
+  .calc-feasibility { font-size: 0.88rem; font-weight: 600; margin-top: 0.5rem; }
+  .calc-feasibility.ok { color: #2fbf71; }
+  .calc-feasibility.warn { color: #f5a623; }
+  .calc-feasibility.bad { color: #e5484d; }
+
+  .macro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+  .macro-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-md);
+    padding: 1.1rem 1.3rem;
+    box-shadow: var(--card-shadow);
+  }
+  .macro-card-head { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .dri-badge { font-size: 0.85rem; }
+  .macro-num { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em; }
+  .macro-sub { font-size: 0.8rem; color: var(--color-text-muted); margin-top: 0.3rem; }
+  .dri-legend { font-size: 0.78rem; color: var(--color-text-muted); margin-top: 0.8rem; }
+
+  .carbcycle-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(110px, 1fr));
+    gap: 0.6rem;
+    overflow-x: auto;
+  }
+  .cc-day {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-sm);
+    padding: 0.7rem 0.6rem;
+    text-align: center;
+  }
+  .cc-day-label { font-size: 0.78rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .cc-day select { width: 100%; font-size: 0.78rem; padding: 0.3rem; border-radius: 6px; border: 1px solid var(--color-border); background: var(--color-bg); color: var(--color-text); margin-bottom: 0.5rem; }
+  .cc-day-macro { font-size: 0.74rem; color: var(--color-text-muted); line-height: 1.5; }
+  .cc-day-macro b { color: var(--color-text); }
+
+  .ref-list { font-size: 0.85rem; line-height: 1.8; color: var(--color-text-muted); padding-left: 1.2rem; }
+  .ref-list a { color: var(--color-accent); }
+  .calc-changelog { font-size: 0.8rem; color: var(--color-text-muted); margin-top: 1rem; padding: 0.8rem 1rem; background: var(--color-surface); border-radius: var(--radius-sm); }
+
+  @media (max-width: 700px) {
+    .carbcycle-grid { grid-template-columns: repeat(7, minmax(96px, 1fr)); }
+  }
+</style>
+
+<script>
+/* ── Reference data (Taiwan DRI 8th ed. + ISSN 2017 + ACSM/AND/DC 2016) ── */
+const DRI = { protein: [10, 35], fat: [20, 30], carb: [50, 65] };
+
+const PROTEIN_GKG = {
+  bulk_high: 1.8, bulk_low: 1.8,
+  maintain: 1.6,
+  cut_low: 2.0, cut_high: 2.4,
+};
+
+const GOALS = {
+  bulk_high: { pct: 1.2, kcal: 500, label: '+20% TDEE 或 +500kcal（取平均）' },
+  bulk_low: { pct: 1.1, kcal: 200, label: '+10% TDEE 或 +200kcal（取平均）' },
+  maintain: { pct: 1.0, kcal: 0, label: '100% TDEE' },
+  cut_low: { pct: 0.9, kcal: -200, label: '-10% TDEE 或 -200kcal（取平均）' },
+  cut_high: { pct: 0.8, kcal: -500, label: '-20% TDEE 或 -500kcal（取平均）' },
+};
+
+const DIET_TYPES = {
+  baseline: { label: '一般飲食（Baseline）', f: 30, c: 55 },
+  balanced: { label: '均衡飲食', f: 25, c: 55 },
+  dash: { label: '得舒飲食 DASH Diet', f: 27, c: 55 },
+  zone: { label: '區域飲食 Zone Diet', f: 30, c: 40 },
+  modlowcarb: { label: '中度低醣飲食', f: 35, c: 40 },
+  lowcarb: { label: '低醣飲食', f: 40, c: 20 },
+  verylowcarb: { label: '極低醣', f: 45, c: 10 },
+  verylowcarbketo: { label: '極低醣＋生酮', f: 45, c: 5 },
+  keto: { label: '生酮飲食 Keto Diet', f: 70, c: 10 },
+  highcarb: { label: '高碳飲食', f: 15, c: 60 },
+  carbcycle: { label: '碳循環飲食（Carb Cycling）', f: 35, c: 40 },
+};
+
+/* Carb-cycling day-type g/kg — adapted from ACSM/AND/DC 2016 (Thomas et al.) framework
+   for general recreational/resistance-trained population (not endurance-athlete figures) */
+const CARBCYCLE_GKG = {
+  high: { label: '高強度訓練日', gkg: 4.5 },
+  low: { label: '低強度訓練日', gkg: 3.5 },
+  rest: { label: '休息日', gkg: 2.5 },
+};
+
+const DAYS = ['一', '二', '三', '四', '五', '六', '日'];
+const DEFAULT_CC_PLAN = ['high', 'low', 'low', 'rest', 'high', 'low', 'rest'];
+
+/* ── BMR formulas ── */
+function bmrMifflin(w, h, age, sex) {
+  return sex === 'male' ? 10 * w + 6.25 * h - 5 * age + 5 : 10 * w + 6.25 * h - 5 * age - 161;
+}
+function bmrHarrisBenedict(w, h, age, sex) {
+  return sex === 'male'
+    ? 13.397 * w + 4.799 * h - 5.677 * age + 88.362
+    : 9.247 * w + 3.098 * h - 4.33 * age + 447.593;
+}
+function estimateLBM(w, h, sex) {
+  return sex === 'male' ? 0.407 * w + 0.267 * h - 19.2 : 0.252 * w + 0.473 * h - 48.3;
+}
+function bmrKatch(lbm) { return 370 + 21.6 * lbm; }
+
+function round(n) { return Math.round(n); }
+function fmt(n) { return isFinite(n) ? round(n).toLocaleString('en-US') : '—'; }
+
+function driBadge(pct, range) {
+  const within = pct >= range[0] - 0.5 && pct <= range[1] + 0.5;
+  return within ? '✅' : '⚠️';
+}
+
+/* ── Macro calculation: protein-first (g/kg), then fat/carb split remaining calories ── */
+function computeMacros(weightKg, targetKcal, proteinGkg, dietType) {
+  const proteinG = weightKg * proteinGkg;
+  const proteinKcal = proteinG * 4;
+  const remainKcal = Math.max(targetKcal - proteinKcal, 0);
+  const ratioSum = dietType.f + dietType.c;
+  const fatKcal = remainKcal * (dietType.f / ratioSum);
+  const carbKcal = remainKcal * (dietType.c / ratioSum);
+  return {
+    protein: { g: proteinG, kcal: proteinKcal, pct: (proteinKcal / targetKcal) * 100 },
+    fat: { g: fatKcal / 9, kcal: fatKcal, pct: (fatKcal / targetKcal) * 100 },
+    carb: { g: carbKcal / 4, kcal: carbKcal, pct: (carbKcal / targetKcal) * 100 },
+  };
+}
+
+/* ── ACSM risk screening ── */
+function computeAcsmRisk() {
+  let score = 0;
+  document.querySelectorAll('#acsm-list input[type=checkbox]').forEach(cb => {
+    if (cb.checked) score += parseInt(cb.dataset.acsm, 10);
+  });
+  const el = document.getElementById('acsm-result');
+  el.classList.remove('risk-low', 'risk-mid', 'risk-high');
+  if (score <= 0) {
+    el.classList.add('risk-low');
+    el.textContent = `低風險（分數 ${score}）：無明顯風險因子或少於 2 項，一般可安全開始中低強度運動。`;
+  } else if (score <= 2) {
+    el.classList.add('risk-mid');
+    el.textContent = `中風險（分數 ${score}）：建議在開始較高強度運動或大幅熱量赤字計畫前，先諮詢醫師。`;
+  } else {
+    el.classList.add('risk-high');
+    el.textContent = `高風險（分數 ${score}）：建議先諮詢醫師評估後，再開始運動計畫或調整飲食熱量。`;
+  }
+}
+
+/* ── Main render ── */
+function render() {
+  const sex = document.getElementById('in-sex').value;
+  const age = parseFloat(document.getElementById('in-age').value) || 0;
+  const weight = parseFloat(document.getElementById('in-weight').value) || 0;
+  const height = parseFloat(document.getElementById('in-height').value) || 0;
+  const bfr = parseFloat(document.getElementById('in-bfr').value);
+  const target = parseFloat(document.getElementById('in-target').value) || weight;
+  const pal = parseFloat(document.getElementById('in-pal').value) || 1.55;
+  const goalKey = document.getElementById('in-goal').value;
+  const dietKey = document.getElementById('in-diettype').value;
+
+  if (!weight || !height || !age) return;
+
+  const mifflin = bmrMifflin(weight, height, age, sex);
+  const hb = bmrHarrisBenedict(weight, height, age, sex);
+  document.getElementById('out-bmr-mifflin').textContent = fmt(mifflin) + ' kcal';
+  document.getElementById('out-bmr-hb').textContent = fmt(hb) + ' kcal';
+
+  if (bfr && bfr > 0) {
+    const lbm = weight * (100 - bfr) / 100;
+    document.getElementById('out-bmr-katch').textContent = fmt(bmrKatch(lbm)) + ' kcal';
+    document.getElementById('katch-sub').textContent = `以體脂率換算除脂體重 ${lbm.toFixed(1)} kg`;
+  } else {
+    const lbmEst = estimateLBM(weight, height, sex);
+    document.getElementById('out-bmr-katch').textContent = fmt(bmrKatch(lbmEst)) + ' kcal';
+    document.getElementById('katch-sub').textContent = '未輸入體脂率，以身高體重估算除脂體重';
+  }
+
+  const tdee = mifflin * pal;
+  document.getElementById('out-tdee').textContent = fmt(tdee) + ' kcal';
+
+  const goal = GOALS[goalKey];
+  const byPct = tdee * goal.pct;
+  const byKcal = tdee + goal.kcal;
+  const targetKcal = (byPct + byKcal) / 2;
+  document.getElementById('out-target-kcal').textContent = fmt(targetKcal) + ' kcal';
+  document.getElementById('target-kcal-sub').textContent = goal.label;
+
+  const deficit = targetKcal - tdee;
+  const daysToGoal = deficit !== 0 ? Math.round((Math.abs(target - weight) * 7700) / Math.abs(deficit)) : Infinity;
+  document.getElementById('out-days').textContent = isFinite(daysToGoal) ? daysToGoal + ' 天' : '—';
+
+  const feasEl = document.getElementById('feasibility-msg');
+  if (targetKcal < mifflin) {
+    feasEl.className = 'calc-feasibility bad';
+    feasEl.textContent = '⚠️ 目標攝取熱量低於估算 BMR，長期執行可能影響代謝與健康，建議放寬熱量赤字。';
+  } else if (Math.abs(deficit) > 550) {
+    feasEl.className = 'calc-feasibility warn';
+    feasEl.textContent = '可行，但熱量調整幅度較大，建議循序漸進並留意疲勞與恢復狀況。';
+  } else {
+    feasEl.className = 'calc-feasibility ok';
+    feasEl.textContent = '✅ 可行，落在一般建議的溫和熱量調整範圍內。';
+  }
+
+  /* Macros */
+  const proteinGkg = PROTEIN_GKG[goalKey];
+  const dietType = DIET_TYPES[dietKey];
+  document.getElementById('diettype-hint').textContent =
+    `蛋白質採 ISSN 建議 ${proteinGkg} g/kg 體重／天（依目標調整）；其餘熱量依「${dietType.label}」的脂肪:碳水 = ${dietType.f}:${dietType.c} 比例分配。`;
+
+  const isCarbCycle = dietKey === 'carbcycle';
+  document.getElementById('carbcycle-section').style.display = isCarbCycle ? '' : 'none';
+
+  if (!isCarbCycle) {
+    const m = computeMacros(weight, targetKcal, proteinGkg, dietType);
+    document.getElementById('out-protein-g').textContent = round(m.protein.g) + ' g';
+    document.getElementById('out-protein-detail').textContent = `${round(m.protein.kcal)} kcal · ${m.protein.pct.toFixed(0)}% · ${proteinGkg} g/kg`;
+    document.getElementById('dri-protein').textContent = driBadge(m.protein.pct, DRI.protein);
+
+    document.getElementById('out-fat-g').textContent = round(m.fat.g) + ' g';
+    document.getElementById('out-fat-detail').textContent = `${round(m.fat.kcal)} kcal · ${m.fat.pct.toFixed(0)}%`;
+    document.getElementById('dri-fat').textContent = driBadge(m.fat.pct, DRI.fat);
+
+    document.getElementById('out-carb-g').textContent = round(m.carb.g) + ' g';
+    document.getElementById('out-carb-detail').textContent = `${round(m.carb.kcal)} kcal · ${m.carb.pct.toFixed(0)}%`;
+    document.getElementById('dri-carb').textContent = driBadge(m.carb.pct, DRI.carb);
+  } else {
+    renderCarbCycle(weight, targetKcal, proteinGkg);
+    /* show weekly-average macros in the summary cards */
+    const avgCarbGkg = ccPlan.reduce((s, d) => s + CARBCYCLE_GKG[d].gkg, 0) / ccPlan.length;
+    const proteinG = weight * proteinGkg;
+    const proteinKcal = proteinG * 4;
+    const carbG = weight * avgCarbGkg;
+    const carbKcal = carbG * 4;
+    const fatKcal = Math.max(targetKcal - proteinKcal - carbKcal, 0);
+    const fatG = fatKcal / 9;
+
+    document.getElementById('out-protein-g').textContent = round(proteinG) + ' g';
+    document.getElementById('out-protein-detail').textContent = `${round(proteinKcal)} kcal · ${((proteinKcal/targetKcal)*100).toFixed(0)}% · 每日固定`;
+    document.getElementById('dri-protein').textContent = driBadge((proteinKcal/targetKcal)*100, DRI.protein);
+
+    document.getElementById('out-carb-g').textContent = round(carbG) + ' g（週平均）';
+    document.getElementById('out-carb-detail').textContent = `${round(carbKcal)} kcal · ${((carbKcal/targetKcal)*100).toFixed(0)}%（依訓練日不同）`;
+    document.getElementById('dri-carb').textContent = driBadge((carbKcal/targetKcal)*100, DRI.carb);
+
+    document.getElementById('out-fat-g').textContent = round(fatG) + ' g（週平均）';
+    document.getElementById('out-fat-detail').textContent = `${round(fatKcal)} kcal · ${((fatKcal/targetKcal)*100).toFixed(0)}%（彈性項）`;
+    document.getElementById('dri-fat').textContent = driBadge((fatKcal/targetKcal)*100, DRI.fat);
+  }
+}
+
+let ccPlan = DEFAULT_CC_PLAN.slice();
+
+function renderCarbCycle(weight, targetKcal, proteinGkg) {
+  const grid = document.getElementById('carbcycle-grid');
+  const proteinG = weight * proteinGkg;
+  const proteinKcal = proteinG * 4;
+  let lowFatDay = false;
+
+  grid.innerHTML = ccPlan.map((dayType, i) => {
+    const gkg = CARBCYCLE_GKG[dayType].gkg;
+    const carbG = weight * gkg;
+    const carbKcal = carbG * 4;
+    const fatKcal = Math.max(targetKcal - proteinKcal - carbKcal, 0);
+    const fatG = fatKcal / 9;
+    if (fatG < 20) lowFatDay = true;
+    return `
+      <div class="cc-day">
+        <div class="cc-day-label">週${DAYS[i]}</div>
+        <select data-day="${i}">
+          <option value="high" ${dayType === 'high' ? 'selected' : ''}>高強度</option>
+          <option value="low" ${dayType === 'low' ? 'selected' : ''}>低強度</option>
+          <option value="rest" ${dayType === 'rest' ? 'selected' : ''}>休息</option>
+        </select>
+        <div class="cc-day-macro">
+          蛋白 <b>${round(proteinG)}g</b><br>
+          碳水 <b>${round(carbG)}g</b> (${gkg}g/kg)<br>
+          脂肪 <b>${round(fatG)}g</b>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('cc-fat-warning').style.display = lowFatDay ? '' : 'none';
+
+  grid.querySelectorAll('select[data-day]').forEach(sel => {
+    sel.addEventListener('change', () => {
+      ccPlan[parseInt(sel.dataset.day, 10)] = sel.value;
+      render();
+    });
+  });
+}
+
+document.querySelectorAll('#in-sex, #in-age, #in-weight, #in-height, #in-bfr, #in-target, #in-pal, #in-goal, #in-diettype')
+  .forEach(el => el.addEventListener('input', render));
+document.querySelectorAll('#acsm-list input[type=checkbox]').forEach(cb => cb.addEventListener('change', computeAcsmRisk));
+
+render();
+computeAcsmRisk();
+</script>
