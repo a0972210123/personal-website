@@ -16,7 +16,7 @@
 - **核心概念**：營運管理的第一課是換眼睛：不看單站效率，看**整條流程**。任何流程的產出率由**瓶頸**（產能最小的那一站）決定——瓶頸之外的改善都是自我安慰，甚至有害：非瓶頸站拚命生產只會堆出在製品（WIP），而 Little's Law 冷酷地保證：WIP 愈高、週期時間愈長——這就是「大家都很忙、交期卻愈來愈慢」的數學解釋。Goldratt 在《目標》中把這套思想寫成小說級的教材，**TOC 五步驟**是操作手冊：①找出限制（哪一站前面堆最多）；②榨乾限制（瓶頸休息一分鐘=全廠休息一分鐘：給它最好的人、免它做垃圾工作、品檢移到它前面——別讓瓶頸加工不良品）；③其他一切遷就限制（非瓶頸「該閒就閒」，按瓶頸節奏投料——drum-buffer-rope）；④提升限制（加班、外包、買設備——注意這是第四步不是第一步）；⑤限制移動後從頭再來，並警惕「惰性」——別讓為舊瓶頸設計的規則活得比瓶頸久。這套思維遠超工廠：客服（瓶頸=資深客服）、軟體開發（瓶頸=code review）、個人生產力（瓶頸=你的深度工作時間）全部適用。對 CEO 的含義：資源該壓倒性地灌給瓶頸，而全公司的 KPI 若獎勵各站局部效率（呼應 W12 Goodhart），流程注定塞車。
 - **必讀原典**：
   - Eliyahu M. Goldratt & Jeff Cox，*The Goal*（1984）——至少讀前半（原典書；TOC 的正典）
-  - MIT OpenCourseWare，*Introduction to Operations Management*（Sloan）流程分析單元 — https://ocw.mit.edu/courses/15-760a-introduction-to-operations-management-spring-2002/ （免費）
+  - MIT OpenCourseWare，*15.760B Introduction to Operations Management*（Sloan）流程分析單元 — https://ocw.mit.edu/courses/15-760b-introduction-to-operations-management-spring-2004/ （免費）
 - **延伸資源**：
   - Goldratt《目標：簡單有效的常識管理》（天下文化）
 - **實作練習**（60 分）：把「經營個人網站內容」畫成流程（選題 → 研究 → 草稿 → 修訂 → 發佈），估各站的週產能，找出瓶頸；套 TOC 前三步寫出三個具體改善動作（提示：模型可以是某幾站的產能放大器——那瓶頸移到哪了？）。

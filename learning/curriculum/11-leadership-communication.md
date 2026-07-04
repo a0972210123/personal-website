@@ -79,7 +79,7 @@
 - **核心概念**：Argenti（Dartmouth Tuck 教授，企業溝通學權威）在疫情期間的 HBR 文章總結了危機溝通的不變原則。**速度**：危機爆發後存在一個資訊真空，你不填，謠言、對手與演算法會替你填——「正在了解中，X 點前給更新」也遠勝沉默；但快不等於搶答未經證實的事實（說錯再改的傷害更大）——分清「已確認的事實/正在查證的事/我們的行動」三個籃子。**誠實與完整**：壞消息要**一次到位**（擠牙膏式的逐步承認，讓每則後續報導都是新一輪打擊；隱瞞被揭穿則直接進入「說謊」敘事——罪名從事故升級為人格）。**同理優先**：第一句話永遠給受影響的人（傷者、用戶、員工），法律顧問會勸你別道歉以免承擔責任——現代實務的平衡是「對事件影響表達真誠的難過與負責的行動」不等於認罪；冷冰冰的法律聲明在社群時代是火上澆油。**一致性**：單一發言體系（訊息中心 + 授權發言人），全員知道「不評論、導流給發言人」——高層在自己社群帳號亂發文是常見自爆點。**Tylenol 正典**（1982 年氰化物下毒、7 死）：嬌生在不確定範圍時**全國回收 3100 萬瓶**（成本一億美元）、CEO Burke 上電視、開發防拆封裝——依據的是信條（Credo）「顧客第一」；市佔從崩盤到一年內基本收復——證明**用現實行動（不是話術）餵養聲譽**（W46：縮小差距的方向是提升現實）。**事前準備**是差距所在：危機情境清單與對應聲明模板、決策鏈（半夜三點誰有權說回收？）、dark site（預先做好待命的危機資訊頁）、每年演練——危機當下的表現，98% 由危機前的準備決定（呼應 W34 的 Respond 功能與演練哲學）。
 - **必讀原典**：
   - Paul A. Argenti，〈Communicating Through the Coronavirus Crisis〉，*Harvard Business Review*（2020）— https://hbr.org/2020/03/communicating-through-the-coronavirus-crisis （需訂閱／有免費額度）
-  - Tylenol 案例：Judith Rehak，〈Tylenol made a hero of Johnson & Johnson〉，*The New York Times*（2002 回顧）— https://www.nytimes.com/2002/03/23/your-money/IHT-tylenol-made-a-hero-of-johnson-johnson-the-recall-that-started.html （有免費額度）
+  - Tylenol 案例：Judith Rehak，〈Tylenol made a hero of Johnson & Johnson: The recall that started them all〉，*The New York Times*（2002-03-23）——紐約時報檔案文章，以標題檢索可得；模型教學時可搭配 J&J Credo 官方頁佐證
 - **延伸資源**：
   - 哈佛商業評論繁中版危機管理專題（hbrtaiwan.com）
 - **實作練習**（60 分）：替你的（假想）公司寫危機作戰包 v1：三個最可能的危機情境（用 W24 方法挑）、每個情境的首發聲明模板（三籃子結構）、決策鏈一頁（誰決策/誰發言/多快）、一條「全員社群紀律」。

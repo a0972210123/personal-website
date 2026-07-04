@@ -38,7 +38,7 @@
 - **核心概念**：Herbert Simon 提出「有限理性」（bounded rationality）：人不是最佳化者，是滿意化者（satisficer）——資訊、時間、認知容量都有限。Daniel Kahneman 與 Amos Tversky 進一步描繪系統一（快速、自動、聯想）與系統二（緩慢、費力、邏輯）如何分工：多數判斷由系統一先給答案，系統二常只是事後合理化。於是偏誤系統性地出現：錨定（第一個數字綁架估計）、確認偏誤（只找支持自己的證據）、沉沒成本（為過去投入加碼）、過度自信（規劃謬誤）、損失趨避（賠 100 的痛 > 賺 100 的樂）。管理上的解方不是「提醒自己別偏誤」（沒用），而是**改流程**：Kahneman 建議在重大決策前用檢查清單審查「提案團隊是否有動機性推理、有沒有比較基準率、最壞情境是否認真算過」；此外可用事前驗屍法（premortem：假設一年後失敗了，寫下原因）、指定唱反調者、把決策與決策者的自尊脫鉤。CEO 的決策品質不取決於聰明，取決於流程設計。
 - **必讀原典**：
   - Daniel Kahneman, Dan Lovallo & Olivier Sibony，〈Before You Make That Big Decision…〉，*Harvard Business Review*（2011）— https://hbr.org/2011/06/the-big-idea-before-you-make-that-big-decision （需訂閱／有免費額度）
-  - John S. Hammond, Ralph L. Keeney & Howard Raiffa，〈The Hidden Traps in Decision Making〉，*Harvard Business Review*（2006 重刊）— https://hbr.org/2006/01/the-hidden-traps-in-decision-making （需訂閱／有免費額度）
+  - John S. Hammond, Ralph L. Keeney & Howard Raiffa，〈The Hidden Traps in Decision Making〉，*Harvard Business Review*（1998）— https://hbr.org/1998/09/the-hidden-traps-in-decision-making-2 （需訂閱／有免費額度）
 - **延伸資源**：
   - Daniel Kahneman《快思慢想》（天下文化）
 - **實作練習**（45 分）：挑一個你近期做過的重要決定（如投資、轉職、買設備），用 premortem 重寫一次：假設它一年後失敗，列出五個最可能的原因，檢查當初是否評估過。

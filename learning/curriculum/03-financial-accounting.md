@@ -59,7 +59,7 @@
   - 能夠用成本結構解釋營運槓桿：高固定成本產業為何「規模就是一切」。
 - **核心概念**：財務會計給外人看，管理會計給自己做決策。核心刀法是把成本切成**固定**（不隨量變：租金、薪資）與**變動**（隨量變：原料、金流手續費），得到**貢獻邊際**＝價格－單位變動成本：每多賣一單位，先貢獻這麼多去回收固定成本，回收完才是利潤，回收點就是**損益兩平點**（固定成本 ÷ 單位貢獻）。這解釋了營運槓桿：軟體、晶圓廠固定成本巨大、變動成本趨近零，過了兩平點後利潤隨量暴衝——所以它們拚規模；餐飲變動成本高，規模化的甜頭小得多。訂閱制與網路事業把這套語言升級成**單位經濟**：CAC（把一個顧客買進來的全部行銷業務成本）對 LTV（這個顧客生命週期貢獻的毛利總和，= 月貢獻 × 留存月數）。健康門檻的常用經驗值：LTV/CAC ≥ 3、CAC 回收期 ≤ 12 個月——但比數字更重要的是趨勢：規模化時 CAC 通常上升（便宜的客先被抓完）、LTV 靠留存撐住，所以 W8 的漏斗留存層直通這裡。決策應用：短期接單看貢獻邊際（只要 > 0 且有閒置產能就值得），長期定價看全成本；打折的底線是變動成本，不是平均成本（呼應 W3 邊際思維）。
 - **必讀原典**：
-  - Harvard Business School Online，〈Contribution Margin: What It Is & How to Calculate It〉（免費文章）— https://online.hbs.edu/blog/post/what-is-contribution-margin
+  - Harvard Business School Online，〈LTV/CAC Ratio: What It Is & How to Calculate It〉（免費文章，含顧客貢獻邊際）— https://online.hbs.edu/blog/post/ltv-cac
   - MIT OpenCourseWare，*15.501* 管理會計單元（CVP 分析部分）— https://ocw.mit.edu/courses/15-501-introduction-to-financial-and-managerial-accounting-spring-2004/
 - **延伸資源**：
   - 千田琢哉或稻盛和夫《阿米巴經營》（天下雜誌）— 單位核算思想的日式實踐
