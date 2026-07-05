@@ -4,6 +4,15 @@ import type { OmsDoc } from './oneMoreStep';
 
 export const marketingUnits: OmsDoc[] = [
   {
+    slug: 'faceless-pipeline',
+    title: '不露臉短影音 Pipeline',
+    titleEn: 'The Faceless Video Pipeline',
+    description: '五種 faceless 類型、中文 TTS 選型、AI 影片工具 2026 現況、n8n 自動化管線、YouTube/TikTok AI 政策紅線，與手作 process video 的零風險路線。行銷學習地圖 W11-12，Q1 完結。',
+    tags: ['Faceless', 'AI 工具', '合規'],
+    date: '2026-07-05',
+    url: '/projects/marketing/faceless-pipeline/',
+  },
+  {
     slug: 'short-video',
     title: '短影音製作方法',
     titleEn: 'Short-Form Video Production',

@@ -1,7 +1,7 @@
 # M05：不露臉（Faceless）短影音 Pipeline（W11-12）
 
 > 研究日期：2026-07。**時效敏感**：Sora 消費端已於 2026-04 關閉（API 2026-09 終止）；YouTube inauthentic content 政策 2025-07-15 生效；TikTok C2PA 自動偵測 2025-01 起。產出前必驗證。
-> 產出紀錄：（尚無）
+> 產出紀錄：2026-07-05 W11-12 → /projects/marketing/faceless-pipeline/
 
 ## Week 11：Faceless 類型 + AI 工具鏈（語音/畫面）
 
