@@ -4,6 +4,15 @@ import type { OmsDoc } from './oneMoreStep';
 
 export const marketingUnits: OmsDoc[] = [
   {
+    slug: 'short-video',
+    title: '短影音製作方法',
+    titleEn: 'Short-Form Video Production',
+    description: '六種 hook 公式與四段式腳本、三平台規格與 safe zone、CapCut/DaVinci/Descript 工具選型，到一源多用 repurposing 系統與 social SEO 發布策略。行銷學習地圖 W8-10。',
+    tags: ['短影音', '腳本', 'Repurposing'],
+    date: '2026-07-05',
+    url: '/projects/marketing/short-video/',
+  },
+  {
     slug: 'marketing-foundations',
     title: '行銷基礎與 2026 趨勢',
     titleEn: 'Marketing Foundations & Trends',

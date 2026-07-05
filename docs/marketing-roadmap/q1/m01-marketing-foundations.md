@@ -1,7 +1,7 @@
 # M01：現代行銷基礎與 2025-26 趨勢（W1-2）
 
 > 研究日期：2026-07。產出單元前依 README 驗證新鮮度。
-> 產出紀錄：（尚無）
+> 產出紀錄：2026-07-05 W1-2 → /projects/marketing/marketing-foundations/（PR #82/#85）
 
 ## Week 1：行銷漏斗演進 — AIDA → AARRR → Flywheel
 
