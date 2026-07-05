@@ -12,6 +12,15 @@ export interface OmsDoc {
 
 export const oneMoreStep: OmsDoc[] = [
   {
+    slug: 'atcc-judges',
+    title: '四位評審教我的事——職能治療師在商業競賽決賽現場的筆記',
+    titleEn: 'What Four Judges Taught Me: An OT at a Business Case Finals',
+    description: '23rd ATCC 全國決賽現場觀察：四位評審的提問如何映照提案的缺口，整理成「評審提問四原型」與「五道生死題」兩個可直接使用的工具。',
+    tags: ['簡報教練', '商業競賽', 'ATCC', '職能治療'],
+    date: '2026-07-05',
+    url: '/projects/one-more-step/atcc-judges/',
+  },
+  {
     slug: 'quantum-photonics-investing',
     title: '矽光子 × 量子電腦 × PQC 投資地圖',
     titleEn: 'Silicon Photonics, Quantum & PQC Investing Map',
