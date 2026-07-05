@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import T from '../../components/T.astro';
 import { getCollection } from 'astro:content';
 import { oneMoreStep } from '../../data/oneMoreStep';
+import { marketingUnits } from '../../data/marketing';
 import { essays } from '../../data/essays';
 
 // Blog posts → unified items
@@ -32,6 +33,18 @@ const features = oneMoreStep.map(d => ({
   kind: 'feature',
 }));
 
+// Marketing Column units → unified items
+const marketingItems = marketingUnits.map(d => ({
+  title: d.title,
+  titleEn: d.titleEn,
+  desc: d.description,
+  href: d.url ?? `/projects/marketing/${d.slug}`,
+  date: new Date(d.date),
+  category: '行銷專欄',
+  badge: '行銷專欄',
+  kind: 'feature',
+}));
+
 // Standalone essays / 隨筆 (static HTML under public/writing/) → unified items
 const essayItems = essays.map(d => ({
   title: d.title,
@@ -44,9 +57,9 @@ const essayItems = essays.map(d => ({
   kind: 'feature',
 }));
 
-const items = [...posts, ...features, ...essayItems].sort((a, b) => b.date.getTime() - a.date.getTime());
+const items = [...posts, ...features, ...marketingItems, ...essayItems].sort((a, b) => b.date.getTime() - a.date.getTime());
 
-const CAT_ORDER = ['硬核簡報', '投資專欄', '管理專欄', 'One More Step', '隨筆'];
+const CAT_ORDER = ['硬核簡報', '投資專欄', '管理專欄', '行銷專欄', 'One More Step', '隨筆'];
 const categories = CAT_ORDER.filter(c => items.some(i => i.category === c));
 
 const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
@@ -63,7 +76,7 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
   <div class="filter-group">
     <div class="filter-row" id="cat-row" aria-label="系列篩選">
       <button class="filter-btn active" data-cat=""><T zh="全部" en="All" /></button>
-      {categories.map(c => <button class="filter-btn" data-cat={c}><T zh={c} en={c === '投資專欄' ? 'Investing' : c === '硬核簡報' ? 'Presentation' : c === '管理專欄' ? 'Management' : c === 'One More Step' ? 'One More Step' : 'Essays'} /></button>)}
+      {categories.map(c => <button class="filter-btn" data-cat={c}><T zh={c} en={c === '投資專欄' ? 'Investing' : c === '硬核簡報' ? 'Presentation' : c === '管理專欄' ? 'Management' : c === '行銷專欄' ? 'Marketing' : c === 'One More Step' ? 'One More Step' : 'Essays'} /></button>)}
     </div>
     <p class="result-count" id="result-count"></p>
   </div>
