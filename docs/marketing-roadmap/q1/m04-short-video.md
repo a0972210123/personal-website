@@ -1,7 +1,7 @@
 # M04：短影音製作方法（W8-10）
 
 > 研究日期：2026-07。工具價格與平台規格變化快（CapCut 2025 已改制），產出前驗證。
-> 產出紀錄：（尚無）
+> 產出紀錄：2026-07-05 W8-10 → /projects/marketing/short-video/
 
 ## Week 8：腳本結構 — Hook、Retention、Payoff
 

@@ -2,7 +2,7 @@
 
 > 研究日期：2026-07。演算法變化極快，產出單元前**必須**驗證新鮮度。
 > 「權重百分比」類數據多為第三方逆向分析，教材中標註為「業界估計」；官方確認的訊號會特別註明。
-> 產出紀錄：（尚無）
+> 產出紀錄：2026-07-05 W3-5 → /projects/marketing/social-platforms-2026/（PR #82/#85）
 
 通用數據源：[Sprout Social Demographics 2026](https://sproutsocial.com/insights/new-social-media-demographics/)、[Hootsuite Statistics 2026](https://blog.hootsuite.com/social-media-statistics/)、[Buffer 發文頻率指南](https://buffer.com/resources/social-media-frequency-guide/)。25-34 歲是所有平台最大年齡層。
 

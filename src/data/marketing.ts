@@ -4,6 +4,24 @@ import type { OmsDoc } from './oneMoreStep';
 
 export const marketingUnits: OmsDoc[] = [
   {
+    slug: 'faceless-pipeline',
+    title: '不露臉短影音 Pipeline',
+    titleEn: 'The Faceless Video Pipeline',
+    description: '五種 faceless 類型、中文 TTS 選型、AI 影片工具 2026 現況、n8n 自動化管線、YouTube/TikTok AI 政策紅線，與手作 process video 的零風險路線。行銷學習地圖 W11-12，Q1 完結。',
+    tags: ['Faceless', 'AI 工具', '合規'],
+    date: '2026-07-05',
+    url: '/projects/marketing/faceless-pipeline/',
+  },
+  {
+    slug: 'short-video',
+    title: '短影音製作方法',
+    titleEn: 'Short-Form Video Production',
+    description: '六種 hook 公式與四段式腳本、三平台規格與 safe zone、CapCut/DaVinci/Descript 工具選型，到一源多用 repurposing 系統與 social SEO 發布策略。行銷學習地圖 W8-10。',
+    tags: ['短影音', '腳本', 'Repurposing'],
+    date: '2026-07-05',
+    url: '/projects/marketing/short-video/',
+  },
+  {
     slug: 'marketing-foundations',
     title: '行銷基礎與 2026 趨勢',
     titleEn: 'Marketing Foundations & Trends',

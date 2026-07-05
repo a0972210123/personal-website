@@ -1,7 +1,7 @@
 # M03：技術人發文平台（W6-7）
 
 > 研究日期：2026-07。平台規則會變（如 Reddit 官方 90/10 條文已下架），產出前驗證。
-> 產出紀錄：（尚無）
+> 產出紀錄：2026-07-05 W6-7 → /projects/marketing/tech-publishing/（PR #82/#85）
 
 **本模組核心觀念**：每個平台的反 spam 免疫系統不同，但原理相同——**社群先於促銷**。HN 看留言史、Reddit 看 promotional ratio、PH 看 engagement quality、GitHub 看真實使用訊號。
 
