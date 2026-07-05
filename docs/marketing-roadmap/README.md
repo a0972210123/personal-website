@@ -39,8 +39,8 @@ docs/marketing-roadmap/
    - 內容結構：學習目標 → 知識點卡片 → 實作練習 → 參考連結（區分官方/社群）
    - **不要放任何部署教學橫幅在頁面上**（Matt 明確要求過移除）
 5. **部署**：
-   - HTML 放 `public/projects/one-more-step/<slug>/index.html`
-   - 在 `src/pages/projects/one-more-step/index.astro` 的 docs 陣列加 card，**用 `url` 欄位直連模式**（`url: '/projects/one-more-step/<slug>/'`）
+   - HTML 放 `public/projects/marketing/<slug>/index.html`（行銷專欄 hub）
+   - 在 `src/data/marketing.ts` 的 `marketingUnits` 陣列加 entry（`url: '/projects/marketing/<slug>/'`），會自動出現在 /projects/marketing 專欄頁與 /writing hub 的「行銷專欄」分類
    - 開新 branch → PR → **回覆時必附 PR 連結**（Matt 明確要求過）
    - Matt merge 後 Cloudflare Pages 自動部署到 mattye.dev
 
