@@ -2674,6 +2674,7 @@ footer .container {
 .fw-topic { font-size: 0.82rem; color: var(--color-text-muted); font-style: italic; }
 .fw-notes-link { font-size: 0.82rem; font-weight: 600; color: var(--color-accent); align-self: center; }
 .fw-notes-link:hover { text-decoration: underline; }
+.fw-video-row { margin-top: 4px; margin-bottom: 0; }
 
 /* Testimonials Carousel */
 .testi-carousel { position: relative; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-lg); padding: 40px 48px 32px; box-shadow: var(--card-shadow); overflow: hidden; }
