@@ -9,7 +9,7 @@ const TESTIMONIALS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gvi
 ---
 <BaseLayout
   title="Coaching — Matt Ye"
-  description="葉淨維 Matt Ye 的競賽培訓成果。協助 MAIC、Falling Walls Lab 等學生團隊奪獎，獎金逾 127 萬。"
+  description="葉淨維 Matt Ye 的競賽培訓成果。協助 MAIC、Falling Walls Lab、ATCC 等學生團隊奪獎，獎金逾 147 萬。"
 >
   <div class="container-wide">
 
@@ -59,6 +59,17 @@ const TESTIMONIALS_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gvi
         <T zh="協助學生以 3 分鐘英文學術簡報詮釋研究突破。台北賽事冠軍可晉級德國柏林國際決賽，與全球頂尖研究者同台競技。" en="Helping students present research breakthroughs in a 3-minute English academic pitch. Taipei winners advance to the international final in Berlin, Germany, competing alongside top researchers worldwide." />
       </p>
       <div id="fw-container" class="fw-container">
+        <div class="data-loading">載入中…</div>
+      </div>
+    </section>
+
+    <!-- ATCC Section -->
+    <section class="coaching-section">
+      <p class="section-heading"><T zh="全國大專院校商業個案大賽" en="National Collegiate Business Case Competition" /> <span class="section-heading-en">ATCC</span></p>
+      <p class="coaching-section-desc">
+        <T zh="ATCC 是台灣規模最大的大專商業個案賽事——企業出真實題目、學生團隊提案解方。以職能治療專業結合簡報教練經驗，協助 SenseEase 團隊把產品機制對回臨床與神經科學實證、誠實劃出「Demo 能證明」與「仍待驗證」的界線，讓痛點與解方站得住腳；再打磨用詞、敘事順序與投影片呈現。最終奪下第 23 屆全國冠軍。" en="ATCC is Taiwan's largest collegiate business-case competition — companies pose real problems and student teams pitch solutions. Combining occupational-therapy expertise with presentation coaching, I helped the SenseEase team ground their product's mechanisms in clinical and neuroscience evidence and honestly separate what the demo proves from what still needs validation — so the pain point and solution held up — then sharpened their wording, narrative, and slides. The result: 1st place at the 23rd national final." />
+      </p>
+      <div id="atcc-container" class="fw-container">
         <div class="data-loading">載入中…</div>
       </div>
     </section>
@@ -213,10 +224,14 @@ function renderFW(rows) {
     const name = rawName.replace(/\(.*?\)/g, '').trim() || '—';
     const topic = (parts[2] || '').trim();
     const key = r.year + '||' + name;
-    if (!byKey[key]) byKey[key] = { year: r.year, name, topic, venues: [] };
+    if (!byKey[key]) byKey[key] = { year: r.year, name, topic, venues: [], videos: [] };
     const isBerlin = r.contestName.toLowerCase().includes('berlin');
     byKey[key].venues.push({ venue: isBerlin ? 'Berlin' : 'Taipei', award: r.award });
     if (topic && !byKey[key].topic) byKey[key].topic = topic;
+    /* collect YouTube link(s) from the URLs column (a cell may hold several, newline-separated) */
+    (r.url || '').split(/\s+/).map(u => u.trim()).filter(Boolean).forEach(u => {
+      if (!byKey[key].videos.includes(u)) byKey[key].videos.push(u);
+    });
   });
 
   const el = document.getElementById('fw-container');
@@ -228,6 +243,12 @@ function renderFW(rows) {
     const venueHTML = p.venues.map(v =>
       `<span class="fw-venue-tag">${v.venue === 'Berlin' ? '🇩🇪' : '🇹🇼'} ${v.venue} · ${tr(AWARD, v.award)}</span>`
     ).join('<span class="fw-venue-arrow">→</span>');
+    const videoHTML = p.videos.map((u, i) => {
+      const label = p.videos.length > 1
+        ? L(`觀賽影片 ${i + 1} ▶`, `Match video ${i + 1} ▶`)
+        : L('觀賽影片 ▶', 'Match video ▶');
+      return `<a class="fw-notes-link" href="${u}" target="_blank" rel="noopener">${label}</a>`;
+    }).join('');
 
     const card = document.createElement('div');
     card.className = 'fw-card' + (hasBerlin ? ' fw-card-featured' : '');
@@ -242,6 +263,44 @@ function renderFW(rows) {
         </div>
         <div class="fw-venues">${venueHTML}</div>
         ${p.topic ? `<div class="fw-topic">"${p.topic}"</div>` : ''}
+        ${videoHTML ? `<div class="fw-venues fw-video-row">${videoHTML}</div>` : ''}
+      </div>
+    `;
+    el.appendChild(card);
+  });
+}
+
+/* ── Render ATCC (business-case competition) — reuses the fw-card visual ── */
+const RANK = { '1st': ['冠軍', '1st Place'], '2nd': ['亞軍', '2nd Place'], '3rd': ['季軍', '3rd Place'] };
+const rankLabel = a => RANK[a] ? L(RANK[a][0], RANK[a][1]) : tr(AWARD, a);
+
+function renderATCC(rows) {
+  const el = document.getElementById('atcc-container');
+  if (!el) return;
+  el.innerHTML = '';
+
+  rows.slice().sort((a, b) => a.year.localeCompare(b.year)).forEach(r => {
+    const team = r.mentee || L('學生團隊', 'Student team');
+    const hlRaw = pick(r.highlightZh, r.highlightEn);
+    const hl = (hlRaw && !hlRaw.includes('**')) ? hlRaw : '';  // hide until finalized
+    const prizeTag = parsePrize(r.prize) > 0
+      ? `<span class="fw-venue-tag">💰 ${fmtMoney(parsePrize(r.prize), true)}</span>` : '';
+    const notes = r.report
+      ? `<a class="fw-notes-link" href="${r.report}" target="_blank" rel="noopener">${L('觀賽紀錄 →', 'Match notes →')}</a>` : '';
+    const video = r.url
+      ? `<a class="fw-notes-link" href="${r.url}" target="_blank" rel="noopener">${L('觀賽影片 ▶', 'Match video ▶')}</a>` : '';
+
+    const card = document.createElement('div');
+    card.className = 'fw-card fw-card-featured';
+    card.innerHTML = `
+      <div class="fw-card-left"><div class="fw-year-badge">${r.year}</div></div>
+      <div class="fw-card-body">
+        <div class="fw-name-row">
+          <span class="fw-name">${team}</span>
+          <span class="fw-intl-badge">${medalEmoji(r.award)} ${rankLabel(r.award)}</span>
+        </div>
+        <div class="fw-venues">${prizeTag}${notes}${video}</div>
+        ${hl ? `<div class="fw-topic">"${hl}"</div>` : ''}
       </div>
     `;
     el.appendChild(card);
@@ -265,6 +324,10 @@ async function loadAwards() {
     const iPrize = hi('獎金');
     const iTeams = hi('組數');
     const iRpt   = hi('報導') >= 0 ? hi('報導') : hi('url');
+    const iMentee = hi('mentee');
+    const iHlZh   = hi('亮點_zh');
+    const iHlEn   = hi('亮點_en');
+    const iUrl    = hi('urls');
 
     const data = rows.slice(1).map(r => ({
       name:        (r[iName]  || '').trim(),
@@ -275,20 +338,26 @@ async function loadAwards() {
       prize:       (r[iPrize] || '').trim(),
       teams:       parseInt(r[iTeams] || '0') || 0,
       report:      (r[iRpt]   || '').trim(),
+      mentee:      iMentee >= 0 ? (r[iMentee] || '').trim() : '',
+      highlightZh: iHlZh >= 0 ? (r[iHlZh] || '').trim() : '',
+      highlightEn: iHlEn >= 0 ? (r[iHlEn] || '').trim() : '',
+      url:         iUrl >= 0 ? (r[iUrl] || '').trim() : '',
     })).filter(r => r.name && r.year);
 
     const maic = data.filter(r => r.abbr === 'MAIC' || r.name.includes('行動應用'));
     const fw   = data.filter(r => r.name.includes('圍牆'));
+    const atcc = data.filter(r => r.abbr === 'ATCC');
 
     /* Stats */
     const totalTeams  = maic.reduce((s, r) => s + r.teams, 0);
-    const totalPrize  = maic.reduce((s, r) => s + parsePrize(r.prize) * r.teams, 0);
+    const totalPrize  = [...maic, ...atcc].reduce((s, r) => s + parsePrize(r.prize) * r.teams, 0);
     const fwCount     = fw.length; // each row = one placement
 
     let awardsAnimated = false;
     awardsRender = (animate) => {
       renderMAIC(maic);
       renderFW(fw);
+      renderATCC(atcc);
       if (animate && !awardsAnimated) {
         awardsAnimated = true;
         countUp(document.getElementById('c-teams'), totalTeams, 1200);
@@ -305,7 +374,7 @@ async function loadAwards() {
 
   } catch (e) {
     console.error('Coaching data error:', e);
-    ['maic-container','fw-container'].forEach(id => {
+    ['maic-container','fw-container','atcc-container'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.innerHTML = '<div class="data-error">⚠️ 資料載入失敗</div>';
     });
