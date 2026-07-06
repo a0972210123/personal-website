@@ -2672,6 +2672,8 @@ footer .container {
 .fw-venue-tag { font-size: 0.82rem; font-weight: 600; background: var(--color-surface); border: 1px solid var(--color-border); padding: 3px 10px; border-radius: 999px; }
 .fw-venue-arrow { font-size: 0.9rem; color: var(--color-accent); font-weight: 700; }
 .fw-topic { font-size: 0.82rem; color: var(--color-text-muted); font-style: italic; }
+.fw-notes-link { font-size: 0.82rem; font-weight: 600; color: var(--color-accent); align-self: center; }
+.fw-notes-link:hover { text-decoration: underline; }
 
 /* Testimonials Carousel */
 .testi-carousel { position: relative; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-lg); padding: 40px 48px 32px; box-shadow: var(--card-shadow); overflow: hidden; }
