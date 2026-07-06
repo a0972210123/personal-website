@@ -274,8 +274,8 @@ function renderATCC(rows) {
     const hl = (hlRaw && !hlRaw.includes('**')) ? hlRaw : '';  // hide until finalized
     const prizeTag = parsePrize(r.prize) > 0
       ? `<span class="fw-venue-tag">💰 ${fmtMoney(parsePrize(r.prize), true)}</span>` : '';
-    const link = r.url
-      ? `<a class="fw-notes-link" href="${r.url}" target="_blank" rel="noopener">${L('觀賽紀錄 →', 'Match notes →')}</a>` : '';
+    const link = r.report
+      ? `<a class="fw-notes-link" href="${r.report}" target="_blank" rel="noopener">${L('觀賽紀錄 →', 'Match notes →')}</a>` : '';
 
     const card = document.createElement('div');
     card.className = 'fw-card fw-card-featured';
@@ -314,7 +314,6 @@ async function loadAwards() {
     const iMentee = hi('mentee');
     const iHlZh   = hi('亮點_zh');
     const iHlEn   = hi('亮點_en');
-    const iUrl    = hi('urls');
 
     const data = rows.slice(1).map(r => ({
       name:        (r[iName]  || '').trim(),
@@ -328,7 +327,6 @@ async function loadAwards() {
       mentee:      iMentee >= 0 ? (r[iMentee] || '').trim() : '',
       highlightZh: iHlZh >= 0 ? (r[iHlZh] || '').trim() : '',
       highlightEn: iHlEn >= 0 ? (r[iHlEn] || '').trim() : '',
-      url:         iUrl >= 0 ? (r[iUrl] || '').trim() : '',
     })).filter(r => r.name && r.year);
 
     const maic = data.filter(r => r.abbr === 'MAIC' || r.name.includes('行動應用'));
