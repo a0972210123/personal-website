@@ -1,0 +1,202 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import T from '../../../components/T.astro';
+import { familyInvestingCourseUnits as units } from '../../../data/familyInvestingCourse';
+
+const total = 52;
+const done = units.length;
+---
+<BaseLayout
+  title="給家人的投資課 Family Investing Course — Matt Ye"
+  description="葉淨維 Matt Ye 的 52 週投資學習地圖：從複利、財報到估值與資產配置，每週一個含互動教材與教家人腳本的單元，與「寫給家人的投資入門」專欄連動。"
+>
+  <section class="fic-hero">
+    <a href="/projects" class="back-link"><T zh="← 其他作品" en="← Side Projects" /></a>
+    <h1><T zh="給家人的" en="Family" /> <span class="accent-text"><T zh="投資課" en="Investing Course" /></span></h1>
+    <p class="fic-subtitle"><T zh="一年 52 週的投資學習地圖——每週一個單元：講義、練習、互動工具，和一段講給家人聽的腳本。" en="A 52-week investing curriculum — weekly units with lectures, exercises, interactive tools, and a script for teaching family." /></p>
+    <p class="fic-note"><T
+      zh="這是「寫給家人的投資入門」專欄的姊妹計畫：專欄是講給家人聽的成果，這裡是每週學習的過程。單元陸續上線中。"
+      en="Sister project of the Family Investing column: the column is the output for family; this is the weekly learning process. Units ship progressively." />
+      <a href="/writing/"><T zh="專欄文章 →" en="Column posts →" /></a>
+    </p>
+    <div class="fic-progress" role="img" aria-label={`52 週已上線 ${done} 週`}>
+      <div class="fic-progress-bar" style={`width:${(done / total) * 100}%`}></div>
+      <span class="fic-progress-label">{done} / {total} <T zh="週" en="weeks" /></span>
+    </div>
+  </section>
+
+  <div class="docs-grid">
+    {units.map(doc => (
+      <a href={doc.url ?? `/projects/family-investing-course/${doc.slug}/`} class="doc-card">
+        <div class="doc-card-body">
+          <h2 class="doc-title"><T zh={doc.title} en={doc.titleEn} /></h2>
+          <p class="doc-desc">{doc.description}</p>
+        </div>
+        <div class="doc-footer">
+          <div class="doc-tags">
+            {doc.tags.map(tag => <span class="doc-tag">{tag}</span>)}
+          </div>
+          <span class="doc-link"><T zh="開始學習 →" en="Start →" /></span>
+        </div>
+      </a>
+    ))}
+  </div>
+
+  <p class="fic-disclaimer"><T
+    zh="本課程為個人學習紀錄與家人教育素材，非投資建議；內容涉及之制度與稅率以主管機關現行公告為準。"
+    en="Personal learning notes and family-education material — not investment advice. Regulations and tax figures are subject to current official announcements." /></p>
+</BaseLayout>
+
+<style>
+  .fic-hero {
+    padding: 3rem 0 2rem;
+  }
+
+  .back-link {
+    display: inline-block;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    margin-bottom: 1rem;
+  }
+
+  .back-link:hover {
+    color: var(--color-text);
+  }
+
+  .fic-hero h1 {
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+  }
+
+  .fic-subtitle {
+    color: var(--color-text-muted);
+    font-size: 1.05rem;
+    margin: 0;
+  }
+
+  .fic-note {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin: 0.9rem 0 0;
+    max-width: 42rem;
+  }
+
+  .fic-note a {
+    color: var(--color-accent);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .fic-note a:hover {
+    text-decoration: underline;
+  }
+
+  .fic-progress {
+    position: relative;
+    margin-top: 1.4rem;
+    max-width: 26rem;
+    height: 22px;
+    background: var(--color-border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .fic-progress-bar {
+    height: 100%;
+    background: var(--color-accent);
+    border-radius: 99px;
+    min-width: 22px;
+  }
+
+  .fic-progress-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--color-text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .docs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .doc-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+
+  .doc-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border-color: var(--color-accent);
+  }
+
+  .doc-card-body {
+    flex: 1;
+  }
+
+  .doc-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 0.15rem;
+  }
+
+  .doc-desc {
+    font-size: 0.92rem;
+    color: var(--color-text-muted);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .doc-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .doc-tags {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .doc-tag {
+    font-size: 0.72rem;
+    background: var(--color-border);
+    color: var(--color-text-muted);
+    padding: 0.15rem 0.5rem;
+    border-radius: 99px;
+  }
+
+  .doc-link {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    white-space: nowrap;
+  }
+
+  .fic-disclaimer {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    padding-bottom: 4rem;
+    margin: 0;
+  }
+</style>
