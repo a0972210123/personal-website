@@ -9,7 +9,7 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     slug: 'week-01-tvm',
     title: 'W1 複利與貨幣時間價值',
     titleEn: 'W1 Time Value of Money',
-    description: '所有金融計算的第一塊磚：複利與折現、FV/PV/年金公式、72 法則。附互動複利計算機、猜謎揭曉與教家人腳本。',
+    description: '所有金融計算的第一塊磚：複利與折現、FV/PV/年金公式、72 法則。附互動複利計算機、猜謎揭曉與費曼學習法分享腳本。',
     tags: ['Q1 共同地基', '互動計算機'],
     date: '2026-07-08',
     url: '/projects/family-investing-course/week-01-tvm/',

@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>第 1 週：複利與貨幣時間價值｜給家人的投資課 · Matt Ye</title>
-  <meta name="description" content="52 週投資課第 1 週：複利與折現的核心觀念、FV/PV/年金公式、72 法則，附互動複利計算機與教家人腳本。">
+  <meta name="description" content="52 週投資課第 1 週：複利與折現的核心觀念、FV/PV/年金公式、72 法則，附互動複利計算機與費曼學習法分享腳本。">
   <meta name="author" content="Ching-Wei Ye">
   <link rel="canonical" href="https://mattye.dev/projects/family-investing-course/week-01-tvm/">
   <meta property="og:type" content="article">
   <meta property="og:title" content="第 1 週：複利與貨幣時間價值 — 給家人的投資課">
-  <meta property="og:description" content="複利與折現、FV/PV/年金、72 法則——附互動複利計算機與教家人腳本。">
+  <meta property="og:description" content="複利與折現、FV/PV/年金、72 法則——附互動複利計算機與費曼學習法分享腳本。">
   <meta property="og:url" content="https://mattye.dev/projects/family-investing-course/week-01-tvm/">
   <!-- 與主站同步主題（同一個 localStorage key），避免閃色 -->
   <script>
@@ -184,6 +184,9 @@
   .readitem:last-child{border-bottom:none}
   .readitem .t{font-size:.72rem;font-weight:800;color:var(--coin);white-space:nowrap;letter-spacing:.06em}
   .readitem .body b{font-weight:700}
+  a.srclink{color:var(--pine);text-decoration:none}
+  a.srclink:hover{text-decoration:underline}
+  a.srclink:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
   .readitem .body p{margin:.25rem 0 0;font-size:.92rem;color:var(--ink-2)}
   .script{margin:1.1rem 0;padding:1.1rem 1.3rem;background:var(--card);border:1px solid var(--line);border-radius:12px}
   .script .who{font-size:.72rem;font-weight:800;letter-spacing:.14em;color:var(--pine)}
@@ -226,7 +229,7 @@
   <div class="navrow">
     <a class="back" href="/projects/family-investing-course/">← 課程首頁</a>
     <span class="brand">WEEK 01</span>
-    <a class="sec" href="#lecture">① 講義</a><a class="sec" href="#reading">② 導讀</a><a class="sec" href="#practice">③ 練習</a><a class="sec" href="#family">④ 教家人</a><a class="sec" href="#checklist">⑤ 檢核</a>
+    <a class="sec" href="#lecture">① 講義</a><a class="sec" href="#reading">② 導讀</a><a class="sec" href="#practice">③ 練習</a><a class="sec" href="#family">④ 分享</a><a class="sec" href="#checklist">⑤ 檢核</a>
     <button id="themeToggle" aria-label="切換深淺主題">◐</button>
   </div>
 </nav>
@@ -405,20 +408,20 @@
   <p class="blocknum" style="margin-top:3rem">區塊 ② ／ 必讀導讀 · 約 2 小時，與講義穿插</p>
   <div class="prose">
   <h2>讀什麼、抓什麼</h2>
-  <p class="muted">資源：Khan Academy「Finance and Capital Markets」（免費）</p>
+  <p class="muted">資源：<a class="srclink" href="https://www.khanacademy.org/economics-finance-domain/core-finance" target="_blank" rel="noopener">Khan Academy「Finance and Capital Markets」</a>（免費）</p>
   <div class="readitem">
     <span class="t num">30 分</span>
-    <div class="body"><b>「Interest and debt」→「Compound interest basics」</b>
+    <div class="body"><b><a class="srclink" href="https://www.khanacademy.org/economics-finance-domain/core-finance/interest-tutorial" target="_blank" rel="noopener">「Interest and debt」→「Compound interest basics」↗</a></b>
       <p>重點：單利 vs 複利的圖形差異。預期收穫：能自己畫出兩條線。</p></div>
   </div>
   <div class="readitem">
     <span class="t num">40 分</span>
-    <div class="body"><b>「Present value」系列</b>
+    <div class="body"><b><a class="srclink" href="https://www.khanacademy.org/economics-finance-domain/core-finance/interest-tutorial/present-value" target="_blank" rel="noopener">「Present value」系列 ↗</a></b>
       <p>重點：折現的方向感——利率越高，未來的錢越不值錢。預期收穫：看到任何「未來會有 X 元」的敘述，反射性地問「折現率多少？」</p></div>
   </div>
   <div class="readitem">
     <span class="t num">選讀</span>
-    <div class="body"><b>MIT OpenCourseWare 15.401 第 2–3 講投影片</b>
+    <div class="body"><b><a class="srclink" href="https://ocw.mit.edu/courses/15-401-finance-theory-i-fall-2008/pages/lecture-notes/" target="_blank" rel="noopener">MIT OpenCourseWare 15.401 第 2–3 講投影片 ↗</a></b>
       <p>行有餘力再看：學術版的嚴謹寫法。</p></div>
   </div>
   </div>
@@ -457,11 +460,12 @@
   </div>
 </section>
 
-<!-- ④ 教家人 -->
+<!-- ④ 分享這個概念（費曼學習法） -->
 <section id="family">
-  <p class="blocknum" style="margin-top:3rem">區塊 ④ ／ 教家人腳本 · 約 30 分鐘</p>
+  <p class="blocknum" style="margin-top:3rem">區塊 ④ ／ 分享這個概念 · 費曼學習法 · 約 30 分鐘</p>
   <div class="prose">
   <h2>先玩，再講</h2>
+  <p class="muted" style="margin-top:-.3rem">講到別人聽懂，才算真的懂——這是檢驗學習最快的方法（費曼學習法）。以下腳本以家人為對象設計，講給朋友、同事聽同樣適用。</p>
   <div class="script">
     <p class="who">開場（就是本頁最上面那題）</p>
     <p>「猜猜看：每個月存一萬塊，連續存 30 年，用年化 6% 的報酬投資，最後會有多少錢？」</p>
@@ -497,7 +501,7 @@
     <li><label><input type="checkbox"><span>複利試算表完成且 30 年終值驗證通過</span></label></li>
     <li><label><input type="checkbox"><span>能不看講義寫出 FV、PV、年金終值三條公式</span></label></li>
     <li><label><input type="checkbox"><span>能解釋「為什麼折現率越高、現值越低」</span></label></li>
-    <li><label><input type="checkbox"><span>教家人環節完成，記下家人聽不懂的點（下週單元開頭回補）</span></label></li>
+    <li><label><input type="checkbox"><span>分享環節完成（家人或朋友皆可），記下對方聽不懂的點（下週單元開頭回補）</span></label></li>
     <li><label><input type="checkbox"><span>本週心得記一行（下週回顧用）</span></label></li>
   </ul>
   <p id="checkdone" aria-live="polite"></p>
