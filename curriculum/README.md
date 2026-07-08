@@ -37,6 +37,18 @@
 - 單元開頭的引言必須回答「本週在三個角色中的定位」
 - 每個單元講義開頭安排 10 分鐘「回補上週教家人卡住的點」（第 1 週除外）
 
+### 教材網頁的部署慣例（W1 起生效，之後每週照做）
+
+單元 md 產出後，同步製作**教材網頁版**部署到本站 side project「給家人的投資課」：
+
+1. 自包含 HTML 放 `public/projects/family-investing-course/<slug>/index.html`（slug 同單元檔名，如 `week-01-tvm`）
+2. 在 `src/data/familyInvestingCourse.ts` 加入該週 entry（陣列順序＝週次順序）
+3. 網頁固定要素：五區塊＋頂部黏性導航與閱讀進度、主題與主站同步（localStorage key `theme`、`:root[data-theme]` tokens）、返回課程首頁連結、檢核清單 localStorage 持久化（key 前綴 `fic-wNN-`）、canonical 與 og meta
+   - 網頁版區塊④標題固定為「**分享這個概念 · 費曼學習法**」（導航縮寫「④ 分享」）——比單元 md 的「教家人腳本」更通用；內文腳本仍以家人為對象設計、註明對朋友同事同樣適用
+   - 區塊②導讀的每個資源**附來源超連結**（canonical URL；本環境無法連外驗證，owner 於 preview 點擊確認）
+4. 視覺系統沿用 W1 建立的「帳本」設計（松綠 `--pine` ＋金 `--coin`；圖表資料色 light `#1F8A5F`/`#A87B1F`、dark `#35A878`/`#BA8A25`——已通過對比與色覺無障礙驗證）；互動元素（計算機/猜謎/圖表）依該週內容設計，教家人開場盡量做成頁面互動
+5. 頁尾附「非投資建議」聲明；發佈走 PR（遵守根目錄 `CLAUDE.md` 工作流程）
+
 ## 如何產出一個「每週單元」
 
 1. 讀 `01-overview.md` 的進度表，找到目前要產出的週次 N
