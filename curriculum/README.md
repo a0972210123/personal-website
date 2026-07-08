@@ -25,8 +25,9 @@
 | `q2-investor.md` | 週 14–26：投資人（估值、資產配置、行為財務） | 同上 |
 | `q3-fund-manager.md` | 週 27–39：操盤手（風險、績效、組合管理） | 同上 |
 | `q4-cfo.md` | 週 40–52：財務長（公司金融、資本決策、治理） | 同上 |
-| `resources.md` | 參考文獻總表（附資源 ID，各週單元以 ID 引用） | 展開連結時查閱 |
+| `resources.md` | 參考文獻總表（附資源 ID，各週單元以 ID 引用；含「第二年新增資源」節） | 展開連結時查閱 |
 | `units/week-NN-slug.md` | **已產出的每週單元**（課綱該週的完整展開版教材） | owner 學習當週時讀；產出新單元前看前一週的「教家人卡住點」 |
+| `year2/` | **第二年課綱（實戰深化年）**：`00-overview.md` 總覽＋四季檔（`q1-real-money-engine` / `q2-industry-python` / `q3-backtesting-portfolio` / `q4-family-cfo`）；單元教材產出後放 `year2/units/` | 第一年 52 週完課後啟用；使用規則與本 README 完全相同（單元五區塊、進度回填、資源 ID 引用） |
 
 ### units/ 的產出慣例
 
