@@ -78,3 +78,17 @@
 |---|---|---|
 | S01 | `src/content/blog/family-investing-01..08` 專欄系列 | 家人教育素材＋owner 已具備知識的基準線 |
 | S02 | 台積電 2023 年報（https://ir.tsmc.com） | 全年課程的貫穿案例公司（Q1 健檢、Q2 估值、Q4 雙報告可沿用或換一家） |
+
+## 第二年新增資源（Y2 使用）
+
+| ID | 資源 | 用途 |
+|---|---|---|
+| Y2-C01 | Google Colab（https://colab.research.google.com）＋ pandas 官方 10 minutes 教學 | Y2W16 Python 起步環境 |
+| Y2-D01 | FinMind（https://finmind.github.io）／證交所 OpenAPI | Y2W17 台股資料源（Python） |
+| Y2-D02 | yfinance（pypi）＋ Ken French Data Library（同 D06） | Y2W17/30 美股價格與因子資料 |
+| Y2-D03 | 勞保局 e 化服務（https://edesk.bli.gov.tw） | Y2W45 勞保年資與勞退帳戶查詢 |
+| Y2-D04 | 財政部稅務入口網遺贈稅專區 | Y2W46 現行免稅額與稅率查證 |
+| Y2-P01 | Cooley, Hubbard & Walz（Trinity Study, 1998）及其後續更新 | Y2W44 4% 法則原典 |
+| Y2-B01 | 《Python for Finance》(Yves Hilpisch) 或等效入門書——選讀 | Y2 量化軌進階選讀 |
+| Y2-B02 | Howard Marks《掌握市場週期》（若 Y1 未讀完） | Y2W36 溫度計 v2 |
+| Y2-W01 | 台灣 REITs 資訊（證交所上市 REITs 專區） | Y2W42 |
