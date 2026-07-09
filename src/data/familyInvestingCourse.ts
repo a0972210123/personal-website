@@ -32,4 +32,13 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     date: '2026-07-22',
     url: '/projects/family-investing-course/week-03-interest-rates/',
   },
+  {
+    slug: 'week-04-accounting',
+    title: 'W4 借貸法則與應計制',
+    titleEn: 'W4 Double-Entry & Accrual',
+    description: '會計是商業的語言：會計恆等式、借貸法則、應計制與預收收入。開一家虛擬飲料店，用六筆分錄的互動記帳台看複式簿記如何永遠平衡——「賺錢」與「現金變多」是兩本帳。',
+    tags: ['Q1 共同地基', '互動記帳台'],
+    date: '2026-07-29',
+    url: '/projects/family-investing-course/week-04-accounting/',
+  },
 ];
