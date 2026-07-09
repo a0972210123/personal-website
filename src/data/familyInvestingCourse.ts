@@ -23,4 +23,13 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     date: '2026-07-15',
     url: '/projects/family-investing-course/week-02-inflation/',
   },
+  {
+    slug: 'week-03-interest-rates',
+    title: 'W3 利率與殖利率曲線',
+    titleEn: 'W3 Interest Rates & Yield Curve',
+    description: '利率是所有資產的地心引力：政策傳導鏈、為什麼利率漲債券跌、存續期間、殖利率曲線倒掛與衰退預測。附「債券蹺蹺板」互動計算機與殖利率曲線切換。',
+    tags: ['Q1 共同地基', '互動計算機'],
+    date: '2026-07-22',
+    url: '/projects/family-investing-course/week-03-interest-rates/',
+  },
 ];
