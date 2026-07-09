@@ -14,4 +14,13 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     date: '2026-07-08',
     url: '/projects/family-investing-course/week-01-tvm/',
   },
+  {
+    slug: 'week-02-inflation',
+    title: 'W2 通膨與實質報酬',
+    titleEn: 'W2 Inflation & Real Return',
+    description: '通膨是「反向複利」：費雪方程式、購買力半衰期、CPI 怎麼讀，以及通膨對各類資產的影響。附「雙雪球賽跑」互動計算機與費曼學習法分享腳本。',
+    tags: ['Q1 共同地基', '互動計算機'],
+    date: '2026-07-15',
+    url: '/projects/family-investing-course/week-02-inflation/',
+  },
 ];
