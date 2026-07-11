@@ -122,4 +122,13 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     date: '2026-09-30',
     url: '/projects/family-investing-course/week-13-q1-capstone/',
   },
+  {
+    slug: 'week-14-asset-allocation',
+    title: 'W14 資產配置——股債現金與風險承受度',
+    titleEn: 'W14 Asset Allocation',
+    description: 'Q2 投資人季開場，全年最重要的單一決定：預備金→配置→選標的的順序、三類資產的角色、風險承受度三要素取最保守。附配置模擬器——拉動股債比例，看期望報酬、30 年終值與 2008 重演的損失金額。',
+    tags: ['Q2 投資人季', '互動模擬器'],
+    date: '2026-10-07',
+    url: '/projects/family-investing-course/week-14-asset-allocation/',
+  },
 ];
