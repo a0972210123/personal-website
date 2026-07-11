@@ -113,4 +113,13 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     date: '2026-09-23',
     url: '/projects/family-investing-course/week-12-cycles-rotation/',
   },
+  {
+    slug: 'week-13-q1-capstone',
+    title: 'W13 Q1 Capstone：20 分鐘財報健檢',
+    titleEn: 'W13 Q1 Capstone: 20-min Health Check',
+    description: 'Q1 期末考，考的不是記憶是組裝：把週 5–9 的五樣工具組成六步驟、20 分鐘的財報健檢流程，回答唯一的問題——值不值得再花 20 小時研究。附六步驟互動時間軸、一頁報告模板與自評計分器。',
+    tags: ['Q1 共同地基', '實作週'],
+    date: '2026-09-30',
+    url: '/projects/family-investing-course/week-13-q1-capstone/',
+  },
 ];
