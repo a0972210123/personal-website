@@ -77,4 +77,13 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     date: '2026-08-26',
     url: '/projects/family-investing-course/week-08-quality-red-flags/',
   },
+  {
+    slug: 'week-09-dupont-ratios',
+    title: 'W9 比率體系與杜邦五因子',
+    titleEn: 'W9 Ratios & DuPont Analysis',
+    description: 'Q1 分析工具的最後一塊：四大類比率抽屜、杜邦五因子拆解 ROE——同樣賺 17.3%，精品店與加槓桿的自助餐體質完全不同。附「ROE 果汁機」五因子互動實驗台與台積電 vs 聯電對決練習。',
+    tags: ['Q1 共同地基', '互動計算機'],
+    date: '2026-09-02',
+    url: '/projects/family-investing-course/week-09-dupont-ratios/',
+  },
 ];
