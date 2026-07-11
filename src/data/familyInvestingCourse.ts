@@ -104,4 +104,13 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     date: '2026-09-16',
     url: '/projects/family-investing-course/week-11-macro-indicators/',
   },
+  {
+    slug: 'week-12-cycles-rotation',
+    title: 'W12 景氣循環與資產輪動',
+    titleEn: 'W12 Cycles & Asset Rotation',
+    description: '股市的春天總是在經濟的隆冬裡開始：景氣四階段、投資時鐘四象限、擇時的代價——錯過最好 10 天報酬腰斬、雙重正確只剩 36%。附投資時鐘互動導覽與「雙重正確」計算器。',
+    tags: ['Q1 共同地基', '互動模擬器'],
+    date: '2026-09-23',
+    url: '/projects/family-investing-course/week-12-cycles-rotation/',
+  },
 ];
