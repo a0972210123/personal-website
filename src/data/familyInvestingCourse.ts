@@ -68,4 +68,13 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     date: '2026-08-19',
     url: '/projects/family-investing-course/week-07-cash-flow/',
   },
+  {
+    slug: 'week-08-quality-red-flags',
+    title: 'W8 三表勾稽與財報紅旗',
+    titleEn: 'W8 Reconciliation & Red Flags',
+    description: '一張表可以化妝，三張表同時化妝很難不露餡：勾稽三條線、盈餘品質五特徵、紅旗檢查清單 v1 與博達案例課。附「紅旗雷達」八情境互動判讀挑戰（含單旗不定罪陷阱題）。',
+    tags: ['Q1 共同地基', '互動測驗'],
+    date: '2026-08-26',
+    url: '/projects/family-investing-course/week-08-quality-red-flags/',
+  },
 ];
