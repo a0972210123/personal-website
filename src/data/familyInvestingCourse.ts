@@ -59,4 +59,13 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     date: '2026-08-12',
     url: '/projects/family-investing-course/week-06-balance-sheet/',
   },
+  {
+    slug: 'week-07-cash-flow',
+    title: 'W7 現金流量表深讀',
+    titleEn: 'W7 Cash Flow Statement',
+    description: '最誠實的一張表：三大活動、間接法、自由現金流與八種現金流組合。附「間接法偵探」互動對帳遊戲——從淨利 71,667 一筆筆對回現金 60,000，親手編出人生第一張現金流量表。',
+    tags: ['Q1 共同地基', '互動測驗'],
+    date: '2026-08-19',
+    url: '/projects/family-investing-course/week-07-cash-flow/',
+  },
 ];
