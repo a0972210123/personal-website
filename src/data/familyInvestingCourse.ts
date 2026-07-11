@@ -95,4 +95,13 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     date: '2026-09-09',
     url: '/projects/family-investing-course/week-10-market-structure/',
   },
+  {
+    slug: 'week-11-macro-indicators',
+    title: 'W11 總經指標判讀',
+    titleEn: 'W11 Macro Indicators',
+    description: '個股是顯微鏡，總經是氣象台：領先／同時／落後的座標、六個核心指標判讀卡、央行反應函數。附「預期 vs 現實」驚奇模擬器——為什麼數據好、股市卻跌——與每月總經儀表板模板。',
+    tags: ['Q1 共同地基', '互動模擬器'],
+    date: '2026-09-16',
+    url: '/projects/family-investing-course/week-11-macro-indicators/',
+  },
 ];
