@@ -41,4 +41,13 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     date: '2026-07-29',
     url: '/projects/family-investing-course/week-04-accounting/',
   },
+  {
+    slug: 'week-05-income-statement',
+    title: 'W5 損益表深讀',
+    titleEn: 'W5 Income Statement',
+    description: '損益表是一道瀑布：把飲料店排成正式損益表，看三個利潤率、共同比分析、收入認列的操縱空間與業外損益陷阱。附「利潤率瀑布」互動圖與「賣土地美化淨利」演示。',
+    tags: ['Q1 共同地基', '互動圖表'],
+    date: '2026-08-05',
+    url: '/projects/family-investing-course/week-05-income-statement/',
+  },
 ];
