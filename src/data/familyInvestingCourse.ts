@@ -50,4 +50,13 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     date: '2026-08-05',
     url: '/projects/family-investing-course/week-05-income-statement/',
   },
+  {
+    slug: 'week-06-balance-sheet',
+    title: 'W6 資產負債表深讀',
+    titleEn: 'W6 Balance Sheet',
+    description: '損益表看賺不賺，資產負債表看撐不撐得住：流動比與速動比、有息 vs 無息負債的兩張臉、商譽地雷與長短錯配。附「科目分類挑戰」十題互動遊戲。',
+    tags: ['Q1 共同地基', '互動測驗'],
+    date: '2026-08-12',
+    url: '/projects/family-investing-course/week-06-balance-sheet/',
+  },
 ];
