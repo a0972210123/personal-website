@@ -86,4 +86,13 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     date: '2026-09-02',
     url: '/projects/family-investing-course/week-09-dupont-ratios/',
   },
+  {
+    slug: 'week-10-market-structure',
+    title: 'W10 台股交易制度與成本',
+    titleEn: 'W10 Market Structure & Costs',
+    description: '委託單的旅程、T+2 交割與違約交割、撮合規則、買賣價差與五檔深度——投資唯一 100% 確定的是過路費。附「過路費計算機」：折數×周轉×20 年，看終值被吃掉多少。',
+    tags: ['Q1 共同地基', '互動計算機'],
+    date: '2026-09-09',
+    url: '/projects/family-investing-course/week-10-market-structure/',
+  },
 ];
