@@ -140,4 +140,13 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     date: '2026-10-14',
     url: '/projects/family-investing-course/week-15-mpt/',
   },
+  {
+    slug: 'week-16-index-investing',
+    title: 'W16 指數化投資與成本侵蝕',
+    titleEn: 'W16 Index Investing & Costs',
+    description: 'Q2 的預設答案：Sharpe「主動管理的算術」五步證明、SPIVA 成績單、成本的反向複利——1.5% 費率 30 年吃掉三分之一終值。附「反向雪球」費用侵蝕計算器與 ETF 六檢核點互動卡。',
+    tags: ['Q2 投資人季', '互動計算機'],
+    date: '2026-10-21',
+    url: '/projects/family-investing-course/week-16-index-investing/',
+  },
 ];
