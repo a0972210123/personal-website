@@ -131,4 +131,13 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     date: '2026-10-07',
     url: '/projects/family-investing-course/week-14-asset-allocation/',
   },
+  {
+    slug: 'week-15-mpt',
+    title: 'W15 現代投資組合理論（MPT）入門',
+    titleEn: 'W15 Modern Portfolio Theory',
+    description: '為什麼分散是投資裡唯一的免費午餐：報酬是加權平均、風險不是——相關係數的第三項、效率前緣、系統性 vs 非系統性風險。附效率前緣互動繪圖器（拉 ρ 看曲線彎）與「幾檔才算分散」模擬器。',
+    tags: ['Q2 投資人季', '互動圖表'],
+    date: '2026-10-14',
+    url: '/projects/family-investing-course/week-15-mpt/',
+  },
 ];
