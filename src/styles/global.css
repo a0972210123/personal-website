@@ -1,5 +1,6 @@
 /* ===== Light Theme (Default) ===== */
 :root {
+  color-scheme: light;
   --color-bg: #ffffff;
   --color-surface: #f7f8fa;
   --color-text: #111111;
@@ -32,6 +33,7 @@
 
 /* ===== Dark Theme ===== */
 [data-theme="dark"] {
+  color-scheme: dark;
   --color-bg: #0b0d18;
   --color-surface: #11142a;
   --color-text: #eef1ff;

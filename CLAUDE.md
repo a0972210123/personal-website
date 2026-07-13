@@ -100,7 +100,7 @@ draft: false   # true 時不顯示在列表
 - [x] 設定自訂網域（mattye.dev）
 - [ ] 加入 RSS feed（`@astrojs/rss`）
 - [x] 加入 sitemap（`@astrojs/sitemap`）
-- [ ] Dark mode support
+- [x] Dark mode support
 
 ---
 
