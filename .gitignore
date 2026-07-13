@@ -28,3 +28,7 @@ pnpm-debug.log*
 .dev.vars*
 !.dev.vars.example
 !.env.example
+
+# python pipeline artifacts (scripts/build_data.py)
+__pycache__/
+scripts/_data_in/
