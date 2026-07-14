@@ -158,4 +158,13 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     date: '2026-10-28',
     url: '/projects/family-investing-course/week-17-entry-strategy/',
   },
+  {
+    slug: 'week-18-position-rebalancing',
+    title: 'W18 倉位管理與再平衡',
+    titleEn: 'W18 Position Sizing & Rebalancing',
+    description: 'Q2 配置系列收尾：單一標的上限怎麼定、集中 vs 分散的取捨、再平衡的本質是風險控制不是報酬增強——最後把一切固化成 IPS：寫給恐慌時自己的一封信。附漂移與再平衡模擬器、IPS 一頁模板。',
+    tags: ['Q2 投資人季', '互動模擬器'],
+    date: '2026-11-04',
+    url: '/projects/family-investing-course/week-18-position-rebalancing/',
+  },
 ];
