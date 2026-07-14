@@ -2433,6 +2433,17 @@ footer .container {
 }
 .hero-cta:hover { opacity: 0.88; transform: translateY(-1px); text-decoration: none; color: #fff; }
 
+/* 贊助版 hero CTA — 金黃漸層（與 telaaurealab.com 贊助按鈕同色系的跨站識別） */
+.hero-cta-sponsor {
+  background: linear-gradient(135deg, #fbbf24, #d97706);
+  color: #451a03;
+  border: none;
+  font-family: inherit;
+  line-height: 1.75; /* 對齊 <a> 版 .hero-cta 的繼承行高，兩顆按鈕等高 */
+  cursor: pointer;
+}
+.hero-cta-sponsor:hover { opacity: 1; color: #451a03; filter: brightness(1.07); }
+
 .hero-actions {
   display: flex;
   align-items: center;
