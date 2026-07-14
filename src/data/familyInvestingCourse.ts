@@ -167,4 +167,13 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     date: '2026-11-04',
     url: '/projects/family-investing-course/week-18-position-rebalancing/',
   },
+  {
+    slug: 'week-19-relative-valuation',
+    title: 'W19 估值一——相對估值深用',
+    titleEn: 'W19 Relative Valuation',
+    description: '健檢回答「好不好」，估值回答「值多少」：四個倍數的適用與陷阱、EV 怎麼算才對、comps 怎麼選、倍數差異的三大歸因——便宜通常有理由。附 EV/EBITDA 計算機（含常見錯誤對照）與 PEG 天平。',
+    tags: ['Q2 投資人季', '互動計算機'],
+    date: '2026-11-11',
+    url: '/projects/family-investing-course/week-19-relative-valuation/',
+  },
 ];
