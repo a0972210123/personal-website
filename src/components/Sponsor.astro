@@ -1,0 +1,245 @@
+---
+/*
+ * Sponsor — 贊助入口 + 金額選擇 modal。
+ * 後端沿用 dreamcatcher-worker 的 /create-donation（telaaurealab.com 已驗證上線），
+ * 純前端呼叫：TWD 走綠界（回傳自動送出的 form html）、USD 走 Polar（回傳結帳 url）。
+ * 金額白名單由伺服器端強制（TWD 50/150/300、USD 2/5/10），前端僅呈現同一組選項。
+ * 付款完成後落在 telaaurealab.com/success.html?thanks=1（已知取捨，return URL 為 worker 白名單）。
+ */
+import T from './T.astro';
+---
+<button type="button" class="sponsor-entry" id="sponsor-open">☕ <T zh="贊助我" en="Sponsor" /></button>
+
+<div id="sponsor-modal" role="dialog" aria-modal="true" aria-label="Sponsor">
+  <div class="sponsor-card">
+    <div class="sponsor-ico">☕</div>
+    <h3><T zh="贊助 Matt" en="Sponsor Matt" /></h3>
+    <p class="sponsor-desc"><T zh="喜歡這裡的內容嗎？請我喝杯咖啡，支持網站持續更新。" en="Enjoying the content? Buy me a coffee and help keep this site going." /></p>
+    <div class="sponsor-tabs" id="sponsor-tabs">
+      <button type="button" class="sponsor-tab sel" data-cur="twd">TWD</button>
+      <button type="button" class="sponsor-tab" data-cur="usd">USD</button>
+    </div>
+    <div class="sponsor-amts" id="sponsor-amts"></div>
+    <button type="button" class="sponsor-pay" id="sponsor-pay"><T zh="前往付款" en="Continue to payment" /></button>
+    <button type="button" class="sponsor-later" id="sponsor-close"><T zh="下次再說" en="Maybe later" /></button>
+    <p class="sponsor-note"><T zh="贊助恕不退款，感謝支持！" en="Donations are non-refundable — thank you!" /></p>
+  </div>
+</div>
+
+<style>
+  /* 入口：小型金黃漸層 pill（與 telaaurealab.com 贊助按鈕同款，跨站「贊助=金色」識別） */
+  .sponsor-entry {
+    display: inline-block;
+    padding: 2px 12px;
+    background: linear-gradient(135deg, #fbbf24, #d97706);
+    color: #451a03;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-family: inherit;
+    line-height: 1.6;
+    cursor: pointer;
+    transition: filter 0.15s;
+  }
+  .sponsor-entry:hover { filter: brightness(1.07); }
+
+  #sponsor-modal { display: none; }
+  #sponsor-modal.show {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.55);
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .sponsor-card {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    max-width: 360px;
+    width: 100%;
+    padding: 1.6rem 1.5rem 1.2rem;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  }
+  .sponsor-ico { font-size: 1.8rem; margin-bottom: 0.3rem; }
+  .sponsor-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.45rem; }
+  .sponsor-desc { font-size: 0.83rem; color: var(--color-text-muted); line-height: 1.6; margin-bottom: 0.9rem; }
+
+  .sponsor-tabs { display: flex; gap: 0.4rem; justify-content: center; margin-bottom: 0.7rem; }
+  .sponsor-tab {
+    padding: 0.25rem 0.9rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+  .sponsor-tab.sel { border-color: #f59e0b; color: #d97706; background: rgba(251, 191, 36, 0.15); }
+
+  .sponsor-amts { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+  .sponsor-amts :global(.sponsor-amt) {
+    flex: 1;
+    padding: 0.6rem 0.3rem;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--color-text);
+    font-size: 0.85rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+  .sponsor-amts :global(.sponsor-amt:hover) { border-color: #f59e0b; }
+  .sponsor-amts :global(.sponsor-amt.sel) { border-color: #f59e0b; color: #d97706; background: rgba(251, 191, 36, 0.15); }
+
+  .sponsor-pay {
+    display: block;
+    width: 100%;
+    padding: 0.6rem 0.3rem;
+    background: linear-gradient(135deg, #fbbf24, #d97706);
+    color: #451a03;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: filter 0.15s;
+  }
+  .sponsor-pay:hover { filter: brightness(1.07); }
+  .sponsor-pay:disabled { opacity: 0.6; cursor: wait; }
+
+  .sponsor-later {
+    display: block;
+    width: 100%;
+    margin-top: 0.45rem;
+    padding: 0.4rem;
+    background: transparent;
+    border: none;
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .sponsor-later:hover { color: var(--color-text); }
+  .sponsor-note { font-size: 0.68rem; color: var(--color-text-muted); margin-top: 0.6rem; }
+</style>
+
+<script>
+  const WORKER_URL = 'https://dreamcatcher-worker.a0972210123.workers.dev';
+  const AMOUNTS: Record<string, number[]> = { twd: [50, 150, 300], usd: [2, 5, 10] };
+  const LABEL: Record<string, (n: number) => string> = { twd: n => `NT$${n}`, usd: n => `$${n}` };
+
+  const modal  = document.getElementById('sponsor-modal');
+  const amtsEl = document.getElementById('sponsor-amts');
+  const tabsEl = document.getElementById('sponsor-tabs');
+  const payBtn = document.getElementById('sponsor-pay') as HTMLButtonElement | null;
+  const openBtn = document.getElementById('sponsor-open');
+  const closeBtn = document.getElementById('sponsor-close');
+
+  if (modal && amtsEl && tabsEl && payBtn && openBtn && closeBtn) {
+    const L = (zh: string, en: string) =>
+      document.documentElement.getAttribute('data-lang') === 'en' ? en : zh;
+    const track = (name: string, params: Record<string, unknown>) => {
+      try { (window as any).gtag?.('event', name, params); } catch (e) {}
+    };
+
+    let cur = 'twd'; // 個人站無既有幣別系統，預設 TWD
+    let selAmt: number | null = null;
+    const payBtnHtml = payBtn.innerHTML;
+
+    function renderAmts() {
+      amtsEl!.innerHTML = '';
+      AMOUNTS[cur].forEach((n, i) => {
+        const b = document.createElement('button');
+        b.className = 'sponsor-amt' + (i === 1 ? ' sel' : ''); // 預選中間金額
+        b.type = 'button';
+        b.textContent = LABEL[cur](n);
+        b.addEventListener('click', () => {
+          amtsEl!.querySelectorAll('.sponsor-amt').forEach(x => x.classList.remove('sel'));
+          b.classList.add('sel');
+          selAmt = n;
+        });
+        amtsEl!.appendChild(b);
+      });
+      selAmt = AMOUNTS[cur][1];
+    }
+
+    function openModal() {
+      renderAmts();
+      payBtn!.disabled = false;
+      payBtn!.innerHTML = payBtnHtml;
+      modal!.classList.add('show');
+      track('donate_open', { source: 'mattye_footer' });
+    }
+    function closeModal() { modal!.classList.remove('show'); }
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && modal!.classList.contains('show')) closeModal();
+    });
+
+    tabsEl.addEventListener('click', e => {
+      const tab = (e.target as HTMLElement).closest('.sponsor-tab') as HTMLElement | null;
+      if (!tab || tab.dataset.cur === cur) return;
+      cur = tab.dataset.cur!;
+      tabsEl!.querySelectorAll('.sponsor-tab').forEach(x => x.classList.remove('sel'));
+      tab.classList.add('sel');
+      renderAmts();
+    });
+
+    payBtn.addEventListener('click', async () => {
+      payBtn!.disabled = true;
+      payBtn!.textContent = L('處理中…', 'Processing…');
+      track('donate_start', { amount: selAmt, currency: cur, source: 'mattye' });
+      try {
+        const res = await fetch(`${WORKER_URL}/create-donation`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount: selAmt, currency: cur }),
+        });
+        const data = await res.json();
+        if (data.url) {
+          // Polar（USD）：直接開結帳頁；被擋就詢問後整頁前往
+          const popup = window.open(data.url, '_blank');
+          if (!popup) {
+            if (confirm(L('瀏覽器封鎖了新視窗，是否在本頁前往付款？', 'Popup blocked — continue to payment in this tab?'))) {
+              location.href = data.url;
+              return;
+            }
+          }
+        } else if (data.provider === 'ecpay' && data.html) {
+          // 綠界（TWD）：需要 form POST，寫入新視窗自動送出
+          const popup = window.open('', '_blank');
+          if (popup) {
+            popup.document.write(data.html);
+            popup.document.close();
+          } else {
+            if (confirm(L('瀏覽器封鎖了新視窗，是否在本頁前往綠界付款？', 'Popup blocked — continue to ECPay in this tab?'))) {
+              document.open(); document.write(data.html); document.close();
+              return;
+            }
+          }
+        } else {
+          throw new Error(data.error || 'Unexpected response');
+        }
+        closeModal();
+      } catch (err: any) {
+        alert(L('付款連結建立失敗：', 'Could not create the payment link: ') + err.message);
+      }
+      payBtn!.disabled = false;
+      payBtn!.innerHTML = payBtnHtml;
+    });
+  }
+</script>
