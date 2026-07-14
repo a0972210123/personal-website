@@ -32,3 +32,6 @@ pnpm-debug.log*
 # python pipeline artifacts (scripts/build_data.py)
 __pycache__/
 scripts/_data_in/
+
+# local Claude Code config (dev-server launch config, agent state)
+.claude/
