@@ -149,4 +149,13 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     date: '2026-10-21',
     url: '/projects/family-investing-course/week-16-index-investing/',
   },
+  {
+    slug: 'week-17-entry-strategy',
+    title: 'W17 入場策略——Lump Sum vs DCA',
+    titleEn: 'W17 Lump Sum vs DCA',
+    description: '手上一筆錢，一次投入還是分批？先分清兩種本質不同的 DCA、Vanguard 的 2/3 結論，以及 DCA 真正買的東西——行為保險。附三情境路徑實驗室（看 DCA 唯一的勝利劇本）與三問入場決策器。',
+    tags: ['Q2 投資人季', '互動模擬器'],
+    date: '2026-10-28',
+    url: '/projects/family-investing-course/week-17-entry-strategy/',
+  },
 ];
