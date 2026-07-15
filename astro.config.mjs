@@ -29,5 +29,9 @@ const publicPages = findPublicHtmlPages(join(__dirname, 'public'), 'https://matt
 export default defineConfig({
   site: 'https://mattye.dev',
   output: 'static',
-  integrations: [sitemap({ customPages: publicPages })],
+  integrations: [sitemap({
+    customPages: publicPages,
+    // keep unlinked prototype/lab pages out of the sitemap (also noindex'd)
+    filter: (page) => !page.includes('/projects/globe-lab'),
+  })],
 });
