@@ -1,0 +1,164 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import T from '../../components/T.astro';
+---
+<BaseLayout
+  title="Globe prototype · three.js / globe.gl — exposome"
+  description="Prototype: global PM2.5 + modifiable-risk PAF on a three.js/globe.gl WebGL globe."
+>
+  <meta slot="head" name="robots" content="noindex" />
+
+  <div class="container-wide globe-lab">
+    <section class="gl-hero">
+      <p class="gl-tag">PROTOTYPE · three.js / globe.gl (WebGL)</p>
+      <h1><T zh="地球儀原型 — three.js / globe.gl" en="Globe prototype — three.js / globe.gl" /></h1>
+      <p class="gl-sub">
+        <T zh="真 3D 方案：globe.gl（內含 three.js）WebGL 球體，可拖曳、縮放、自轉、有大氣光暈。全球 PM2.5（近年）＋可調控失智風險 PAF（27 國）。皆為教育性模型估計。"
+           en="True-3D route: globe.gl (bundles three.js) WebGL sphere — drag, zoom, auto-spin, atmosphere glow. Global PM2.5 (recent) + modifiable-dementia-risk PAF (27 countries). Educational modelled estimates." />
+      </p>
+    </section>
+
+    <div class="gl-toggle" id="gl-toggle">
+      <button type="button" class="gl-btn is-active" data-metric="pm25"><T zh="PM2.5（近年）" en="PM2.5 (recent)" /></button>
+      <button type="button" class="gl-btn" data-metric="paf"><T zh="可調控風險 PAF" en="Modifiable risk (PAF)" /></button>
+    </div>
+
+    <div class="globe-wrap" id="globe-wrap">
+      <div id="globe"></div>
+      <div class="globe-legend" id="globe-legend"></div>
+    </div>
+    <p class="gl-note">
+      <T zh="※ 原型頁，未連到網站導覽。界線 © Natural Earth（public domain）｜PM2.5 © ACAG/WashU, CC BY 4.0｜PAF：Livingston 2024 相對風險 × 各國危險因子盛行率 — 模型估計。"
+         en="※ Prototype page, not in site nav. Boundaries © Natural Earth (public domain) · PM2.5 © ACAG/WashU, CC BY 4.0 · PAF: Livingston 2024 RRs × national risk-factor prevalence — modelled." />
+    </p>
+  </div>
+</BaseLayout>
+
+<!-- vendored, self-hosted globe.gl UMD (bundles three.js + three-globe) -->
+<script is:inline src="/vendor/globe.gl.min.js"></script>
+
+<script>
+  const RAMP = ['#ffeda0', '#fed976', '#feb24c', '#fd8d3c', '#f03b20', '#bd0026'];
+  const METRICS = {
+    pm25: { bins: [5, 10, 15, 25, 35], zh: 'PM2.5 µg/m³', en: 'PM2.5 µg/m³', unit: 'µg/m³', dec: 1 },
+    paf:  { bins: [20, 24, 28, 32, 36], zh: '可調控失智風險 PAF %', en: 'Attributable dementia risk PAF %', unit: '%', dec: 1 },
+  };
+  const lang = () => (document.documentElement.getAttribute('data-lang') === 'en' ? 'en' : 'zh');
+  const L = (zh, en) => (lang() === 'en' ? en : zh);
+  const isDark = () => document.documentElement.getAttribute('data-theme') === 'dark';
+  const noData = () => (isDark() ? '#2b3050' : '#e6e6e6');
+  const oceanCol = () => (isDark() ? '#141a33' : '#dfe8f5');
+  const strokeColSafe = () => (isDark() ? '#8b93b8' : '#ffffff');
+
+  function colorFor(v, bins) {
+    if (v == null || Number.isNaN(v)) return noData();
+    for (let i = 0; i < bins.length; i++) if (v < bins[i]) return RAMP[i];
+    return RAMP[bins.length];
+  }
+
+  const wrap = document.getElementById('globe-wrap');
+  const el = document.getElementById('globe');
+  const legendEl = document.getElementById('globe-legend');
+  let metric = 'pm25', world = null;
+
+  function labelHTML(f) {
+    const m = METRICS[metric], v = f.properties[metric];
+    return `<div class="g3-tip"><b>${f.properties.name}</b><br>${L(m.zh, m.en)}: ` +
+      (v == null ? L('無資料', 'no data') : `${(+v).toFixed(m.dec)} ${m.unit}`) + '</div>';
+  }
+
+  function applyTheme() {
+    if (!world) return;
+    try { world.globeMaterial().color.set(oceanCol()); } catch (e) {}
+    world.polygonStrokeColor(() => strokeColSafe());
+    world.polygonCapColor((f) => colorFor(f.properties[metric], METRICS[metric].bins));
+    world.atmosphereColor(isDark() ? '#6b7bd6' : '#a9c2e8');
+  }
+
+  function buildLegend() {
+    const m = METRICS[metric], bins = m.bins, rows = [];
+    for (let i = 0; i <= bins.length; i++) {
+      const lo = i === 0 ? 0 : bins[i - 1];
+      const label = i === bins.length ? `${bins[i - 1]}+` : `${lo}–${bins[i]}`;
+      rows.push(`<span class="lg-row"><i style="background:${RAMP[i]}"></i>${label}</span>`);
+    }
+    legendEl.innerHTML = `<div class="lg-title">${L(m.zh, m.en)}</div>` + rows.join('');
+  }
+
+  function sizeGlobe() {
+    if (!world) return;
+    const r = wrap.getBoundingClientRect();
+    world.width(r.width).height(r.height);
+  }
+
+  document.getElementById('gl-toggle').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-metric]'); if (!b || !world) return;
+    metric = b.dataset.metric;
+    document.querySelectorAll('#gl-toggle .gl-btn').forEach((x) => x.classList.toggle('is-active', x === b));
+    world.polygonCapColor((f) => colorFor(f.properties[metric], METRICS[metric].bins));
+    buildLegend();
+  });
+
+  window.addEventListener('langchange', buildLegend);
+  window.addEventListener('resize', sizeGlobe);
+  new MutationObserver(applyTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+  fetch('/data/geo/world-globe.geojson').then((r) => r.json()).then((geo) => {
+    if (typeof window.Globe !== 'function') { legendEl.textContent = 'globe.gl failed to load'; return; }
+    world = window.Globe()(el)
+      .backgroundColor('rgba(0,0,0,0)')
+      .showGlobe(true)
+      .showAtmosphere(true)
+      .atmosphereAltitude(0.16)
+      .polygonsData(geo.features)
+      .polygonAltitude(0.012)
+      .polygonCapColor((f) => colorFor(f.properties[metric], METRICS[metric].bins))
+      .polygonSideColor(() => 'rgba(120,120,150,0.20)')
+      .polygonStrokeColor(() => strokeColSafe())
+      .polygonLabel(labelHTML)
+      .polygonsTransitionDuration(300);
+    sizeGlobe();
+    applyTheme();
+    world.pointOfView({ lat: 20, lng: 80, altitude: 2.2 });
+    const c = world.controls();
+    c.autoRotate = true; c.autoRotateSpeed = 0.5; c.enableZoom = true;
+    buildLegend();
+  }).catch((err) => { legendEl.textContent = 'load error: ' + err; });
+</script>
+
+<style>
+  .globe-lab { padding-top: var(--spacing-lg); padding-bottom: var(--spacing-xl); }
+  .gl-tag { font-size: 0.72rem; letter-spacing: 0.08em; color: var(--color-accent); font-weight: 700; margin-bottom: 0.3rem; }
+  .gl-hero h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); margin-bottom: 0.5rem; }
+  .gl-sub { color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.7; max-width: 640px; }
+  .gl-toggle { display: flex; gap: 0.5rem; margin: 1.2rem 0 0.7rem; flex-wrap: wrap; }
+  .gl-btn {
+    font: inherit; font-size: 0.82rem; font-weight: 600; cursor: pointer;
+    padding: 0.4rem 0.9rem; border-radius: 999px;
+    border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text-muted);
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .gl-btn:hover { border-color: var(--color-accent); color: var(--color-text); }
+  .gl-btn.is-active { border-color: var(--color-accent); color: #fff; background: var(--color-accent); }
+  .globe-wrap {
+    position: relative; height: 460px; border: 1px solid var(--color-border);
+    border-radius: var(--radius-md); background: var(--color-surface); overflow: hidden;
+    touch-action: none; cursor: grab;
+  }
+  .globe-wrap:active { cursor: grabbing; }
+  #globe { width: 100%; height: 100%; }
+  .globe-legend {
+    position: absolute; right: 12px; bottom: 12px; z-index: 4;
+    background: var(--card-bg); border: 1px solid var(--card-border); box-shadow: var(--card-shadow);
+    border-radius: 8px; padding: 0.5rem 0.6rem; font-size: 0.72rem; color: var(--color-text);
+    display: flex; flex-direction: column; gap: 0.18rem;
+  }
+  .globe-legend .lg-title { font-weight: 700; margin-bottom: 0.15rem; }
+  .globe-legend .lg-row { display: flex; align-items: center; gap: 0.4rem; }
+  .globe-legend i { width: 0.85rem; height: 0.85rem; border-radius: 2px; display: inline-block; }
+  .gl-note { margin-top: 0.8rem; font-size: 0.78rem; color: var(--color-text-muted); line-height: 1.6; }
+  :global(.g3-tip) {
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    color: var(--color-text); font-size: 0.8rem; line-height: 1.4; padding: 0.35rem 0.55rem; border-radius: 8px;
+  }
+</style>
