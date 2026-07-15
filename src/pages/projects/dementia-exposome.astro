@@ -777,14 +777,20 @@ import T from '../../components/T.astro';
   .tw-map { height: 460px; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
   .map-note { font-size: 0.78rem; color: var(--color-text-muted); margin-top: 0.6rem; line-height: 1.6; }
   .prev-method { margin-top: 0.8rem; padding: 0.8rem 1rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
-  .prev-method-h { font-size: 0.95rem; font-weight: 700; margin: 0 0 0.4rem; }
-  .prev-method-p { font-size: 0.8rem; color: var(--color-text-muted); line-height: 1.6; margin: 0 0 0.6rem; }
-  .prev-method-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
-  .prev-method-table th, .prev-method-table td { padding: 0.3rem 0.5rem; border-bottom: 1px solid var(--color-border); text-align: left; }
-  .prev-method-table th { color: var(--color-text-muted); font-weight: 600; }
-  .prev-method-table th:last-child, .prev-method-table td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
-  .prev-method-total td { font-weight: 700; border-top: 2px solid var(--color-border); border-bottom: none; }
-  .prev-method-src { font-size: 0.72rem; color: var(--color-text-muted); margin: 0.6rem 0 0; line-height: 1.6; }
+  /* method-box internals are injected via innerHTML → Astro's scoped selectors don't match them.
+     Scope to the .prev-method container (which IS in the template) and mark the injected children :global. */
+  .prev-method :global(.prev-method-h) { font-size: 0.95rem; font-weight: 700; margin: 0 0 0.4rem; }
+  .prev-method :global(.prev-method-p) { font-size: 0.8rem; color: var(--color-text-muted); line-height: 1.6; margin: 0 0 0.6rem; }
+  .prev-method :global(.prev-method-table) { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  .prev-method :global(.prev-method-table th), .prev-method :global(.prev-method-table td) { padding: 0.3rem 0.5rem; border-bottom: 1px solid var(--color-border); text-align: left; }
+  .prev-method :global(.prev-method-table th) { color: var(--color-text-muted); font-weight: 600; }
+  .prev-method :global(.prev-method-table th:last-child), .prev-method :global(.prev-method-table td:last-child) { text-align: right; font-variant-numeric: tabular-nums; }
+  /* composite-PAF table has 4 columns (factor · prevalence · RR · PAF) — give the 3 numeric columns
+     breathing room + right-align so the numbers don't crowd together */
+  .prev-method :global(.prev-method-paf th), .prev-method :global(.prev-method-paf td) { padding: 0.34rem 0.9rem; }
+  .prev-method :global(.prev-method-paf th:not(:first-child)), .prev-method :global(.prev-method-paf td:not(:first-child)) { text-align: right; font-variant-numeric: tabular-nums; }
+  .prev-method :global(.prev-method-total td) { font-weight: 700; border-top: 2px solid var(--color-border); border-bottom: none; }
+  .prev-method :global(.prev-method-src) { font-size: 0.72rem; color: var(--color-text-muted); margin: 0.6rem 0 0; line-height: 1.6; }
   .map-fail { padding: 2rem; text-align: center; color: var(--color-text-muted); }
   .tw-map :global(.leaflet-container) { background: var(--color-surface); font-family: var(--font-sans); font-size: 0.8rem; }
   .tw-map :global(.map-legend), .tw-map :global(.leaflet-tooltip) {
@@ -1675,7 +1681,7 @@ function renderExpoMethod() {
       const f = F[k], lab = FACTOR_LABEL[k];
       return `<tr><td>${L(lab[0], lab[1])}</td><td>${f.prev_pct}%</td><td>${f.rr}</td><td>${f.paf_pct}%</td></tr>`;
     }).join('');
-    html += `<table class="prev-method-table"><thead><tr><th>${L('因子', 'Factor')}</th><th>${L('盛行率', 'Prev.')}</th><th>RR</th><th>PAF</th></tr></thead><tbody>`
+    html += `<table class="prev-method-table prev-method-paf"><thead><tr><th>${L('因子', 'Factor')}</th><th>${L('盛行率', 'Prev.')}</th><th>RR</th><th>PAF</th></tr></thead><tbody>`
       + rows + `<tr class="prev-method-total"><td>${L('合計（可調控）', 'Composite')}</td><td>—</td><td>—</td><td>${e.composite_paf_pct}%</td></tr></tbody></table>`;
     const srcs = [...new Set(EXPO_FACTORS.filter(k => F[k]).map(k => `${F[k].source} (${F[k].year})`))].join('；');
     html += `<p class="prev-method-src">${formula}<br>${L('資料來源：', 'Sources: ')}${srcs}｜RR © Livingston 2024 Lancet Commission｜${tail}</p>`;
