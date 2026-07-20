@@ -194,4 +194,13 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     date: '2026-11-25',
     url: '/projects/family-investing-course/week-21-margin-of-safety/',
   },
+  {
+    slug: 'week-22-moat-five-forces',
+    title: 'W22 質化分析——護城河進階＋波特五力',
+    titleEn: 'W22 Moats & Five Forces',
+    description: '估值假設的品質保證：護城河從「有沒有」升級到來源×寬度×趨勢、Porter 五力產業掃描、定價權試金石——真正值錢的公司不是「現在很賺」，是「別人搶不走」。附五力雷達評分器與真假護城河快篩。',
+    tags: ['Q2 投資人季', '互動測驗'],
+    date: '2026-12-02',
+    url: '/projects/family-investing-course/week-22-moat-five-forces/',
+  },
 ];
