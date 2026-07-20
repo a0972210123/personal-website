@@ -203,4 +203,13 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     date: '2026-12-02',
     url: '/projects/family-investing-course/week-22-moat-five-forces/',
   },
+  {
+    slug: 'week-23-behavioral-finance',
+    title: 'W23 行為財務學——認知偏誤與對策工程',
+    titleEn: 'W23 Behavioral Finance',
+    description: '前 22 週打造武器，本週處理拿武器的手會抖：兩套系統、六大偏誤目錄（損失趨避／過度自信／確認偏誤／錨定／羊群／近因）、對策工程——不靠意志力靠制度。附擲硬幣實驗、偏誤配對遊戲與對策速查器。',
+    tags: ['Q2 投資人季', '互動測驗'],
+    date: '2026-12-09',
+    url: '/projects/family-investing-course/week-23-behavioral-finance/',
+  },
 ];
