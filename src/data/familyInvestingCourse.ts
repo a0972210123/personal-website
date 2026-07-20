@@ -176,4 +176,13 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     date: '2026-11-11',
     url: '/projects/family-investing-course/week-19-relative-valuation/',
   },
+  {
+    slug: 'week-20-dcf',
+    title: 'W20 估值二——DCF 基礎',
+    titleEn: 'W20 DCF Fundamentals',
+    description: '公司值它未來能生出的所有現金，折現到今天：DCF 三零件（FCF 預測、折現率、終值）、終值為什麼佔六到八成、「假設放大器」的正確心態。附 DCF 組裝台——拉動三個假設看每股價值怎麼跳（含 r−g 分母爆炸防呆）。',
+    tags: ['Q2 投資人季', '互動計算機'],
+    date: '2026-11-18',
+    url: '/projects/family-investing-course/week-20-dcf/',
+  },
 ];
