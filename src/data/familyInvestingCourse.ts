@@ -185,4 +185,13 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     date: '2026-11-18',
     url: '/projects/family-investing-course/week-20-dcf/',
   },
+  {
+    slug: 'week-21-margin-of-safety',
+    title: 'W21 估值三——敏感度、情境與安全邊際',
+    titleEn: 'W21 Sensitivity & Margin of Safety',
+    description: '尺本身不準怎麼辦？敏感度九宮格把單點變區間（13.2–26.7 差 2 倍）、三情境給區間商業故事、Graham 的安全邊際吸收誤差、市場先生寓言。附互動九宮格（含市價反推市場預期）與安全邊際計算器。',
+    tags: ['Q2 投資人季', '互動計算機'],
+    date: '2026-11-25',
+    url: '/projects/family-investing-course/week-21-margin-of-safety/',
+  },
 ];
