@@ -1,0 +1,43 @@
+# 每日 analytics 快照：GA4 + Cloudflare + GitHub → secret gist
+# 手動觸發：Actions → analytics → Run workflow
+# 設定步驟見 docs/analytics-pipeline.md
+name: analytics
+
+on:
+  schedule:
+    - cron: '30 1 * * *' # 01:30 UTC = 09:30 台北
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: analytics
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Fetch analytics and publish to gist
+        env:
+          GA4_SA_KEY: ${{ secrets.GA4_SA_KEY }}
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+          GH_TRAFFIC_TOKEN: ${{ secrets.GH_TRAFFIC_TOKEN }}
+          GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
+          GIST_ID: ${{ secrets.GIST_ID }}
+        run: node scripts/fetch-analytics.mjs
+      - name: Upload snapshot artifact (debug)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: analytics-snapshot
+          path: out/
+          retention-days: 7
+          if-no-files-found: ignore

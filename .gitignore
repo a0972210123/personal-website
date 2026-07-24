@@ -33,5 +33,8 @@ pnpm-debug.log*
 __pycache__/
 scripts/_data_in/
 
+# analytics pipeline local output (scripts/fetch-analytics.mjs)
+out/
+
 # local Claude Code config (dev-server launch config, agent state)
 .claude/
