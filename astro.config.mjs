@@ -32,6 +32,6 @@ export default defineConfig({
   integrations: [sitemap({
     customPages: publicPages,
     // keep unlinked prototype/lab pages out of the sitemap (also noindex'd)
-    filter: (page) => !page.includes('/projects/globe-lab'),
+    filter: (page) => !page.includes('/projects/globe-lab') && !page.includes('/dashboard'),
   })],
 });
