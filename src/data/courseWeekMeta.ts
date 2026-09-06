@@ -324,5 +324,26 @@ export const courseWeekMeta: CourseWeekMeta[] = [
     "descriptionEn": "Week 27 of 52: arithmetic vs geometric returns and volatility drag, what TWR and MWR each answer — and the paper portfolio goes live as the vehicle for Q3.",
     "ogTitleEn": "Week 27: TWR/MWR and the Paper Portfolio",
     "ogDescriptionEn": "A strategy up 80% while the wallet lost money — what TWR and MWR each answer. The paper portfolio goes live as Q3's experimental vehicle."
+  },
+  {
+    "slug": "week-28-risk-measurement",
+    "title": "第 28 週：風險衡量——波動率、回撤與 VaR｜給家人的投資課 · Matt Ye",
+    "description": "52 週投資課第 28 週：波動率年化（×√252）、最大回撤與回本不對稱、VaR 速算與三缺陷、下行偏差，給模擬組合裝上風險儀表板。附回本陡坡與風險翻譯機互動。",
+    "ogTitle": "第 28 週：風險衡量——波動率、回撤與 VaR — 給家人的投資課",
+    "ogDescription": "虧 50% 要賺 100% 才回本——回本的坡非線性地陡。波動、MDD、VaR 三儀表上線，把風險翻成家人聽得懂的金額。"
+  },
+  {
+    "slug": "week-29-sharpe-family",
+    "title": "第 29 週：風險調整績效——Sharpe 家族｜給家人的投資課 · Matt Ye",
+    "description": "52 週投資課第 29 週：Sharpe、Sortino 與資訊比率——同樣賺 8% 誰賺得高明；比公式更重要的四個使用陷阱。附 Sharpe 對決台與陷阱照妖鏡互動。",
+    "ogTitle": "第 29 週：風險調整績效——Sharpe 家族 — 給家人的投資課",
+    "ogDescription": "報酬除以風險才能比高下：C 賺 12% 卻輸給賺 8% 的 A。三比率的分工、四個陷阱，附對決台與照妖鏡互動。"
+  },
+  {
+    "slug": "week-30-brinson-attribution",
+    "title": "第 30 週：績效歸因——Brinson 模型｜給家人的投資課 · Matt Ye",
+    "description": "52 週投資課第 30 週：超額 2.4pp 拆成配置、選股與交互三塊且勾稽歸零，並修正被誤用最多的「90% 來自配置」。附 Brinson 拆帳台與 90% 判讀互動。",
+    "ogTitle": "第 30 週：績效歸因——Brinson 模型 — 給家人的投資課",
+    "ogDescription": "贏大盤 2.4pp——押對類別還是挑對股票？配置＋選股＋交互＝超額，帳拆得乾乾淨淨。附拆帳台互動。"
   }
 ];
