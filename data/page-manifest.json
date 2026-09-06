@@ -10,12 +10,12 @@
       "lastChanged": "2026-08-30"
     },
     "https://mattye.dev/en/about/": {
-      "hash": "ba07c0003ab9b378",
-      "lastChanged": "2026-08-30"
+      "hash": "b30bbeeeda9335ae",
+      "lastChanged": "2026-09-06"
     },
     "https://mattye.dev/en/coaching/": {
-      "hash": "54f03a265de1be8d",
-      "lastChanged": "2026-08-30"
+      "hash": "faa226b899021266",
+      "lastChanged": "2026-09-06"
     },
     "https://mattye.dev/en/projects/agent-skills/": {
       "hash": "5bfc6b3823ce8584",
@@ -78,8 +78,8 @@
       "lastChanged": "2026-08-30"
     },
     "https://mattye.dev/en/projects/family-investing-course/week-14-asset-allocation/": {
-      "hash": "5e779c4e6a219771",
-      "lastChanged": "2026-08-30"
+      "hash": "dd600d74d6278d63",
+      "lastChanged": "2026-09-06"
     },
     "https://mattye.dev/en/projects/family-investing-course/week-15-mpt/": {
       "hash": "be0bdd843a41fe2b",
@@ -94,8 +94,8 @@
       "lastChanged": "2026-08-30"
     },
     "https://mattye.dev/en/projects/family-investing-course/week-18-position-rebalancing/": {
-      "hash": "d2a8ffb137604641",
-      "lastChanged": "2026-08-30"
+      "hash": "6a3310a70bf24208",
+      "lastChanged": "2026-09-06"
     },
     "https://mattye.dev/en/projects/family-investing-course/week-19-relative-valuation/": {
       "hash": "470e6b4c4d975484",
@@ -126,8 +126,12 @@
       "lastChanged": "2026-08-30"
     },
     "https://mattye.dev/en/projects/family-investing-course/week-26-q2-capstone-thesis/": {
-      "hash": "6ba30b0e98da9cc3",
-      "lastChanged": "2026-08-30"
+      "hash": "f02a982b1484fe5a",
+      "lastChanged": "2026-09-06"
+    },
+    "https://mattye.dev/en/projects/family-investing-course/week-27-returns-portfolio/": {
+      "hash": "45d541dba1c7520d",
+      "lastChanged": "2026-09-06"
     },
     "https://mattye.dev/en/projects/family-investing-course/": {
       "hash": "83fc40578f003acb",
@@ -194,8 +198,8 @@
       "lastChanged": "2026-08-30"
     },
     "https://mattye.dev/en/speeches/": {
-      "hash": "7840205c0ef02e15",
-      "lastChanged": "2026-08-30"
+      "hash": "f5c37281ec1ff458",
+      "lastChanged": "2026-09-06"
     },
     "https://mattye.dev/en/sponsor/": {
       "hash": "b197fcc781f3b0a5",
@@ -214,8 +218,8 @@
       "lastChanged": "2026-08-30"
     },
     "https://mattye.dev/en/": {
-      "hash": "d02625805cbfe380",
-      "lastChanged": "2026-08-30"
+      "hash": "3bdf83bfb9c6440f",
+      "lastChanged": "2026-09-06"
     },
     "https://mattye.dev/": {
       "hash": "c4f9a7db68337fb9",
@@ -334,8 +338,8 @@
       "lastChanged": "2026-08-30"
     },
     "https://mattye.dev/projects/family-investing-course/week-27-returns-portfolio/": {
-      "hash": "e3705d6234ce8604",
-      "lastChanged": "2026-08-30"
+      "hash": "b5c7afa34a05ea88",
+      "lastChanged": "2026-09-06"
     },
     "https://mattye.dev/projects/family-investing-course/": {
       "hash": "7fb0219f26480aef",
@@ -417,6 +421,10 @@
       "hash": "d8c5f0115d165134",
       "lastChanged": "2026-08-30"
     },
+    "https://mattye.dev/writing/In-Memory-of-Miguel-Li/": {
+      "hash": "0879b28f4e9b2283",
+      "lastChanged": "2026-08-30"
+    },
     "https://mattye.dev/writing/family-investing-01-why-invest/": {
       "hash": "04d0302ac7ae9386",
       "lastChanged": "2026-08-30"
@@ -455,10 +463,6 @@
     },
     "https://mattye.dev/writing/hello-world/": {
       "hash": "d3d2121a12c3605b",
-      "lastChanged": "2026-08-30"
-    },
-    "https://mattye.dev/writing/In-Memory-of-Miguel-Li/": {
-      "hash": "0879b28f4e9b2283",
       "lastChanged": "2026-08-30"
     },
     "https://mattye.dev/writing/management-3r-01-manifesto/": {
