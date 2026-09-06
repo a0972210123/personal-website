@@ -328,4 +328,15 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     published: '2026-08-19',
     url: '/projects/family-investing-course/week-27-returns-portfolio/',
   },
+  {
+    slug: 'week-28-risk-measurement',
+    title: 'W28 風險衡量——波動率、回撤與 VaR',
+    titleEn: 'W28 Risk: Volatility, Drawdown, VaR',
+    description: '操盤手與散戶的分水嶺不在報酬，在能不能量化風險：波動率年化、最大回撤與回本不對稱（虧 50% 要賺 100%）、VaR 速算與三缺陷。附回本陡坡與風險翻譯機互動，模擬組合的風險儀表板上線。',
+    descriptionEn: 'Volatility annualization, max drawdown and the asymmetry of recovery (a 50% loss needs a 100% gain), VaR and its three flaws — the paper portfolio gets its risk dashboard, with two interactive tools.',
+    tags: ['Q3 操盤手季', '互動計算機'],
+    date: '2027-01-13',
+    published: '2026-09-06',
+    url: '/projects/family-investing-course/week-28-risk-measurement/',
+  },
 ];

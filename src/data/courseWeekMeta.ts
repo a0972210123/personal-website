@@ -324,5 +324,12 @@ export const courseWeekMeta: CourseWeekMeta[] = [
     "descriptionEn": "Week 27 of 52: arithmetic vs geometric returns and volatility drag, what TWR and MWR each answer — and the paper portfolio goes live as the vehicle for Q3.",
     "ogTitleEn": "Week 27: TWR/MWR and the Paper Portfolio",
     "ogDescriptionEn": "A strategy up 80% while the wallet lost money — what TWR and MWR each answer. The paper portfolio goes live as Q3's experimental vehicle."
+  },
+  {
+    "slug": "week-28-risk-measurement",
+    "title": "第 28 週：風險衡量——波動率、回撤與 VaR｜給家人的投資課 · Matt Ye",
+    "description": "52 週投資課第 28 週：波動率年化（×√252）、最大回撤與回本不對稱、VaR 速算與三缺陷、下行偏差，給模擬組合裝上風險儀表板。附回本陡坡與風險翻譯機互動。",
+    "ogTitle": "第 28 週：風險衡量——波動率、回撤與 VaR — 給家人的投資課",
+    "ogDescription": "虧 50% 要賺 100% 才回本——回本的坡非線性地陡。波動、MDD、VaR 三儀表上線，把風險翻成家人聽得懂的金額。"
   }
 ];
