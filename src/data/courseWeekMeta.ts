@@ -331,5 +331,12 @@ export const courseWeekMeta: CourseWeekMeta[] = [
     "description": "52 週投資課第 28 週：波動率年化（×√252）、最大回撤與回本不對稱、VaR 速算與三缺陷、下行偏差，給模擬組合裝上風險儀表板。附回本陡坡與風險翻譯機互動。",
     "ogTitle": "第 28 週：風險衡量——波動率、回撤與 VaR — 給家人的投資課",
     "ogDescription": "虧 50% 要賺 100% 才回本——回本的坡非線性地陡。波動、MDD、VaR 三儀表上線，把風險翻成家人聽得懂的金額。"
+  },
+  {
+    "slug": "week-29-sharpe-family",
+    "title": "第 29 週：風險調整績效——Sharpe 家族｜給家人的投資課 · Matt Ye",
+    "description": "52 週投資課第 29 週：Sharpe、Sortino、資訊比率三兄弟——同樣賺 8% 誰賺得高明；四個使用陷阱（期間、平滑化、尾部、負值）。附 Sharpe 對決台與陷阱照妖鏡互動。",
+    "ogTitle": "第 29 週：風險調整績效——Sharpe 家族 — 給家人的投資課",
+    "ogDescription": "報酬除以風險才能比高下：C 賺 12% 卻輸給賺 8% 的 A。三比率的分工、四個陷阱，附對決台與照妖鏡互動。"
   }
 ];

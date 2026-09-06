@@ -339,4 +339,15 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     published: '2026-09-06',
     url: '/projects/family-investing-course/week-28-risk-measurement/',
   },
+  {
+    slug: 'week-29-sharpe-family',
+    title: 'W29 風險調整績效——Sharpe 家族',
+    titleEn: 'W29 The Sharpe Family',
+    description: '報酬除以風險才能比高下：Sharpe、Sortino、資訊比率的分工，C 賺 12% 為什麼輸給賺 8% 的 A，以及比公式更重要的四個使用陷阱。附 Sharpe 對決台與陷阱照妖鏡互動。',
+    descriptionEn: 'Divide return by risk before comparing: Sharpe, Sortino and the information ratio, why 12% can lose to 8%, and the four traps that matter more than the formulas. With a duel bench and a trap-spotting quiz.',
+    tags: ['Q3 操盤手季', '互動測驗'],
+    date: '2027-01-20',
+    published: '2026-09-06',
+    url: '/projects/family-investing-course/week-29-sharpe-family/',
+  },
 ];
