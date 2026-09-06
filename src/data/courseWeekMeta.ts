@@ -335,7 +335,7 @@ export const courseWeekMeta: CourseWeekMeta[] = [
   {
     "slug": "week-29-sharpe-family",
     "title": "第 29 週：風險調整績效——Sharpe 家族｜給家人的投資課 · Matt Ye",
-    "description": "52 週投資課第 29 週：Sharpe、Sortino、資訊比率三兄弟——同樣賺 8% 誰賺得高明；四個使用陷阱（期間、平滑化、尾部、負值）。附 Sharpe 對決台與陷阱照妖鏡互動。",
+    "description": "52 週投資課第 29 週：Sharpe、Sortino 與資訊比率——同樣賺 8% 誰賺得高明；比公式更重要的四個使用陷阱。附 Sharpe 對決台與陷阱照妖鏡互動。",
     "ogTitle": "第 29 週：風險調整績效——Sharpe 家族 — 給家人的投資課",
     "ogDescription": "報酬除以風險才能比高下：C 賺 12% 卻輸給賺 8% 的 A。三比率的分工、四個陷阱，附對決台與照妖鏡互動。"
   },
