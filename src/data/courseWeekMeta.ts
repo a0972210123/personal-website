@@ -338,5 +338,12 @@ export const courseWeekMeta: CourseWeekMeta[] = [
     "description": "52 週投資課第 29 週：Sharpe、Sortino、資訊比率三兄弟——同樣賺 8% 誰賺得高明；四個使用陷阱（期間、平滑化、尾部、負值）。附 Sharpe 對決台與陷阱照妖鏡互動。",
     "ogTitle": "第 29 週：風險調整績效——Sharpe 家族 — 給家人的投資課",
     "ogDescription": "報酬除以風險才能比高下：C 賺 12% 卻輸給賺 8% 的 A。三比率的分工、四個陷阱，附對決台與照妖鏡互動。"
+  },
+  {
+    "slug": "week-30-brinson-attribution",
+    "title": "第 30 週：績效歸因——Brinson 模型｜給家人的投資課 · Matt Ye",
+    "description": "52 週投資課第 30 週：超額 2.4pp 拆成配置、選股與交互三塊且勾稽歸零，並修正被誤用最多的「90% 來自配置」。附 Brinson 拆帳台與 90% 判讀互動。",
+    "ogTitle": "第 30 週：績效歸因——Brinson 模型 — 給家人的投資課",
+    "ogDescription": "贏大盤 2.4pp——押對類別還是挑對股票？配置＋選股＋交互＝超額，帳拆得乾乾淨淨。附拆帳台互動。"
   }
 ];

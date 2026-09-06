@@ -350,4 +350,15 @@ export const familyInvestingCourseUnits: OmsDoc[] = [
     published: '2026-09-06',
     url: '/projects/family-investing-course/week-29-sharpe-family/',
   },
+  {
+    slug: 'week-30-brinson-attribution',
+    title: 'W30 績效歸因——Brinson 模型',
+    titleEn: 'W30 Brinson Attribution',
+    description: '贏大盤 2.4pp——是押對類別（配置）還是挑對股票（選股）？Brinson 四步驟把帳拆得乾乾淨淨（勾稽必等於超額），並修正被誤用最多的「90% 來自配置」。附拆帳台與 90% 判讀互動。',
+    descriptionEn: 'Beat the benchmark by 2.4pp — was it allocation or stock selection? Brinson attribution splits the bill cleanly (the pieces must sum to the excess), and sets the record straight on the misquoted 90%. With an interactive attribution bench.',
+    tags: ['Q3 操盤手季', '互動計算機'],
+    date: '2027-01-27',
+    published: '2026-09-06',
+    url: '/projects/family-investing-course/week-30-brinson-attribution/',
+  },
 ];
