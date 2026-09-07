@@ -37,6 +37,24 @@ export const MIGRATED_PATHS = [
   '/projects/marketing/tech-publishing/',
   '/projects/marketing/short-video/',
   '/writing/symbolic-reminder/',
+  /* content collection 的 Markdown 文章。中文在 src/content/blog/<slug>.md、
+     英文在 src/content/blog/en/<slug>.md，路由是 [...lang]/writing/[slug].astro。
+
+     這批和上面的手刻頁不同，網址是從檔案推導出來的——所以 [slug].astro 的
+     getStaticPaths 有一道守衛：中文檔沒有英文對應檔就讓 build 失敗，
+     避免這份清單宣稱有英文版、hreflang 卻指到 404。 */
+  '/writing/hello-world/',
+  '/writing/hardcore-presentation-00-roadmap/',
+  '/writing/management-3r-01-manifesto/',
+  '/writing/seo-rules-with-sources/',
+  '/writing/family-investing-01-why-invest/',
+  '/writing/family-investing-02-inflation/',
+  '/writing/family-investing-03-interest-rate/',
+  '/writing/family-investing-04-what-is-stock/',
+  '/writing/family-investing-05-etf-dca/',
+  '/writing/family-investing-06-economic-moat/',
+  '/writing/family-investing-07-financial-statements/',
+  '/writing/family-investing-08-capital-allocation-intro/',
   '/projects/one-more-step/aw32/',
   '/projects/one-more-step/daniels-talk/',
   '/projects/one-more-step/ga4-guide/',
