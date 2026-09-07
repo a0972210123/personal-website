@@ -58,6 +58,7 @@ export const MIGRATED_PATHS = [
   '/projects/one-more-step/aw32/',
   '/projects/one-more-step/daniels-talk/',
   '/projects/one-more-step/ga4-guide/',
+  '/projects/one-more-step/ip-governance-ai/',
 ] as const;
 
 /**
