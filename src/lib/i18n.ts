@@ -29,10 +29,10 @@ export const MIGRATED_PATHS = [
   '/projects/marketing/',
   '/projects/one-more-step/',
   '/projects/family-investing-course/',
-  /* marketing 專欄的手刻頁。這四頁的判準另有一層：staticPageMeta 要有填英文欄位
-     （titleEn/descriptionEn），StaticPageLayout 與 [slug].astro 都讀那個判準。
-     marketing-foundations 刻意不列——它有 13 處純中文尚未補譯。 */
+  /* marketing 專欄的手刻頁。這五頁的判準另有一層：staticPageMeta 要有填英文欄位
+     （titleEn/descriptionEn），StaticPageLayout 與 [slug].astro 都讀那個判準。 */
   '/projects/marketing/faceless-pipeline/',
+  '/projects/marketing/marketing-foundations/',
   '/projects/marketing/social-platforms-2026/',
   '/projects/marketing/tech-publishing/',
   '/projects/marketing/short-video/',
