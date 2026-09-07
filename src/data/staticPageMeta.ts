@@ -24,6 +24,7 @@ export interface StaticPageMeta {
   ogType: string;
   ogImage: string;
   canonical: string;
+  /** 覆寫用。不填就由路由推導（/en/ → en_US，其餘 → zh_TW），見 StaticPageLayout。 */
   ogLocale?: string;
   ogImageAlt?: string;
   ogImageAltEn?: string;
